@@ -1,7 +1,7 @@
 /* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02.java
+Filename: CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03.java
 Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-02.tmpl.java
+Template File: sources-sinks-03.tmpl.java
 */
 /*
 * @description
@@ -11,7 +11,7 @@ Template File: sources-sinks-02.tmpl.java
 * Sinks: addCookieServlet
 *    GoodSink: URLEncode input
 *    BadSink : querystring to addCookie()
-* Flow Variant: 02 Control flow: if(true) and if(false)
+* Flow Variant: 03 Control flow: if(5==5) and if(5!=5)
 *
 * */
 
@@ -22,12 +22,12 @@ import javax.servlet.http.*;
 
 import java.net.URLEncoder;
 
-public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet
+public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true)
+        if (5==5)
         {
             /* get environment variable ADD */
             /* POTENTIAL FLAW: Read data from an environment variable */
@@ -40,7 +40,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
             data = null;
         }
 
-        if (true)
+        if (5==5)
         {
             if (data != null)
             {
@@ -51,11 +51,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first true to false */
+    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (false)
+        if (5!=5)
         {
             /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
              * but ensure data is inititialized before the Sink to avoid compiler errors */
@@ -69,7 +69,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
 
         }
 
-        if (true)
+        if (5==5)
         {
             if (data != null)
             {
@@ -84,7 +84,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true)
+        if (5==5)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
@@ -96,7 +96,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
             data = null;
         }
 
-        if (true)
+        if (5==5)
         {
             if (data != null)
             {
@@ -107,11 +107,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second true to false */
+    /* goodB2G1() - use badsource and goodsink by changing second 5==5 to 5!=5 */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true)
+        if (5==5)
         {
             /* get environment variable ADD */
             /* POTENTIAL FLAW: Read data from an environment variable */
@@ -124,7 +124,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
             data = null;
         }
 
-        if (false)
+        if (5!=5)
         {
             /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
             IO.writeLine("Benign, fixed string");
@@ -146,7 +146,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true)
+        if (5==5)
         {
             /* get environment variable ADD */
             /* POTENTIAL FLAW: Read data from an environment variable */
@@ -159,7 +159,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
             data = null;
         }
 
-        if (true)
+        if (5==5)
         {
             if (data != null)
             {
