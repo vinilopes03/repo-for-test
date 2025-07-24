@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet {
     
@@ -15,7 +16,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     }
     
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = "foo"; // Hardcoded string
+        String data = "foo";
         if (data != null) {
             Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink);
@@ -23,7 +24,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     }
     
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = "foo"; // Hardcoded string
+        String data = "foo";
         if (data != null) {
             Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink);
@@ -31,7 +32,12 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     }
     
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in future commits
+        String data;
+        data = System.getenv("ADD");
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            response.addCookie(cookieSink);
+        }
     }
     
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
