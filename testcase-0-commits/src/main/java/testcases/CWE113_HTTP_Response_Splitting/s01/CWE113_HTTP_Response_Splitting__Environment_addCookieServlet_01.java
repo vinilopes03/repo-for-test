@@ -26,7 +26,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
 
-        // FIX: Use a hardcoded string
         data = "foo";
 
         if (data != null) {
@@ -36,7 +35,16 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G implementation
+        String data;
+
+        // POTENTIAL FLAW: Read data from an environment variable
+        data = System.getenv("ADD");
+
+        if (data != null) {
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
