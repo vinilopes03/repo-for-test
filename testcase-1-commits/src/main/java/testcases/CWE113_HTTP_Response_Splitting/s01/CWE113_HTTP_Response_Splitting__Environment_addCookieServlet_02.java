@@ -4,7 +4,7 @@ import testcasesupport.*;
 import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet {
-    
+
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         // Read data from an environment variable
@@ -17,11 +17,25 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // To be implemented
+        String data;
+        // Use a hardcoded string
+        data = "foo";
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            // Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // To be implemented
+        String data;
+        // Use a hardcoded string
+        data = "foo";
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            // Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
