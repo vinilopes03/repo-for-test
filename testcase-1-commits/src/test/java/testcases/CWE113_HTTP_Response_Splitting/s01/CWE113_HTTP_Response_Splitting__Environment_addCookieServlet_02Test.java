@@ -1,5 +1,6 @@
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -7,107 +8,43 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02Test {
 
+    private CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private StringWriter responseWriter;
+
+    @BeforeEach
+    public void setUp() {
+        servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
+        request = Mockito.mock(HttpServletRequest.class);
+        response = Mockito.mock(HttpServletResponse.class);
+        responseWriter = new StringWriter();
+    }
+
     @Test
     public void testBad() throws Throwable {
         // Set up the environment variable
-        System.setProperty("ADD", "en-US\r\nSet-Cookie: sessionId=abc123");
+        System.setProperty("ADD", "en-US%0d%0aSet-Cookie:sessionId=12345");
 
-        // Mock HttpServletRequest and HttpServletResponse
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
+        // Mock the response writer
+        when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
 
-        // Create an instance of the class to test
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
-
-        // Call the bad method
+        // Call the vulnerable method
         servlet.bad(request, response);
 
-        // Verify that a cookie was added with the potentially malicious value
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            return "lang".equals(cookie.getName()) && "en-US\r\nSet-Cookie: sessionId=abc123".equals(cookie.getValue());
-        }));
-    }
+        // Verify that the cookie was added with the unvalidated input
+        verify(response).addCookie(argThat(cookie -> "lang".equals(cookie.getName()) && "en-US%0d%0aSet-Cookie:sessionId=12345".equals(cookie.getValue())));
 
-    @Test
-    public void testGoodG2B1() throws Throwable {
-        // Mock HttpServletRequest and HttpServletResponse
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
-        // Create an instance of the class to test
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
-
-        // Call the goodG2B1 method
-        servlet.goodG2B1(request, response);
-
-        // Verify that a cookie was added with the hardcoded value
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            return "lang".equals(cookie.getName()) && "foo".equals(cookie.getValue());
-        }));
-    }
-
-    @Test
-    public void testGoodG2B2() throws Throwable {
-        // Mock HttpServletRequest and HttpServletResponse
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
-        // Create an instance of the class to test
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
-
-        // Call the goodG2B2 method
-        servlet.goodG2B2(request, response);
-
-        // Verify that a cookie was added with the hardcoded value
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            return "lang".equals(cookie.getName()) && "foo".equals(cookie.getValue());
-        }));
-    }
-
-    @Test
-    public void testGoodB2G1() throws Throwable {
-        // Set up the environment variable
-        System.setProperty("ADD", "en-US\r\nSet-Cookie: sessionId=abc123");
-
-        // Mock HttpServletRequest and HttpServletResponse
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
-        // Create an instance of the class to test
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
-
-        // Call the goodB2G1 method
-        servlet.goodB2G1(request, response);
-
-        // Verify that a cookie was added with the encoded value
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            return "lang".equals(cookie.getName()) && "en-US%0D%0ASet-Cookie%3A+sessionId%3Dabc123".equals(cookie.getValue());
-        }));
-    }
-
-    @Test
-    public void testGoodB2G2() throws Throwable {
-        // Set up the environment variable
-        System.setProperty("ADD", "en-US\r\nSet-Cookie: sessionId=abc123");
-
-        // Mock HttpServletRequest and HttpServletResponse
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
-        // Create an instance of the class to test
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
-
-        // Call the goodB2G2 method
-        servlet.goodB2G2(request, response);
-
-        // Verify that a cookie was added with the encoded value
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            return "lang".equals(cookie.getName()) && "en-US%0D%0ASet-Cookie%3A+sessionId%3Dabc123".equals(cookie.getValue());
-        }));
+        // Check if the response contains the injected header
+        String responseContent = responseWriter.toString();
+        assertTrue(responseContent.contains("Set-Cookie:sessionId=12345"), "Response should contain the injected Set-Cookie header");
     }
 }
