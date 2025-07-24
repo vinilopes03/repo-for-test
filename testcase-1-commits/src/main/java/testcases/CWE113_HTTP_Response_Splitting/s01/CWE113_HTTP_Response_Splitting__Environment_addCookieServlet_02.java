@@ -6,7 +6,13 @@ import javax.servlet.http.*;
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet {
     
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in future commits
+        String data;
+        // Vulnerable code: reading from environment variable
+        data = System.getenv("ADD");
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
     
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
