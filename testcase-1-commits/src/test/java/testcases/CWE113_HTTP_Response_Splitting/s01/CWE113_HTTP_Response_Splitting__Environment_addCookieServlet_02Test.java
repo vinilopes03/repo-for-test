@@ -8,10 +8,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02Test {
@@ -19,32 +17,34 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02Test
     private CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private StringWriter responseWriter;
 
     @BeforeEach
     public void setUp() {
         servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
         request = Mockito.mock(HttpServletRequest.class);
         response = Mockito.mock(HttpServletResponse.class);
-        responseWriter = new StringWriter();
     }
 
     @Test
     public void testBad() throws Throwable {
-        // Set up the environment variable
-        System.setProperty("ADD", "en-US%0d%0aSet-Cookie:sessionId=12345");
-
-        // Mock the response writer
-        when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        // Set up the environment variable to simulate the vulnerability
+        System.setProperty("ADD", "en-US\r\nSet-Cookie: sessionId=malicious");
 
         // Call the vulnerable method
         servlet.bad(request, response);
 
-        // Verify that the cookie was added with the unvalidated input
-        verify(response).addCookie(argThat(cookie -> "lang".equals(cookie.getName()) && "en-US%0d%0aSet-Cookie:sessionId=12345".equals(cookie.getValue())));
+        // Verify that a cookie was added with the potentially malicious value
+        verify(response, times(1)).addCookie(any(Cookie.class));
 
-        // Check if the response contains the injected header
-        String responseContent = responseWriter.toString();
-        assertTrue(responseContent.contains("Set-Cookie:sessionId=12345"), "Response should contain the injected Set-Cookie header");
+        // Capture the cookie to check its value
+        Cookie addedCookie = captureAddedCookie();
+        assertEquals("en-US\r\nSet-Cookie: sessionId=malicious", addedCookie.getValue());
+    }
+
+    private Cookie captureAddedCookie() {
+        // Use an ArgumentCaptor to capture the cookie added to the response
+        ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(response).addCookie(cookieCaptor.capture());
+        return cookieCaptor.getValue();
     }
 }

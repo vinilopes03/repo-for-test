@@ -12,15 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
-    <!-- Explicitly showing Maven Central (though this is the default) -->
-    <repositories>
-        <repository>
-            <id>central</id>
-            <n>Maven Central Repository</n>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
-    
     <dependencies>
         <!-- JUnit 5 - Java 11 compatible -->
         <dependency>
