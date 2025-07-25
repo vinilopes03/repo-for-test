@@ -73,12 +73,60 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 ext
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;  // Dead code
+            break;
+        default:
+            data = "foo";  // FIX
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);  // POTENTIAL FLAW
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = "foo";  // FIX
+            break;
+        default:
+            data = null;  // Dead code
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);  // POTENTIAL FLAW
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
