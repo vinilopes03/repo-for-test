@@ -39,6 +39,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -47,6 +48,22 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
             data = null; // Dead code
         } else {
             data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateTrue) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // Dead code
         }
 
         if (privateTrue) {
