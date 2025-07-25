@@ -25,6 +25,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
 
         if (PRIVATE_STATIC_FINAL_TRUE) {
             if (data != null) {
+                // PATCH: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
