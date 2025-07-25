@@ -18,7 +18,55 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
     private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method body will be implemented in the next commit
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            FileInputStream streamFileInput = null;
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+            try {
+                // Read string from file into data
+                streamFileInput = new FileInputStream(file);
+                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
