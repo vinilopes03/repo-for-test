@@ -14,26 +14,51 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
         if (PRIVATE_STATIC_FINAL_TRUE) {
             data = ""; // Initialize data
             try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\data.txt")), "UTF-8"))) {
-                // POTENTIAL FLAW: Read data from a file
                 data = readerBuffered.readLine();
             } catch (IOException exceptIO) {
                 IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
             }
         } else {
-            data = null; // Dead code, but necessary for compilation
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE) {
             if (data != null) {
-                // POTENTIAL FLAW: Input not verified before inclusion in header
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
 
-    // Method signatures for good cases
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE) {
+            data = null;
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
 
