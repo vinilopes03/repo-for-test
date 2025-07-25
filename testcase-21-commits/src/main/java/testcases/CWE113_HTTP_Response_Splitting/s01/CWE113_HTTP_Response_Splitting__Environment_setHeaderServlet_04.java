@@ -72,6 +72,29 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 ext
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         mainFromParent(args);
     }
