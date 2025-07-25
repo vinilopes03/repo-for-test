@@ -85,3 +85,18 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+
+    // FIX: Use a hardcoded string
+    data = "foo";
+
+    for (int j = 0; j < 1; j++) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
+    }
+}
