@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -25,7 +26,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
     {
         String data;
 
-        // Use a hardcoded string
         data = "foo";
 
         for (int j = 0; j < 1; j++)
@@ -33,7 +33,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                // Unsafe: Input not verified before inclusion in the cookie
                 response.addCookie(cookieSink);
             }
         }
@@ -41,7 +40,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature for bad source, good sink
+        String data;
+
+        data = System.getenv("ADD");
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // Safe: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
