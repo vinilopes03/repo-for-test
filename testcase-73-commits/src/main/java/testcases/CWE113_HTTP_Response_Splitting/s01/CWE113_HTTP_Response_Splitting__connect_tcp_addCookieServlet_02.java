@@ -70,11 +70,39 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method stub
+        String data;
+        if (false) {
+            data = null; // Dead code
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (true) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method stub
+        String data;
+        if (true) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null; // Dead code
+        }
+
+        if (true) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
