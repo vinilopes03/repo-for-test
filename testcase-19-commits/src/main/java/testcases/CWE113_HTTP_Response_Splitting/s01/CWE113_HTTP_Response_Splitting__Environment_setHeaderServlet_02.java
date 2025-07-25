@@ -56,6 +56,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
         else
         {
+            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -63,6 +64,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         {
             if (data != null)
             {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
