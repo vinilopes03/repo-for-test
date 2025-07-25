@@ -1,31 +1,41 @@
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
-
 import javax.servlet.http.*;
+import java.io.*;
+import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends AbstractTestCaseServlet {
     private int privateFive = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (privateFive == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code, but ensures data is initialized
+        }
+
+        if (privateFive == 5 && data != null) {
+            // POTENTIAL FLAW: Input not verified before inclusion in header
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
-    }
-
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
-    }
-
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
-    }
-
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
-    }
+    // Method signatures
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
