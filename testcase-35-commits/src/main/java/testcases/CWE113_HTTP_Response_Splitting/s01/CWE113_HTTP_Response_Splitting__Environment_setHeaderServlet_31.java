@@ -33,7 +33,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // goodB2G method will be implemented in next commit
+        goodB2G(request, response);
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -60,7 +60,26 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31 ext
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        String dataCopy;
+        {
+            String data;
+
+            // get environment variable ADD
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
