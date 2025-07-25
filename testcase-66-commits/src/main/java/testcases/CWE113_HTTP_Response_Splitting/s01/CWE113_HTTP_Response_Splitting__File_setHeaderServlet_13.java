@@ -16,7 +16,53 @@ import java.net.URLEncoder;
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends AbstractTestCaseServlet {
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation to be added
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            FileInputStream streamFileInput = null;
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+            try {
+                streamFileInput = new FileInputStream(file);
+                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        } else {
+            data = null; // Ensure data is initialized before the sink to avoid compiler errors
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
