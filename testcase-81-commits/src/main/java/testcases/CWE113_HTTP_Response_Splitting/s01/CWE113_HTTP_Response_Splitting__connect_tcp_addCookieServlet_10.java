@@ -71,9 +71,46 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 ext
         }
     }
 
-    // Method signatures for good methods
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFalse) {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is initialized before the Sink to avoid compiler errors */
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticTrue) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is initialized before the Sink to avoid compiler errors */
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
 
