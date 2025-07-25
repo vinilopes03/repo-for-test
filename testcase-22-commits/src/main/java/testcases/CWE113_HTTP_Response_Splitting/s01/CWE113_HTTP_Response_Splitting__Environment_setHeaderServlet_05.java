@@ -94,7 +94,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         {
             if (data != null)
             {
-                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
@@ -117,7 +116,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         {
             if (data != null)
             {
-                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
