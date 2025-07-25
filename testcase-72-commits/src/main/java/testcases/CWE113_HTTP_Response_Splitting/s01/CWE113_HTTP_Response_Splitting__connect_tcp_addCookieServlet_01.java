@@ -94,9 +94,20 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_01 ext
         goodB2G(request, response);
     }
 
+    /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
