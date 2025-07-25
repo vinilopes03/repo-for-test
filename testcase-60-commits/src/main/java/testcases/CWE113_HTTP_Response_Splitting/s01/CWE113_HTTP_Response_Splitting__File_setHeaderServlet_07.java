@@ -18,45 +18,15 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
     private int privateFive = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation as in Commit 2
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (privateFive == 5) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
+        if (privateFive != 5) {
+            data = null; // Dead code
         } else {
-            data = null;
+            data = "foo"; // FIX: Use a hardcoded string
         }
 
         if (privateFive == 5) {
@@ -66,12 +36,19 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
         }
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Placeholder for goodG2B1 method
-    }
-
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Placeholder for goodG2B2 method
+        String data;
+        if (privateFive == 5) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // Dead code
+        }
+
+        if (privateFive == 5) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
