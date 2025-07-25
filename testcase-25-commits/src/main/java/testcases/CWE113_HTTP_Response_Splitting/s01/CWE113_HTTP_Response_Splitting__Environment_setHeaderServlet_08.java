@@ -193,3 +193,28 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (privateReturnsFalse())
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+         * but ensure data is initialized before the Sink to avoid compiler errors */
+        data = null;
+    }
+    else
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+
+    if (privateReturnsTrue())
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
