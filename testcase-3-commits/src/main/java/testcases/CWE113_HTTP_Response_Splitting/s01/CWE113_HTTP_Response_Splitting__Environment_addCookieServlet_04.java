@@ -3,6 +3,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 extends AbstractTestCaseServlet {
     
@@ -67,11 +68,44 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Placeholder for future implementation
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        } else {
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FALSE) {
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Placeholder for future implementation
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        } else {
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
