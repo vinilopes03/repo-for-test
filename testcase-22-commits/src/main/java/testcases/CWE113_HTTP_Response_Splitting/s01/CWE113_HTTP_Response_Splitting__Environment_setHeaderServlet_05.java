@@ -13,7 +13,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         String data;
         if (privateTrue)
         {
-            // POTENTIAL FLAW: Read data from an environment variable
             data = System.getenv("ADD");
         }
         else
@@ -25,7 +24,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         {
             if (data != null)
             {
-                // POTENTIAL FLAW: Input not verified before inclusion in header
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -33,12 +31,46 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature only
+        String data;
+        if (privateFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature only
+        String data;
+        if (privateTrue)
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -53,7 +85,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature only
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
