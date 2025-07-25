@@ -64,14 +64,37 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_11 extends Ab
             }
         }
     }
-    
-    // Method signatures for good implementations
+
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // To be implemented
+        String data;
+        if (IO.staticReturnsFalse()) {
+            data = null;
+        } else {
+            data = "foo";
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // To be implemented
+        String data;
+        if (IO.staticReturnsTrue()) {
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
