@@ -38,11 +38,37 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B1
+        String data;
+        if (privateFive != 5) {
+            data = null; // Dead code path
+        } else {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (privateFive == 5) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B2
+        String data;
+        if (privateFive == 5) {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        } else {
+            data = null; // Dead code path
+        }
+
+        if (privateFive == 5) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
