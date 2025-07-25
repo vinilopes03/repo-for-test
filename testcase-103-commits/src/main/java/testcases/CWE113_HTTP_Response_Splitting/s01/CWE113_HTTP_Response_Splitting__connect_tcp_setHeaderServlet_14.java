@@ -5,14 +5,14 @@ import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_14 extends AbstractTestCaseServlet {
 
-    // bad method omitted for brevity
+    // bad and goodG2B1 methods omitted for brevity
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (IO.staticFive != 5) {
-            data = null;
-        } else {
+        if (IO.staticFive == 5) {
             data = "foo";
+        } else {
+            data = null;
         }
 
         if (IO.staticFive == 5) {
