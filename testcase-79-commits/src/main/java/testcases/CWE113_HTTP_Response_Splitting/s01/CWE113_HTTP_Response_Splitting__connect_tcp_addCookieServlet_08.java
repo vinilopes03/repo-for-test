@@ -24,7 +24,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
         String data;
         if (privateReturnsTrue()) {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -60,8 +59,41 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsFalse()) {
+            data = null;
+        } else {
+            data = "foo";
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature, implementation to follow
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
