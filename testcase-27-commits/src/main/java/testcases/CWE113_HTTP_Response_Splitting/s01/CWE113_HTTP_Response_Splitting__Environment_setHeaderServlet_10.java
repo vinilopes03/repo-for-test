@@ -25,7 +25,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         if (IO.staticFalse) {
             data = null;
         } else {
-            // FIX: Use a hardcoded string
             data = "foo";
         }
 
@@ -37,7 +36,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will follow
+        String data;
+        if (IO.staticTrue) {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
