@@ -27,8 +27,8 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
 
         if (privateTrue) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", java.net.URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
             }
         }
     }
