@@ -66,7 +66,29 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method skeleton
+        String data;
+        if (privateTrue) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(java.util.logging.Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code
+        }
+
+        if (privateFalse) {
+            IO.writeLine("Benign, fixed string"); // Dead code
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", java.net.URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
