@@ -51,7 +51,22 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in the next commits
+        String data;
+        if (IO.staticReturnsTrueOrFalse()) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (IO.staticReturnsTrueOrFalse()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        } else {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
