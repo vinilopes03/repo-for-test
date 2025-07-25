@@ -190,7 +190,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_02 extends Ab
         {
             if (data != null)
             {
-                // Placeholder for setting header with good sink
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
@@ -257,6 +258,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_02 extends Ab
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
