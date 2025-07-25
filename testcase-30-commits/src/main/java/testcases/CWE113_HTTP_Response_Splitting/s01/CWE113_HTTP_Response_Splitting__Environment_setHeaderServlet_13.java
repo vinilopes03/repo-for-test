@@ -110,3 +110,48 @@ private void goodG2B2(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (IO.STATIC_FINAL_FIVE == 5) {
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+    } else {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+         * but ensure data is initialized before the Sink to avoid compiler errors */
+        data = null;
+    }
+
+    if (IO.STATIC_FINAL_FIVE != 5) {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        IO.writeLine("Benign, fixed string");
+    } else {
+        if (data != null) {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
+
+private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (IO.STATIC_FINAL_FIVE == 5) {
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+    } else {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+         * but ensure data is initialized before the Sink to avoid compiler errors */
+        data = null;
+    }
+
+    if (IO.STATIC_FINAL_FIVE == 5) {
+        if (data != null) {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
