@@ -64,15 +64,51 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature and structure
+        String data;
+        if (IO.staticReturnsTrue()) {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        } else {
+            // Dead code, but required initialization
+            data = null;
+        }
+
+        if (IO.staticReturnsFalse()) {
+            // Dead code, benign output
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature and structure
+        String data;
+        if (IO.staticReturnsTrue()) {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        } else {
+            // Dead code, but required initialization
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature and structure
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
