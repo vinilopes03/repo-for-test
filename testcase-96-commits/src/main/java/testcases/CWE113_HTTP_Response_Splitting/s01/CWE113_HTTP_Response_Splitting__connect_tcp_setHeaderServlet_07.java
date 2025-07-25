@@ -14,7 +14,27 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
     private int privateFive = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for bad case
+        String data;
+        if (privateFive == 5) {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                // Read data using an outbound tcp connection
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code path
+        }
+
+        if (privateFive == 5) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
