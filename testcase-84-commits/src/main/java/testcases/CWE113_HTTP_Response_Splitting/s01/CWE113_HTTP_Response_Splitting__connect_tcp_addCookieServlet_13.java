@@ -24,6 +24,10 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.STATIC_FINAL_FIVE == 5) {
             data = ""; // Initialize data
@@ -46,18 +50,12 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
             data = null; // Dead Code
         }
 
-        if (IO.STATIC_FINAL_FIVE != 5) {
-            IO.writeLine("Benign, fixed string"); // Dead Code
-        } else {
+        if (IO.STATIC_FINAL_FIVE == 5) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink); // FIX: URLEncode input
             }
         }
-    }
-
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2 implementation
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
