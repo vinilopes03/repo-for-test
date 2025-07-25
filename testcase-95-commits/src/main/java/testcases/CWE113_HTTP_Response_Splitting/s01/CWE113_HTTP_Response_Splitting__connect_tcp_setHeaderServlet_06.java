@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 extends AbstractTestCaseServlet {
     
@@ -64,11 +65,49 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            data = ""; 
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            data = ""; 
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
