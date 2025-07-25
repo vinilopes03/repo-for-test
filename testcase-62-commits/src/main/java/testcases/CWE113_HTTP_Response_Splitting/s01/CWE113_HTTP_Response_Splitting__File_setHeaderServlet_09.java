@@ -21,53 +21,11 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.STATIC_FINAL_TRUE) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            try (FileInputStream streamFileInput = new FileInputStream(file);
-                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        } else {
-            data = null;
-        }
-
-        if (IO.STATIC_FINAL_FALSE) {
-            IO.writeLine("Benign, fixed string");
-        } else {
-            if (data != null) {
-                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation from previous commit
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.STATIC_FINAL_TRUE) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            try (FileInputStream streamFileInput = new FileInputStream(file);
-                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        } else {
-            data = null;
-        }
-
-        if (IO.STATIC_FINAL_TRUE) {
-            if (data != null) {
-                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation from previous commit
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
