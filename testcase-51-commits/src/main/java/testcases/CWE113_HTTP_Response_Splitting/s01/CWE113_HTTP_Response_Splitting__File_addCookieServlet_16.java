@@ -133,3 +133,53 @@ private void goodG2B(HttpServletRequest request, HttpServletResponse response) t
         break;
     }
 }
+
+// ... (rest of the class remains unchanged) ...
+
+private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+
+    while (true)
+    {
+        data = ""; /* Initialize data */
+        {
+            File file = new File("C:\\data.txt");
+            FileInputStream streamFileInput = null;
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+            try
+            {
+                /* read string from file into data */
+                streamFileInput = new FileInputStream(file);
+                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                /* POTENTIAL FLAW: Read data from a file */
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                /* Close stream reading objects */
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", e); }
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", e); }
+                try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException e) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", e); }
+            }
+        }
+        break;
+    }
+
+    while (true)
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+        break;
+    }
+}
