@@ -9,12 +9,12 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
 
     // Previously implemented methods omitted for brevity
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (privateFalse) {
-            data = null;
-        } else {
+        if (privateTrue) {
             data = "foo";
+        } else {
+            data = null;
         }
 
         if (privateTrue) {
