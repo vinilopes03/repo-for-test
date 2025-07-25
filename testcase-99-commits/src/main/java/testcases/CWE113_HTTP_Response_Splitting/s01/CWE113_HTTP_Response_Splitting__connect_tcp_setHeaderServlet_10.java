@@ -151,3 +151,49 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (IO.staticFalse)
+    {
+        data = null; // Dead code
+    }
+    else
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+
+    if (IO.staticTrue)
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
+
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (IO.staticTrue)
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+    else
+    {
+        data = null; // Dead code
+    }
+
+    if (IO.staticTrue)
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
