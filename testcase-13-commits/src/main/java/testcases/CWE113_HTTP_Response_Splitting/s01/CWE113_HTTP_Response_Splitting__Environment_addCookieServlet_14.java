@@ -8,7 +8,19 @@ import java.net.URLEncoder;
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_14 extends AbstractTestCaseServlet {
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for bad implementation
+        String data;
+        if (IO.staticFive == 5) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (IO.staticFive == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
