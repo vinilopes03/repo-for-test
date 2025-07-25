@@ -26,7 +26,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_16 ext
         String data;
 
         while (true) {
-            // FIX: Use a hardcoded string
             data = "foo";
             break;
         }
@@ -40,7 +39,21 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_16 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature with no implementation
+        String data;
+
+        while (true) {
+            data = System.getenv("ADD");
+            break;
+        }
+
+        while (true) {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
