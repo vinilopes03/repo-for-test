@@ -16,68 +16,17 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_16 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation of the bad method
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
         while (true)
         {
-            data = ""; // Initialize data
-            // Read data using an outbound tcp connection
-            {
-                Socket socket = null;
-                BufferedReader readerBuffered = null;
-                InputStreamReader readerInputStream = null;
-                try
-                {
-                    socket = new Socket("host.example.org", 39544);
-                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // POTENTIAL FLAW
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Clean up stream reading objects
-                    try
-                    {
-                        if (readerBuffered != null)
-                        {
-                            readerBuffered.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (readerInputStream != null)
-                        {
-                            readerInputStream.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-
-                    // Clean up socket objects
-                    try
-                    {
-                        if (socket != null)
-                        {
-                            socket.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
-                    }
-                }
-            }
+            // FIX: Use a hardcoded string
+            data = "foo";
             break;
         }
 
@@ -86,15 +35,10 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_16 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                response.addCookie(cookieSink); // Still a potential flaw
             }
             break;
         }
-    }
-
-    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature for goodG2B (Good Source, Bad Sink)
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
