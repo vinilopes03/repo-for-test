@@ -45,6 +45,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_01 ext
 
         if (data != null)
         {
+            data = URLEncoder.encode(data, "UTF-8"); // PATCH: Encode data to prevent HTTP Response Splitting
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
