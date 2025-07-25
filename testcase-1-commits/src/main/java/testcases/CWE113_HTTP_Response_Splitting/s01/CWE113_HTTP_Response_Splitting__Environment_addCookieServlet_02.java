@@ -27,7 +27,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         if (false) {
             data = null;
         } else {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -40,7 +39,20 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation to be added
+        String data;
+        if (true) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (true) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
