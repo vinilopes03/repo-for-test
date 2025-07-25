@@ -2,18 +2,19 @@
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet
 {
-    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    // ... (bad method from previous commit)
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true)
+        if (false)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
-            data = System.getenv("ADD");
+            data = null; // Dead code
         }
         else
         {
-            data = null; // Dead code
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (true)
