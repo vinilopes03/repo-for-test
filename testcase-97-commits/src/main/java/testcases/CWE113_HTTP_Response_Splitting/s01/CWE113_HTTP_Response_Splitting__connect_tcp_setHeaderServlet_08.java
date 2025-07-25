@@ -24,7 +24,29 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
     }
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in the next commit
+        String data;
+        if (privateReturnsTrue()) {
+            data = ""; // Initialize data
+            // Read data using an outbound tcp connection
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                // POTENTIAL FLAW: Read data using an outbound tcp connection
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
