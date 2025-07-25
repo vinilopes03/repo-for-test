@@ -90,12 +90,44 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method placeholder
+        String data;
+        if (IO.STATIC_FINAL_FIVE != 5)
+        {
+            data = null; // Dead code path
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method placeholder
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null; // Dead code path
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
