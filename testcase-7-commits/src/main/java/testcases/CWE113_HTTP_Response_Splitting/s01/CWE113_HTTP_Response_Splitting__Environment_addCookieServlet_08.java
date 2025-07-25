@@ -63,3 +63,24 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_08 ext
         mainFromParent(args);
     }
 }
+
+// Previous code remains unchanged
+
+public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (privateReturnsTrue()) {
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+    } else {
+        data = null; // Dead code, but ensures data is initialized
+    }
+
+    if (privateReturnsTrue()) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+    }
+}
