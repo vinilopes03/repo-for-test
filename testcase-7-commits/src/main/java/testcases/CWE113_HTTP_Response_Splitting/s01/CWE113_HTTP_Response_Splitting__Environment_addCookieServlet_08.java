@@ -122,3 +122,45 @@ private void goodG2B2(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+// Previous code remains unchanged
+
+private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (privateReturnsTrue()) {
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+    } else {
+        data = null; // Dead code
+    }
+
+    if (privateReturnsFalse()) {
+        IO.writeLine("Benign, fixed string");
+    } else {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+    }
+}
+
+private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (privateReturnsTrue()) {
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+    } else {
+        data = null; // Dead code
+    }
+
+    if (privateReturnsTrue()) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+    }
+}
