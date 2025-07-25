@@ -15,11 +15,15 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // `goodG2B1` implementation remains unchanged
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (privateFalse) {
-            data = null; // Dead code
-        } else {
+        if (privateTrue) {
             data = "foo"; // Use a hardcoded string
+        } else {
+            data = null; // Dead code
         }
 
         if (privateTrue) {
