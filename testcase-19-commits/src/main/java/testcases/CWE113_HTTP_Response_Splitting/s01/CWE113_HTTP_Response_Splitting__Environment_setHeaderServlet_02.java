@@ -29,6 +29,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         String data;
         if (true)
         {
+            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -40,6 +41,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         {
             if (data != null)
             {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
