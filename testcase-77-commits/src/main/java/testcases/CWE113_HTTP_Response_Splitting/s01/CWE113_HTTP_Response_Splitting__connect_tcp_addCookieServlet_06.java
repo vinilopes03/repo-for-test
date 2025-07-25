@@ -2,6 +2,11 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 extends AbstractTestCaseServlet {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
@@ -10,9 +15,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5) {
             data = ""; // Initialize data
-            // Method logic to be implemented
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+
+                try {
+                    if (socket != null) {
+                        socket.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                }
+            }
         } else {
-            data = null; // Dead code for compiler assurance
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5) {
