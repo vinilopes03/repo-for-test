@@ -36,11 +36,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_05 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will follow
+        String data;
+        if (privateFalse) {
+            data = null; // This block will never be executed
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will follow
+        String data;
+        if (privateTrue) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // This block will never be executed
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
