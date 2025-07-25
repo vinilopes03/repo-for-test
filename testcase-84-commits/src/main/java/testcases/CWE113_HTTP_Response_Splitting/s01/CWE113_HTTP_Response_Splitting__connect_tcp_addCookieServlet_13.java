@@ -136,3 +136,38 @@ private void goodB2G1(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (IO.STATIC_FINAL_FIVE == 5) {
+        data = ""; // Initialize data
+        // Read data using an outbound TCP connection
+        try (Socket socket = new Socket("host.example.org", 39544);
+             InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+            // POTENTIAL FLAW: Read data using an outbound TCP connection
+            data = readerBuffered.readLine();
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+    } else {
+        // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+        data = null;
+    }
+
+    if (IO.STATIC_FINAL_FIVE == 5) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            response.addCookie(cookieSink);
+        }
+    }
+}
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    goodG2B1(request, response);
+    goodG2B2(request, response);
+    goodB2G1(request, response);
+    goodB2G2(request, response);
+}
