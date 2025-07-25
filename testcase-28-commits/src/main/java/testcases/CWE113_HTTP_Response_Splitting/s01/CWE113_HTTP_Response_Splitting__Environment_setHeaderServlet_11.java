@@ -5,12 +5,33 @@ import javax.servlet.http.*;
 
 import java.net.URLEncoder;
 
-// Initial commit: Set up class structure and import necessary packages
+// Implement the `bad` method
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
-    // Method signatures
-    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
