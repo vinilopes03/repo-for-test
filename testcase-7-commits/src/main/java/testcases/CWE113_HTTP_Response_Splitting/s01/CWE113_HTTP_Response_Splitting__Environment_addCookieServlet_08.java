@@ -80,11 +80,37 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_08 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (privateReturnsTrue()) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsFalse()) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (privateReturnsTrue()) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
