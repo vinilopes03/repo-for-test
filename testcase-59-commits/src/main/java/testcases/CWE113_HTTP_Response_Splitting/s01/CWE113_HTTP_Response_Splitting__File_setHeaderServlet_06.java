@@ -14,12 +14,16 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation as in Commit 3
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (PRIVATE_STATIC_FINAL_FIVE != 5) {
-            data = null; // Dead code
-        } else {
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
             // FIX: Use a hardcoded string
             data = "foo";
+        } else {
+            data = null; // Dead code
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5) {
@@ -28,10 +32,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // placeholder
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
