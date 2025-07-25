@@ -183,3 +183,11 @@ private void goodB2G(HttpServletRequest request, HttpServletResponse response) t
         break;
     }
 }
+
+// ... (rest of the class remains unchanged) ...
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    goodG2B(request, response);
+    goodB2G(request, response);
+}
