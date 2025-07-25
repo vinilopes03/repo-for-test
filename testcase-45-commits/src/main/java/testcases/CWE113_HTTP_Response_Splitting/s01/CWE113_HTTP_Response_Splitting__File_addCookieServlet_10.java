@@ -32,8 +32,17 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_10 extends Ab
         }
     }
 
-    // Placeholders for good methods
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = "foo"; // FIX: Use a hardcoded string
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
+    }
+
+    // Placeholders for other good methods
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
