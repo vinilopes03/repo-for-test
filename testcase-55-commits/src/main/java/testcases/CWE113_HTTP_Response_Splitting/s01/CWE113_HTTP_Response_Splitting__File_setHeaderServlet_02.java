@@ -81,16 +81,76 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_02 extends Ab
     }
     
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G1 implementation
+        String data;
+        if (true) {
+            data = ""; // Initialize data
+            try {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = new FileInputStream(file);
+                InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+
+                readerBuffered.close();
+                readerInputStream.close();
+                streamFileInput.close();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (false) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
     
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2 implementation
+        String data;
+        if (true) {
+            data = ""; // Initialize data
+            try {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = new FileInputStream(file);
+                InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+
+                readerBuffered.close();
+                readerInputStream.close();
+                streamFileInput.close();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (true) {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
     
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
