@@ -7,12 +7,14 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
     private boolean privateTrue = true;
     private boolean privateFalse = false;
 
-    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    // Previously implemented methods omitted for brevity
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (privateTrue) {
-            data = System.getenv("ADD");
-        } else {
+        if (privateFalse) {
             data = null;
+        } else {
+            data = "foo";
         }
 
         if (privateTrue) {
