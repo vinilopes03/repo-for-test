@@ -38,7 +38,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_09 extends Ab
 
         if (IO.STATIC_FINAL_TRUE && data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
             response.addCookie(cookieSink);
         }
     }
