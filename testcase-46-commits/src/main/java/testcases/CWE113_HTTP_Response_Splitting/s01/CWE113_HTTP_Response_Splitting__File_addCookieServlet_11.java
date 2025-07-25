@@ -18,68 +18,68 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_11 extends Ab
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrue()) {
-            // To be implemented
+            data = ""; 
+            File file = new File("C:\\data.txt");
+            FileInputStream streamFileInput = null;
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+            try {
+                streamFileInput = new FileInputStream(file);
+                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
         } else {
             data = null;
         }
 
         if (IO.staticReturnsTrue()) {
-            // To be implemented
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
         }
     }
-
+    
+    // Method signatures for good implementations
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsFalse()) {
-            data = null;
-        } else {
-            // To be implemented
-        }
-
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        }
+        // To be implemented
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        } else {
-            data = null;
-        }
-
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        }
+        // To be implemented
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        } else {
-            data = null;
-        }
-
-        if (IO.staticReturnsFalse()) {
-            IO.writeLine("Benign, fixed string");
-        } else {
-            // To be implemented
-        }
+        // To be implemented
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        } else {
-            data = null;
-        }
-
-        if (IO.staticReturnsTrue()) {
-            // To be implemented
-        }
+        // To be implemented
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
