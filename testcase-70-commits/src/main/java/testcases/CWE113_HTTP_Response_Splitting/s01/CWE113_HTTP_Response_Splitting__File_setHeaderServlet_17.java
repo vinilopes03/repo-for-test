@@ -40,7 +40,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_17 extends Ab
         }
 
         if (data != null) {
-            // POTENTIAL FLAW: Input not verified before inclusion in header
+            // FIX: Use URLEncoder.encode to hex-encode non-alphanumerics
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
