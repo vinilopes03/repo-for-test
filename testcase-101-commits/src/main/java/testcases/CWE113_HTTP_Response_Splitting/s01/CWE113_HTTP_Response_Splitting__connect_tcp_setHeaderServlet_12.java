@@ -1,20 +1,3 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-12.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: connect_tcp Read data using an outbound tcp connection
-* GoodSource: A hardcoded string
-* Sinks: setHeaderServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to setHeader()
-* Flow Variant: 12 Control flow: if(IO.staticReturnsTrueOrFalse())
-*
-* */
-
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
@@ -33,7 +16,86 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature for bad()
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try
+                {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (socket != null)
+                        {
+                            socket.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = "foo";
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
