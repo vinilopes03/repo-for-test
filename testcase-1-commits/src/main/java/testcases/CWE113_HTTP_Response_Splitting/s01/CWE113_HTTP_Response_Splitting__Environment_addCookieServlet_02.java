@@ -2,19 +2,19 @@
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 extends AbstractTestCaseServlet
 {
-    // ... (bad method from previous commit)
+    // ... (bad and goodG2B1 methods from previous commits)
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (false)
-        {
-            data = null; // Dead code
-        }
-        else
+        if (true)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
         }
 
         if (true)
