@@ -19,7 +19,16 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in future commits
+        String data;
+
+        data = "foo";
+
+        for (int j = 0; j < 1; j++) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
