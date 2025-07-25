@@ -11,11 +11,15 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Method implementation as before
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (IO.staticReturnsFalse()) {
-            data = null; // Dead code
-        } else {
+        if (IO.staticReturnsTrue()) {
             data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // Dead code
         }
 
         if (IO.staticReturnsTrue()) {
@@ -25,7 +29,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
         }
     }
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
 
