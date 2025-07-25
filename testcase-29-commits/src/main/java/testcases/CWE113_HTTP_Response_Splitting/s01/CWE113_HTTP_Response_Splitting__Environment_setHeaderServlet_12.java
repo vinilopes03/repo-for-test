@@ -49,7 +49,24 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G()
+        String data;
+        if (IO.staticReturnsTrueOrFalse()) {
+            data = System.getenv("ADD");
+        } else {
+            data = System.getenv("ADD");
+        }
+
+        if (IO.staticReturnsTrueOrFalse()) {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
