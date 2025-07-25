@@ -30,105 +30,11 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (privateFive == 5) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
-        } else {
-            data = null; // Dead code
-        }
-
-        if (privateFive != 5) {
-            IO.writeLine("Benign, fixed string");
-        } else {
-            if (data != null) {
-                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation as in Commit 4
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (privateFive == 5) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
-        } else {
-            data = null; // Dead code
-        }
-
-        if (privateFive == 5) {
-            if (data != null) {
-                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation as in Commit 4
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
