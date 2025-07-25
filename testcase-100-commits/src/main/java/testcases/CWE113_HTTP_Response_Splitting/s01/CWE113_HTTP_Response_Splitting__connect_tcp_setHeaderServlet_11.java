@@ -18,7 +18,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 ext
         if (IO.staticReturnsTrue())
         {
             data = ""; // Initialize data
-            // Read data using an outbound tcp connection
             Socket socket = null;
             BufferedReader readerBuffered = null;
             InputStreamReader readerInputStream = null;
