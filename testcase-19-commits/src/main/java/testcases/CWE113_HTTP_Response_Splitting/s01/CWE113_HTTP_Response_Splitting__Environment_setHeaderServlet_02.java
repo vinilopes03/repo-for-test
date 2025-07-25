@@ -96,6 +96,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         String data;
         if (true)
         {
+            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -111,6 +112,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         {
             if (data != null)
             {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
