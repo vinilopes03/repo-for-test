@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 extends AbstractTestCaseServlet
 {
@@ -131,12 +132,122 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 ext
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try
+                {
+                    /* Read data using an outbound tcp connection */
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine();  // POTENTIAL FLAW
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                        if (readerInputStream != null) readerInputStream.close();
+                        if (socket != null) socket.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing resources", exceptIO);
+                    }
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8)
+        {
+        case 7:
+            IO.writeLine("Benign, fixed string");  // Dead code
+            break;
+        default:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);  // FIX
+            }
+            break;
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try
+                {
+                    /* Read data using an outbound tcp connection */
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine();  // POTENTIAL FLAW
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                        if (readerInputStream != null) readerInputStream.close();
+                        if (socket != null) socket.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing resources", exceptIO);
+                    }
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);  // FIX
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
