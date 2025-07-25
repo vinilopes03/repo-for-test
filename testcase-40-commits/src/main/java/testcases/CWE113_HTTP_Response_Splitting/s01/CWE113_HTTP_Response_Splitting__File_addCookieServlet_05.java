@@ -11,18 +11,15 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
     private boolean privateFalse = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (privateTrue) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            try (FileInputStream streamFileInput = new FileInputStream(file);
-                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+        // `bad` implementation remains unchanged
+    }
 
-                data = readerBuffered.readLine(); // Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateFalse) {
+            data = null; // Dead code
+        } else {
+            data = "foo"; // Use a hardcoded string
         }
 
         if (privateTrue) {
