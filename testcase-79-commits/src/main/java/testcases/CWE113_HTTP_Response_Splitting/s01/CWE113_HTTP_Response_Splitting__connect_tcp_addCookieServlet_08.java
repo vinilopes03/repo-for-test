@@ -69,13 +69,36 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
         }
     }
 
-    // Method signatures for good methods
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added in the next commit
+        String data;
+        if (privateReturnsFalse()) {
+            data = null;
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added in the next commit
+        String data;
+        if (privateReturnsTrue()) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
