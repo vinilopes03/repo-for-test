@@ -15,7 +15,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
         String data;
         if (IO.staticReturnsTrue()) {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             Socket socket = null;
             BufferedReader readerBuffered = null;
             InputStreamReader readerInputStream = null;
@@ -23,7 +22,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
                 socket = new Socket("host.example.org", 39544);
                 readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data using an outbound tcp connection
+                data = readerBuffered.readLine();
             } catch (IOException exceptIO) {
                 IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
             } finally {
@@ -56,17 +55,41 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
         if (IO.staticReturnsTrue()) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
             }
         }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B1
+        String data;
+        if (IO.staticReturnsFalse()) {
+            data = null; // Dead code
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B2
+        String data;
+        if (IO.staticReturnsTrue()) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // Dead code
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
