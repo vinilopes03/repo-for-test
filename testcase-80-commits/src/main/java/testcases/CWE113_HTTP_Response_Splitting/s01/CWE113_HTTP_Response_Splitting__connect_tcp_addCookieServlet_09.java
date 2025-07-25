@@ -11,9 +11,9 @@ import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 extends AbstractTestCaseServlet {
     
-    // bad() and other methods omitted for brevity
+    // bad(), goodG2B1(), goodG2B2(), and goodB2G1() methods omitted for brevity
 
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.STATIC_FINAL_TRUE) {
             data = ""; // Initialize data
@@ -29,9 +29,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
             data = null; // Dead code, won't run
         }
 
-        if (IO.STATIC_FINAL_FALSE) {
-            IO.writeLine("Benign, fixed string"); // Dead code, won't run
-        } else {
+        if (IO.STATIC_FINAL_TRUE) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink); // FIX: URLEncode input
@@ -39,5 +37,5 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
         }
     }
 
-    // Other methods omitted for brevity
+    // good() and main() methods are present
 }
