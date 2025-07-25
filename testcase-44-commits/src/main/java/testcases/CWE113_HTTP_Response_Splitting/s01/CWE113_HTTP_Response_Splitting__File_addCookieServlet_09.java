@@ -20,37 +20,11 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_09 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = ""; // Initialize data
-        File file = new File("C:\\data.txt");
-        try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-            // POTENTIAL FLAW: Read data from a file
-            data = readerBuffered.readLine();
-        } catch (IOException exceptIO) {
-            IO.logger.log(java.util.logging.Level.WARNING, "Error with stream reading", exceptIO);
-        }
-
-        if (data != null) {
-            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
-            response.addCookie(cookieSink);
-        }
+        // Implemented in previous commit
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = ""; // Initialize data
-        File file = new File("C:\\data.txt");
-        try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-            // POTENTIAL FLAW: Read data from a file
-            data = readerBuffered.readLine();
-        } catch (IOException exceptIO) {
-            IO.logger.log(java.util.logging.Level.WARNING, "Error with stream reading", exceptIO);
-        }
-
-        if (data != null) {
-            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
-            response.addCookie(cookieSink);
-        }
+        // Implemented in previous commit
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
