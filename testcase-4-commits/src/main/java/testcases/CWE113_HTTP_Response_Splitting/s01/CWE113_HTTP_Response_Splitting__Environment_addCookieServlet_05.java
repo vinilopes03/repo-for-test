@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 extends AbstractTestCaseServlet {
     private boolean privateTrue = true;
@@ -9,21 +10,37 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
 
     // Previously implemented methods omitted for brevity
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateTrue) {
-            data = "foo";
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateFalse) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateTrue) {
+            data = System.getenv("ADD");
         } else {
             data = null;
         }
 
         if (privateTrue) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
     }
-
-    // Other methods omitted for brevity
 }
