@@ -11,7 +11,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateTrue) {
-            // Read data from an environment variable
             data = System.getenv("ADD");
         } else {
             data = null;
@@ -19,7 +18,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
         if (privateTrue) {
             if (data != null) {
-                // Potential flaw: input not verified before inclusion in header
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -30,6 +28,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         if (privateFalse) {
             data = null;
         } else {
+            // Use a hardcoded string
             data = "foo";
         }
 
@@ -43,6 +42,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateTrue) {
+            // Use a hardcoded string
             data = "foo";
         } else {
             data = null;
