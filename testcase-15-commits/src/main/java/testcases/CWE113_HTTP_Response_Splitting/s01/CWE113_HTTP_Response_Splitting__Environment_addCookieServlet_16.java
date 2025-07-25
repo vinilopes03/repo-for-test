@@ -97,7 +97,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial method signature only
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
