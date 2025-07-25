@@ -12,9 +12,6 @@ import java.util.logging.Level;
 import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 extends AbstractTestCaseServlet {
-    /* The methods below always return the same value, so a tool
-     * should be able to figure out that every call to these
-     * methods will return true or return false. */
     private boolean privateReturnsTrue() {
         return true;
     }
@@ -24,7 +21,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
     }
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature, implementation to follow
+        String data;
+        if (privateReturnsTrue()) {
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                } finally {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                    if (socket != null) {
+                        socket.close();
+                    }
+                }
+            }
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
