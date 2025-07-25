@@ -1,0 +1,1 @@
+Initial commit: Set up class structure and method signatures
