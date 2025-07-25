@@ -37,7 +37,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_10 ext
         if (IO.staticFalse) {
             data = null;
         } else {
-            data = "foo"; // Use a hardcoded string
+            data = "foo";
         }
 
         if (IO.staticTrue) {
@@ -48,7 +48,18 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_10 ext
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (IO.staticTrue) {
+            data = "foo"; // Use a hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
