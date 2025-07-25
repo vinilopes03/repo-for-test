@@ -1,40 +1,46 @@
-// Continuing from the last state, adding goodG2B1 and goodG2B2 method implementations
+// Continuing from the last state, adding goodB2G1 and goodB2G2 method implementations
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 extends AbstractTestCaseServlet
 {
-    // bad method as implemented in the previous commit
+    // bad, goodG2B1, and goodG2B2 methods as implemented in previous commits
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.staticFalse)
+        if (IO.staticTrue)
         {
-            data = null; // Dead code for compiler safety
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null; // Dead code for compiler safety
         }
 
-        if (IO.staticTrue)
+        if (IO.staticFalse)
+        {
+            IO.writeLine("Benign, fixed string"); // Dead code
+        }
+        else
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
     }
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.staticTrue)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
         }
         else
         {
@@ -45,8 +51,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
