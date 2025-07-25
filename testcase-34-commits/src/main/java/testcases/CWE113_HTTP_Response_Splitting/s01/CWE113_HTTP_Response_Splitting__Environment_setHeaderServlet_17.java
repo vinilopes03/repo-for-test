@@ -64,7 +64,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
         {
             if (data != null)
             {
-                // Use URLEncoder.encode to hex-encode non-alphanumerics
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
@@ -73,7 +72,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Call both good methods
         goodG2B(request, response);
         goodB2G(request, response);
     }
