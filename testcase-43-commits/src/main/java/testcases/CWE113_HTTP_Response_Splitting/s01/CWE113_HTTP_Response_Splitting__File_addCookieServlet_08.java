@@ -23,7 +23,30 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends Ab
     }
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Will be implemented in the next commit
+        String data;
+        if (privateReturnsTrue()) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code path
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
