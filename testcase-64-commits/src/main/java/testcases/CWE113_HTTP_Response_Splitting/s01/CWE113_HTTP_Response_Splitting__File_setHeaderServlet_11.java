@@ -20,10 +20,23 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation...
+        String data;
+        if (IO.staticReturnsTrue()) {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        } else {
+            data = null; // Dead Code
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrue()) {
             data = ""; // Initialize data
@@ -41,13 +54,19 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
             data = null; // Ensure data is initialized
         }
 
-        if (IO.staticReturnsTrue()) {
+        if (IO.staticReturnsFalse()) {
+            IO.writeLine("Benign, fixed string");
+        } else {
             if (data != null) {
                 // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Method implementation...
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
