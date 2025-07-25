@@ -68,7 +68,15 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_01 ext
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added later
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null) {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
