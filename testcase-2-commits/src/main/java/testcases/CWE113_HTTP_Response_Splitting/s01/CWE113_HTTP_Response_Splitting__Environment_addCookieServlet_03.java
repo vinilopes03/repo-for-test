@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03 extends AbstractTestCaseServlet {
 
@@ -26,7 +27,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03 ext
         if (5 != 5) {
             data = null;
         } else {
-            data = "foo"; // Use hardcoded string
+            data = "foo";
         }
 
         if (5 == 5) {
@@ -40,7 +41,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (5 == 5) {
-            data = "foo"; // Use hardcoded string
+            data = "foo";
         } else {
             data = null;
         }
@@ -54,7 +55,21 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_03 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (5 == 5) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (5 != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
