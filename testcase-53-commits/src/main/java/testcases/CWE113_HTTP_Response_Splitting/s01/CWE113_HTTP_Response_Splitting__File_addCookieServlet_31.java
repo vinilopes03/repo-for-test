@@ -1,16 +1,44 @@
-// Initial setup of the project with support classes
-package testcasesupport;
+package testcases.CWE113_HTTP_Response_Splitting.s01;
+import testcasesupport.*;
 
-import java.io.*;
-import java.sql.*;
-import java.util.logging.Logger;
+import javax.servlet.http.*;
 
-public class IO 
-{ 
-    public static final Logger logger = Logger.getLogger("testcases");
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
 
-    public static void writeLine(String line) 
+import java.util.logging.Level;
+
+import java.net.URLEncoder;
+
+public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_31 extends AbstractTestCaseServlet
+{
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        System.out.println(line);
+        // Method signature for bad() defined
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Method signature for good() defined
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Method signature for goodG2B() defined
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Method signature for goodB2G() defined
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        // Main method for standalone execution
+        mainFromParent(args);
     }
 }
