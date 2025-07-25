@@ -1,20 +1,3 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-15.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: Environment Read data from an environment variable
-* GoodSource: A hardcoded string
-* Sinks: addCookieServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to addCookie()
-* Flow Variant: 15 Control flow: switch(6) and switch(7)
-*
-* */
-
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
@@ -26,7 +9,31 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+            break;
+        default:
+            data = null; // INCIDENTAL: Dead Code
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string"); // INCIDENTAL: Dead Code
+            break;
+        }
     }
     
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
