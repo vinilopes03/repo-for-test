@@ -11,41 +11,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrueOrFalse()) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
+            data = readDataFromFile();
         } else {
             data = "foo"; // Use a hardcoded string
         }
@@ -63,12 +29,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsTrueOrFalse()) {
-            data = "foo"; // Use a hardcoded string
-        } else {
-            data = "foo"; // Use a hardcoded string
-        }
+        String data = "foo"; // Use a hardcoded string
 
         if (IO.staticReturnsTrueOrFalse()) {
             if (data != null) {
@@ -84,77 +45,9 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrueOrFalse()) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
+            data = readDataFromFile();
         } else {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-            try {
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (readerBuffered != null) {
-                        readerBuffered.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-                try {
-                    if (readerInputStream != null) {
-                        readerInputStream.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                }
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
+            data = readDataFromFile();
         }
 
         if (IO.staticReturnsTrueOrFalse()) {
@@ -168,6 +61,45 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
+    }
+
+    private String readDataFromFile() {
+        String data = ""; // Initialize data
+        File file = new File("C:\\data.txt");
+        FileInputStream streamFileInput = null;
+        InputStreamReader readerInputStream = null;
+        BufferedReader readerBuffered = null;
+        try {
+            streamFileInput = new FileInputStream(file);
+            readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+            readerBuffered = new BufferedReader(readerInputStream);
+            data = readerBuffered.readLine(); // Read data from a file
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        } finally {
+            try {
+                if (readerBuffered != null) {
+                    readerBuffered.close();
+                }
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+            }
+            try {
+                if (readerInputStream != null) {
+                    readerInputStream.close();
+                }
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+            }
+            try {
+                if (streamFileInput != null) {
+                    streamFileInput.close();
+                }
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+            }
+        }
+        return data;
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
