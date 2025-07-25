@@ -67,7 +67,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 ext
         if (PRIVATE_STATIC_FINAL_FALSE) {
             data = null;
         } else {
-            data = "foo"; // FIX
+            data = "foo"; // FIX: Use a hardcoded string
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE) {
@@ -81,7 +81,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE) {
-            data = "foo"; // FIX
+            data = "foo"; // FIX: Use a hardcoded string
         } else {
             data = null;
         }
@@ -140,7 +140,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 ext
         } else {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX
+                response.addCookie(cookieSink); // FIX: Encode input
             }
         }
     }
@@ -189,7 +189,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 ext
         if (PRIVATE_STATIC_FINAL_TRUE) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX
+                response.addCookie(cookieSink); // FIX: Encode input
             }
         }
     }
