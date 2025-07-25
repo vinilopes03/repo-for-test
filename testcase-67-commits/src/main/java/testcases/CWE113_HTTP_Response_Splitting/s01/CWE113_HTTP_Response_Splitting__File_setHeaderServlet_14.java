@@ -80,6 +80,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Existing goodB2G1 method implementation
         String data;
         if (IO.staticFive == 5) {
             data = ""; // Initialize data
@@ -109,6 +110,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Existing goodB2G2 method implementation
         String data;
         if (IO.staticFive == 5) {
             data = ""; // Initialize data
