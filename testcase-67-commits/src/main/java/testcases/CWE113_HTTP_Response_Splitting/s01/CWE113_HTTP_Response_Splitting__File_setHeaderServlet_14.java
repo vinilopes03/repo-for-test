@@ -44,6 +44,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Existing goodG2B1 method implementation
         String data;
         if (IO.staticFive != 5) {
             data = null; // INCIDENTAL: Ensure data is initialized before the Sink
@@ -61,6 +62,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Existing goodG2B2 method implementation
         String data;
         if (IO.staticFive == 5) {
             // FIX: Use a hardcoded string
@@ -77,12 +79,68 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
         }
     }
 
-    // Other method signatures remain unchanged
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFive == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
 
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // INCIDENTAL: Ensure data is initialized before use
+        }
 
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+        if (IO.staticFive != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFive == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // INCIDENTAL: Ensure data is initialized before use
+        }
+
+        if (IO.staticFive == 5) {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         mainFromParent(args);
