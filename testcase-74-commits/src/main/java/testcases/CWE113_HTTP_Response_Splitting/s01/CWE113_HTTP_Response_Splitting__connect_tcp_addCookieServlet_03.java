@@ -34,11 +34,35 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B1
+        String data;
+        if (5 != 5) {
+            data = null;
+        } else {
+            data = "foo";
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B2
+        String data;
+        if (5 == 5) {
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
