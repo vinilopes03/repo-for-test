@@ -1,8 +1,9 @@
-// Commit 3
+// Commit 4
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -39,7 +40,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
         }
         else
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = "foo";
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
@@ -57,7 +58,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = "foo";
         }
         else
         {
@@ -76,17 +77,58 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
