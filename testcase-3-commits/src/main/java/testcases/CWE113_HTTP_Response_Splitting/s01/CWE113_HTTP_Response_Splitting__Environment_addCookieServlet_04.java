@@ -13,7 +13,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            // POTENTIAL FLAW: Read data from an environment variable
             data = System.getenv("ADD");
         }
         else
@@ -31,9 +30,32 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
