@@ -15,29 +15,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04Test
 
     /**
      * Test method to verify the presence of HTTP Response Splitting vulnerability.
-     * This test will pass if the vulnerability exists, i.e., if unsanitized input
-     * from an environment variable is directly used in a cookie without encoding.
+     * This test will pass if the vulnerability exists, i.e., the malicious input is not sanitized.
+     * It uses a mock HttpServletResponse to capture the cookies added by the servlet.
      */
     @Test
     public void testBad() throws Throwable {
-        // Set up the environment variable to simulate malicious input
-        String maliciousInput = "en-US\r\nSet-Cookie: sessionId=abc123";
-        System.setProperty("ADD", maliciousInput);
-
-        // Mock HttpServletRequest and HttpServletResponse
+        // Arrange
+        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
-        // Create an instance of the class to be tested
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 servlet =
-                new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04();
+        // Set up the environment variable to simulate malicious input
+        String maliciousInput = "en-US\r\nSet-Cookie: sessionId=malicious";
+        System.setProperty("ADD", maliciousInput);
 
-        // Invoke the 'bad' method
+        // Act
         servlet.bad(request, response);
 
-        // Verify that the response.addCookie method was called with a cookie containing unsanitized input
+        // Assert
+        // Verify that a cookie with unsanitized input is added to the response
         verify(response, times(1)).addCookie(any(Cookie.class));
         Cookie addedCookie = Mockito.verify(response).addCookie(any(Cookie.class));
-        assertTrue(addedCookie.getValue().contains("\r\n"), "The cookie value should contain unsanitized input, indicating a vulnerability.");
+        assertTrue(addedCookie.getValue().contains("\r\nSet-Cookie: sessionId=malicious"),
+                "The input was not sanitized, indicating the presence of the vulnerability.");
     }
 }
