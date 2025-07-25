@@ -100,12 +100,54 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to be added
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Dead code to avoid compiler errors
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to be added
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Dead code to avoid compiler errors
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
