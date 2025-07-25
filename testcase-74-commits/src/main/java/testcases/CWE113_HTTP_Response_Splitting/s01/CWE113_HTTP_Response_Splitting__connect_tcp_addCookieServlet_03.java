@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 extends AbstractTestCaseServlet {
     
@@ -66,11 +67,51 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G1
+        String data;
+        if (5 == 5) {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (5 != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2
+        String data;
+        if (5 == 5) {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
