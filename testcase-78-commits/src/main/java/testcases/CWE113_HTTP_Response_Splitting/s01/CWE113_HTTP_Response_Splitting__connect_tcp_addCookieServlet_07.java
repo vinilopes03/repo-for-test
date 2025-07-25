@@ -14,9 +14,24 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 ext
 
     private int privateFive = 5;
 
-    // bad() and goodG2B1() methods...
+    // bad(), goodG2B1(), and goodB2G2() methods...
 
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateFive == 5) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null; // Dead code
+        }
+
+        if (privateFive == 5 && data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateFive == 5) {
             data = ""; /* Initialize data */
@@ -33,11 +48,11 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 ext
             data = null; // Dead code
         }
 
-        if (privateFive == 5 && data != null) {
+        if (privateFive != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else if (data != null) {
             Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
             response.addCookie(cookieSink);
         }
     }
-    
-    // Other methods...
 }
