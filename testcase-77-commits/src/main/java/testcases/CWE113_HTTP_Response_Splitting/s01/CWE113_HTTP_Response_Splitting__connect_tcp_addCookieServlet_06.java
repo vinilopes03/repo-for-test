@@ -117,3 +117,35 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (PRIVATE_STATIC_FINAL_FIVE != 5) {
+        data = null; // Dead Code
+    } else {
+        data = "foo"; // FIX: Use a hardcoded string
+    }
+
+    if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+        }
+    }
+}
+
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+        data = "foo"; // FIX: Use a hardcoded string
+    } else {
+        data = null; // Dead Code
+    }
+
+    if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+        }
+    }
+}
