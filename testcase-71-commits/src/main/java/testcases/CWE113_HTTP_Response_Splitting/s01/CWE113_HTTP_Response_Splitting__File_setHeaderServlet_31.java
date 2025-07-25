@@ -166,3 +166,25 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String dataCopy;
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        dataCopy = data;
+    }
+    {
+        String data = dataCopy;
+
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
