@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends AbstractTestCaseServlet
 {
@@ -48,6 +49,24 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        String data = ""; // Initialize data
+        File file = new File("C:\\data.txt");
+        try (FileInputStream streamFileInput = new FileInputStream(file);
+             InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream))
+        {
+            data = readerBuffered.readLine(); // Read data from file
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Use URLEncoder
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
