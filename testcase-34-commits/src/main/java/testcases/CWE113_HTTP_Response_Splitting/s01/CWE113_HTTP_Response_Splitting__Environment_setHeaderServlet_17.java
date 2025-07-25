@@ -43,7 +43,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
     {
         String data;
 
-        // Use a hardcoded string
         data = "foo";
 
         for (int j = 0; j < 1; j++)
@@ -57,12 +56,26 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation pending
+        String data;
+
+        data = System.getenv("ADD");
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                // Use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation pending
+        // Call both good methods
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
