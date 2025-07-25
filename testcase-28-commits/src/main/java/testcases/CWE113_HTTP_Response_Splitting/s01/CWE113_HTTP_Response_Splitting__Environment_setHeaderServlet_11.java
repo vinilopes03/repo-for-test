@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 
 import java.net.URLEncoder;
 
-// Implement `goodG2B1` method
+// Implement `goodG2B2` method
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
@@ -39,7 +39,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 ext
         }
         else
         {
-            // FIX: Use a hardcoded string
             data = "foo";
         }
 
@@ -52,7 +51,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 ext
         }
     }
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue())
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {}
