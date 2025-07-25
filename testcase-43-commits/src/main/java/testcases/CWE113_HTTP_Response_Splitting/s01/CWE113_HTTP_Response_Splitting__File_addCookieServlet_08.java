@@ -71,7 +71,39 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends Ab
         }
     }
 
-    // goodG2B1, goodG2B2, goodB2G1, goodB2G2 implementations will be added in the next commits.
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsFalse()) {
+            data = null;
+        } else {
+            data = "foo";
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    // goodB2G1, goodB2G2 implementations will be added in the next commits.
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
