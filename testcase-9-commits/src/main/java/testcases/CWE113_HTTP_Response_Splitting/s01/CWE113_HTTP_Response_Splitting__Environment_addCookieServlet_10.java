@@ -7,7 +7,26 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method logic to be implemented in future commits
+        String data;
+        if (IO.staticTrue)
+        {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -15,7 +34,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
         // Method logic to be implemented in future commits
     }
 
-    // Main method to execute the test case
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
