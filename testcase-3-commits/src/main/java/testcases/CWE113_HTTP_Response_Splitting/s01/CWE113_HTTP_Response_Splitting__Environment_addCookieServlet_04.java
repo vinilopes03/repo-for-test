@@ -10,23 +10,38 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
     private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for bad implementation
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+        } else {
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B1 implementation
+        // Placeholder for future implementation
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B2 implementation
+        // Placeholder for future implementation
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G1 implementation
+        // Placeholder for future implementation
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2 implementation
+        // Placeholder for future implementation
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
