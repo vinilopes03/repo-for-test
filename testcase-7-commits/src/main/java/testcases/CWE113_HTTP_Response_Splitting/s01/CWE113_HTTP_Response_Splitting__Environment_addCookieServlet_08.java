@@ -64,7 +64,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_08 ext
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (privateReturnsTrue()) {
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
