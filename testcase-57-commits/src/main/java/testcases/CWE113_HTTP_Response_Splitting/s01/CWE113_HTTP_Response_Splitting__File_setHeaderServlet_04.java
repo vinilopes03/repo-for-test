@@ -22,12 +22,16 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Existing implementation
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (PRIVATE_STATIC_FINAL_FALSE) {
-            data = null;
-        } else {
+        if (PRIVATE_STATIC_FINAL_TRUE) {
             // FIX: Use a hardcoded string
             data = "foo";
+        } else {
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE) {
@@ -40,6 +44,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
