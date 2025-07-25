@@ -108,3 +108,28 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         break;
     }
 }
+
+// ... (rest of the class remains unchanged) ...
+
+private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+
+    while (true)
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+        break;
+    }
+
+    while (true)
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+        break;
+    }
+}
