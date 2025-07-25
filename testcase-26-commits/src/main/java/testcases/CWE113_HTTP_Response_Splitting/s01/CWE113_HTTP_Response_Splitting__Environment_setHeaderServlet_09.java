@@ -25,7 +25,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
         if (IO.STATIC_FINAL_FALSE) {
             data = null;
         } else {
-            // Use a hardcoded string
             data = "foo";
         }
         if (IO.STATIC_FINAL_TRUE) {
@@ -38,7 +37,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.STATIC_FINAL_TRUE) {
-            // Use a hardcoded string
             data = "foo";
         } else {
             data = null;
