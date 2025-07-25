@@ -39,7 +39,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: Encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
