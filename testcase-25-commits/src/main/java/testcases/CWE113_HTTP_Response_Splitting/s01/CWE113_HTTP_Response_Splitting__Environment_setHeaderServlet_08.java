@@ -137,3 +137,68 @@ private void goodG2B2(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+// Implement goodB2G1
+private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (privateReturnsTrue())
+    {
+        // get environment variable ADD
+        // POTENTIAL FLAW: Read data from an environment variable
+        data = System.getenv("ADD");
+    }
+    else
+    {
+        data = null;
+    }
+
+    if (privateReturnsFalse())
+    {
+        IO.writeLine("Benign, fixed string");
+    }
+    else
+    {
+        if (data != null)
+        {
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
+
+// Implement goodB2G2
+private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (privateReturnsTrue())
+    {
+        // get environment variable ADD
+        // POTENTIAL FLAW: Read data from an environment variable
+        data = System.getenv("ADD");
+    }
+    else
+    {
+        data = null;
+    }
+
+    if (privateReturnsTrue())
+    {
+        if (data != null)
+        {
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
+
+// Finalize good method
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    goodG2B1(request, response);
+    goodG2B2(request, response);
+    goodB2G1(request, response);
+    goodB2G2(request, response);
+}
