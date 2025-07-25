@@ -94,9 +94,53 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
         }
     }
 
-    // Method signatures for good functions
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (false)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    // Method signatures for goodB2G1 and goodB2G2
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
 
