@@ -6,15 +6,16 @@ import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 extends AbstractTestCaseServlet {
     // bad method...
+    // goodG2B1 method...
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (IO.staticFive != 5) {
-            // Ensure data is initialized before the Sink to avoid compiler errors
-            data = null;
-        } else {
+        if (IO.staticFive == 5) {
             // FIX: Use a hardcoded string
             data = "foo";
+        } else {
+            // Ensure data is initialized before the Sink to avoid compiler errors
+            data = null;
         }
 
         if (IO.staticFive == 5) {
