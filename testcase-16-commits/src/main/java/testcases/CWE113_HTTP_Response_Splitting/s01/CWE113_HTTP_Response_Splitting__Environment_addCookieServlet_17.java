@@ -9,8 +9,24 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
     {
         String data;
 
-        // Read data from an environment variable
         data = System.getenv("ADD");
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        // Use a hardcoded string
+        data = "foo";
 
         for (int j = 0; j < 1; j++)
         {
@@ -21,11 +37,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature for good source, bad sink
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
