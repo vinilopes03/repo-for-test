@@ -80,7 +80,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+                data = URLEncoder.encode(data, "UTF-8"); // Use URLEncoder.encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
