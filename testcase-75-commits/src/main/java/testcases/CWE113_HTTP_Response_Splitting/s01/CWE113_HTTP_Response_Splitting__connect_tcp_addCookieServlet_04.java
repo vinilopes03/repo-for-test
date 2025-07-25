@@ -27,6 +27,8 @@ import java.net.Socket;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 extends AbstractTestCaseServlet {
     /* The two variables below are declared "final", so a tool should
      * be able to identify that reads of these will always return their
@@ -97,8 +99,52 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_04 ext
         }
     }
 
+    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE) {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is initialized before the Sink to avoid compiler errors */
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is initialized before the Sink to avoid compiler errors */
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in subsequent commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // Additional good method implementations will be added in subsequent commits
     }
 
     /* Below is the main(). It is only used when building this testcase on
