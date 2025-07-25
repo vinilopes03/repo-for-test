@@ -60,11 +60,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (false) {
+            data = null;
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (true) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (true) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (true) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -76,7 +98,9 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // Other good methods to be called
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
