@@ -8,11 +8,23 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
     private boolean privateFalse = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        String data;
+        if (privateTrue) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to be implemented
+        // Methods to be implemented
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
