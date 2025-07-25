@@ -31,6 +31,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         String data;
         if (privateFive == 5)
         {
+            // Read data from an environment variable
             data = System.getenv("ADD");
         }
         else
@@ -42,6 +43,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         {
             if (data != null)
             {
+                // Potential flaw: Input not verified before inclusion in the cookie
                 Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
@@ -57,6 +59,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         }
         else
         {
+            // Use a hardcoded string
             data = "foo";
         }
 
@@ -75,6 +78,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         String data;
         if (privateFive == 5)
         {
+            // Use a hardcoded string
             data = "foo";
         }
         else
@@ -97,6 +101,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         String data;
         if (privateFive == 5)
         {
+            // Read data from an environment variable
             data = System.getenv("ADD");
         }
         else
@@ -112,6 +117,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         {
             if (data != null)
             {
+                // Use URLEncoder.encode to hex-encode non-alphanumerics
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
@@ -123,6 +129,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         String data;
         if (privateFive == 5)
         {
+            // Read data from an environment variable
             data = System.getenv("ADD");
         }
         else
@@ -134,6 +141,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         {
             if (data != null)
             {
+                // Use URLEncoder.encode to hex-encode non-alphanumerics
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
