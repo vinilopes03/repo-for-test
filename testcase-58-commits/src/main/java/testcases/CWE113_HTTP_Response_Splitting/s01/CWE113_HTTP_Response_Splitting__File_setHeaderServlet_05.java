@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_05 extends AbstractTestCaseServlet {
@@ -67,17 +68,56 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_05 extends Ab
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation to be added
+        String data = "";
+        if (privateTrue) {
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+
+        if (privateFalse) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation to be added
+        String data = "";
+        if (privateTrue) {
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other good methods to be called
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
