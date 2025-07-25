@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends AbstractTestCaseServlet {
 
@@ -23,18 +24,58 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-
-        data = "foo"; // Use a hardcoded string
-
-        if (data != null) {
-            Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink);
-        }
+        // Existing implementation of goodG2B method
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G
+        String data;
+
+        data = ""; /* Initialize data */
+        {
+            File file = new File("C:\\data.txt");
+            FileInputStream streamFileInput = null;
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+
+            try {
+                streamFileInput = new FileInputStream(file);
+                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
