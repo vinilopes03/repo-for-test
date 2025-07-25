@@ -28,7 +28,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         if (privateFalse) {
             data = null;
         } else {
-            // Use a hardcoded string
             data = "foo";
         }
 
@@ -42,7 +41,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateTrue) {
-            // Use a hardcoded string
             data = "foo";
         } else {
             data = null;
@@ -83,6 +81,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
         if (privateTrue) {
             if (data != null) {
+                // Use URLEncoder.encode to hex-encode non-alphanumerics
                 data = java.net.URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
