@@ -26,22 +26,34 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature created
+        String data;
+
+        // Read data from an environment variable
+        data = System.getenv("ADD");
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                // Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature created
+        // Method implementation pending
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature created
+        // Method implementation pending
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature created
+        // Method implementation pending
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
