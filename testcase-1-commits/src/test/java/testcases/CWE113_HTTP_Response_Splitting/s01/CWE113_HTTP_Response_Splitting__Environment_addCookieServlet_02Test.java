@@ -15,16 +15,21 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02Test
     /**
      * Test method to verify the presence of HTTP Response Splitting vulnerability.
      * This test will pass if the vulnerability exists, i.e., if unsanitized input
-     * from an environment variable is directly added to a cookie.
+     * from an environment variable is directly added to a cookie without encoding.
+     * 
+     * The test simulates a scenario where the environment variable "ADD" contains
+     * malicious input that could lead to HTTP Response Splitting if not properly
+     * sanitized.
      */
     @Test
     public void testBad() throws Throwable {
         // Arrange
-        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet = new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
+        CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 servlet =
+                new CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02();
 
-        // Mock environment variable to simulate malicious input
+        // Set up the environment variable to simulate malicious input
         String maliciousInput = "en-US\r\nSet-Cookie: sessionId=malicious";
         System.setProperty("ADD", maliciousInput);
 
@@ -33,9 +38,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02Test
 
         // Assert
         // Verify that the cookie was added with unsanitized input
-        verify(response, times(1)).addCookie(argThat(cookie -> {
-            // Check if the cookie value contains the malicious input
-            return cookie.getValue().equals(maliciousInput);
-        }));
+        verify(response, times(1)).addCookie(argThat(cookie -> 
+            cookie.getName().equals("lang") && cookie.getValue().equals(maliciousInput)
+        ));
+
+        // Clean up the environment variable
+        System.clearProperty("ADD");
     }
 }
