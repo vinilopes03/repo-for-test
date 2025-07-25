@@ -10,20 +10,16 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation as in Commit 2
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
-            data = ""; // Initialize data
-            File file = new File("C:\\data.txt");
-            try (FileInputStream streamFileInput = new FileInputStream(file);
-                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
-                // POTENTIAL FLAW: Read data from a file
-                data = readerBuffered.readLine();
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        } else {
+        if (PRIVATE_STATIC_FINAL_FIVE != 5) {
             data = null; // Dead code
+        } else {
+            // FIX: Use a hardcoded string
+            data = "foo";
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5) {
@@ -32,10 +28,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // placeholder
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
