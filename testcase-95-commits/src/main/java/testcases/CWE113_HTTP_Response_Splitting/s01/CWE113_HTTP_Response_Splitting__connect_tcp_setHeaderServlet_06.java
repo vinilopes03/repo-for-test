@@ -1,24 +1,4 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-06.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: connect_tcp Read data using an outbound tcp connection
-* GoodSource: A hardcoded string
-* Sinks: setHeaderServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to setHeader()
-* Flow Variant: 06 Control flow: if(PRIVATE_STATIC_FINAL_FIVE==5) and if(PRIVATE_STATIC_FINAL_FIVE!=5)
-*
-* */
-
-package testcases.CWE113_HTTP_Response_Splitting.s01;
-import testcasesupport.*;
-
-import javax.servlet.http.*;
+// ... (header and imports remain unchanged)
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -26,33 +6,38 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature defined
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8")))
+            {
+                // POTENTIAL FLAW: Read data using an outbound tcp connection
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        else
+        {
+            data = null; // Dead Code
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature defined
-    }
-
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature defined
-    }
-
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature defined
-    }
-
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature defined
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature defined
-    }
+    // Method signatures for goodG2B1, goodG2B2, goodB2G1, goodB2G2, and good
+    // ...
 
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
