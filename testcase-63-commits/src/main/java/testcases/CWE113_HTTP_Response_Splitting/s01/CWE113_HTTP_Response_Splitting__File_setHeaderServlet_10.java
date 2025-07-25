@@ -10,11 +10,33 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B1
+        String data;
+        if (IO.staticFalse) {
+            data = null;
+        } else {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodG2B2
+        String data;
+        if (IO.staticTrue) {
+            data = "foo"; // Use a hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -26,7 +48,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for good
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
