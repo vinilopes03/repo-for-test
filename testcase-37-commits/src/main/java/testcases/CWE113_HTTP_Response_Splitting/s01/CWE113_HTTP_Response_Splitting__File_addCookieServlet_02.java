@@ -14,7 +14,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_02 extends Ab
 
     // Existing code remains the same
 
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (true) {
             data = ""; 
@@ -58,9 +58,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_02 extends Ab
             data = null;
         }
 
-        if (false) {
-            IO.writeLine("Benign, fixed string");
-        } else {
+        if (true) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
