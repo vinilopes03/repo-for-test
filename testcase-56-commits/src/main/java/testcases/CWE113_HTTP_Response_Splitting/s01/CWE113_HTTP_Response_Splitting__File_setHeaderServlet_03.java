@@ -51,6 +51,48 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (5 == 5) {
+            data = "foo"; // FIX: Use a hardcoded string
+        } else {
+            data = null; // Dead code, won't run but ensures data is initialized
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW: Input not verified
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (5 == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Dead code, won't run but ensures data is initialized
+        }
+
+        if (5 != 5) {
+            IO.writeLine("Benign, fixed string"); // Dead code, won't run
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (5 == 5) {
@@ -78,6 +120,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
         goodB2G2(request, response);
     }
 
