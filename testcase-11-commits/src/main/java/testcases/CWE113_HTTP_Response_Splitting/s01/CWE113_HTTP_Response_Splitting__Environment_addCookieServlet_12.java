@@ -32,7 +32,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_12 ext
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for good G2B case
+        String data;
+        if (IO.staticReturnsTrueOrFalse()) {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        } else {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (IO.staticReturnsTrueOrFalse()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
