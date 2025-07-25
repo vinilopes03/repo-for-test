@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 extends AbstractTestCaseServlet {
 
@@ -30,7 +31,16 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added later
+        String data;
+
+        data = System.getenv("ADD");
+
+        for (int k = 0; k < 1; k++) {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
