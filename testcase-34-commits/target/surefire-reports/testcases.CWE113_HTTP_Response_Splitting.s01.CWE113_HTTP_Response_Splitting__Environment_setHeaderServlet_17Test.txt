@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.188 s <<< FAILURE! - in testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test
+testBad  Time elapsed: 0.186 s  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+httpServletResponse.setHeader(
+    "Location",
+    contains("en-US%0d%0aContent-Length:%200%0d%0a%0d%0a")
+);
+-> at testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test.testBad(CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test.java:35)
+Actually, there were zero interactions with this mock.
+
+	at testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test.testBad(CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17Test.java:35)
+

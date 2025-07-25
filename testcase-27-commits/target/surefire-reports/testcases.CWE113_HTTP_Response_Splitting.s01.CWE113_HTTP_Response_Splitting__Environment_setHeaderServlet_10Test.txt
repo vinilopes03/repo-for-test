@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.204 s <<< FAILURE! - in testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10Test
+testBad  Time elapsed: 0.201 s  <<< ERROR!
+org.mockito.exceptions.base.MockitoException: 
+
+The used MockMaker SubclassByteBuddyMockMaker does not support the creation of static mocks
+
+Mockito's inline mock maker supports static mocks based on the Instrumentation API.
+You can simply enable this mock mode, by placing the 'mockito-inline' artifact where you are currently using 'mockito-core'.
+Note that Mockito's inline mock maker is not supported on Android.
+	at testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10Test.testBad(CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10Test.java:29)
+

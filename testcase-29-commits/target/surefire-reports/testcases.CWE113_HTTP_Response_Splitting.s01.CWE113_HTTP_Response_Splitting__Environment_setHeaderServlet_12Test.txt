@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.195 s <<< FAILURE! - in testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test
+testBadMethodVulnerability  Time elapsed: 0.193 s  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+httpServletResponse.setHeader(
+    "Location",
+    contains("en-US%0d%0aContent-Length:%200")
+);
+-> at testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test.testBadMethodVulnerability(CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test.java:41)
+Actually, there were zero interactions with this mock.
+
+	at testcases.CWE113_HTTP_Response_Splitting.s01.CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test.testBadMethodVulnerability(CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12Test.java:41)
+
