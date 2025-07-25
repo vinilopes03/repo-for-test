@@ -9,7 +9,24 @@ import java.net.URLEncoder;
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 extends AbstractTestCaseServlet {
     
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for bad()
+        String data;
+        if (IO.staticReturnsTrueOrFalse()) {
+            // bad source
+            data = System.getenv("ADD");
+        } else {
+            data = "foo";
+        }
+        
+        if (IO.staticReturnsTrueOrFalse()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
