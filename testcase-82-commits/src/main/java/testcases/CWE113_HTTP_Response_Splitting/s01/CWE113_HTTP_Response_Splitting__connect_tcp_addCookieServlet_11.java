@@ -138,7 +138,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
         } else {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
             }
         }
     }
@@ -187,7 +187,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
         if (IO.staticReturnsTrue()) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                response.addCookie(cookieSink);
             }
         }
     }
