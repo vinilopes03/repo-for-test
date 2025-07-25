@@ -49,3 +49,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_16 ext
         mainFromParent(args);
     }
 }
+
+// ... (previous code)
+
+public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+    while (true) {
+        data = ""; // Initialize data
+        // Read data using an outbound TCP connection
+        try (Socket socket = new Socket("host.example.org", 39544);
+             InputStreamReader readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+            // POTENTIAL FLAW: Read data using an outbound TCP connection
+            data = readerBuffered.readLine();
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        break;
+    }
+
+    while (true) {
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
+        break;
+    }
+}
+
+// ... (remaining code)
