@@ -14,7 +14,43 @@ import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for 'bad' method
+        String data;
+        if (IO.staticTrue) {
+            data = ""; // Initialize data
+            // Read data using an outbound TCP connection
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) readerBuffered.close();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try {
+                    if (readerInputStream != null) readerInputStream.close();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+                try {
+                    if (socket != null) socket.close();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                }
+            }
+        }
+
+        if (IO.staticTrue && data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
