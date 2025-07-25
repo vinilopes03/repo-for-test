@@ -87,11 +87,57 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G1
+        String data;
+
+        switch (6) {
+        case 6:
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+            break;
+        default:
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            data = null;
+            break;
+        }
+
+        switch (8) {
+        default:
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2
+        String data;
+
+        switch (6) {
+        case 6:
+            // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
+            break;
+        default:
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            data = null;
+            break;
+        }
+
+        switch (7) {
+        case 7:
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            // INCIDENTAL: CWE 561 Dead Code, the code below will never run
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
