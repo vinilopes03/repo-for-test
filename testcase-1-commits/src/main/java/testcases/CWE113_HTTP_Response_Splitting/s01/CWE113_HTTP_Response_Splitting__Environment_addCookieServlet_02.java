@@ -43,3 +43,25 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         mainFromParent(args);
     }
 }
+
+public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (true)
+    {
+        data = System.getenv("ADD");
+    }
+    else
+    {
+        data = null;
+    }
+
+    if (true)
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
+    }
+}
