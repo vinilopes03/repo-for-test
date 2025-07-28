@@ -87,3 +87,25 @@ private void goodG2B1(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (true)
+    {
+        data = "foo";
+    }
+    else
+    {
+        data = null;
+    }
+
+    if (true)
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
+    }
+}
