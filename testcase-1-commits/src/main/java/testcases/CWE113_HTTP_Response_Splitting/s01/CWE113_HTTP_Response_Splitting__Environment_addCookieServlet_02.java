@@ -1,7 +1,6 @@
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
-
 import javax.servlet.http.*;
 import java.net.URLEncoder;
 
@@ -10,14 +9,18 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (true) {
+            // Read data from an environment variable
             data = System.getenv("ADD");
         } else {
-            data = null; // Dead code
+            // Dead code
+            data = null;
         }
 
         if (true) {
             if (data != null) {
+                // Create a cookie with the data
                 Cookie cookieSink = new Cookie("lang", data);
+                // Add the cookie to the response
                 response.addCookie(cookieSink);
             }
         }
@@ -26,9 +29,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (false) {
-            data = null; // Dead code
+            // Dead code
+            data = null;
         } else {
-            data = "foo"; // FIX: Use a hardcoded string
+            // Use a hardcoded string
+            data = "foo";
         }
 
         if (true) {
@@ -42,9 +47,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (true) {
-            data = "foo"; // FIX: Use a hardcoded string
+            // Use a hardcoded string
+            data = "foo";
         } else {
-            data = null; // Dead code
+            // Dead code
+            data = null;
         }
 
         if (true) {
@@ -60,13 +67,16 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         if (true) {
             data = System.getenv("ADD");
         } else {
-            data = null; // Dead code
+            // Dead code
+            data = null;
         }
 
         if (false) {
-            IO.writeLine("Benign, fixed string"); // Dead code
+            // Dead code
+            IO.writeLine("Benign, fixed string");
         } else {
             if (data != null) {
+                // URLEncode the data before using it in a cookie
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
@@ -78,7 +88,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         if (true) {
             data = System.getenv("ADD");
         } else {
-            data = null; // Dead code
+            // Dead code
+            data = null;
         }
 
         if (true) {
