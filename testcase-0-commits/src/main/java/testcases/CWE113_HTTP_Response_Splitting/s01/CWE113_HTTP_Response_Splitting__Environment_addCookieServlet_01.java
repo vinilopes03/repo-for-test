@@ -40,3 +40,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
             response.addCookie(cookieSink);
         }
     }
+
+// Inside CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 class
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+
+        /* get environment variable ADD */
+        /* POTENTIAL FLAW: Read data from an environment variable */
+        data = System.getenv("ADD");
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+    }
