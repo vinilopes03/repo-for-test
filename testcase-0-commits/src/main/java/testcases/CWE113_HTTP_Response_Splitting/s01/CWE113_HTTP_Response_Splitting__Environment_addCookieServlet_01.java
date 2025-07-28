@@ -38,6 +38,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
         }
     }
 
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Placeholder for good method implementation
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
