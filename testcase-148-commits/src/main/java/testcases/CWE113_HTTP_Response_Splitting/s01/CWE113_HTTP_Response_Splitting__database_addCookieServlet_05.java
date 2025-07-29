@@ -42,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
                     connection = IO.getDBConnection();
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
                     data = resultSet.getString(1);
                 } catch (SQLException exceptSql) {
                     IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
@@ -63,7 +62,20 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // To be implemented
+        String data;
+        if (privateFalse) {
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
