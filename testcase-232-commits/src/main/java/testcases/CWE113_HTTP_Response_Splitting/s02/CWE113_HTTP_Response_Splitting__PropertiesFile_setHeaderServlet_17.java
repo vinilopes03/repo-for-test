@@ -30,7 +30,37 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_17 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in the next commits
+        String data = ""; // Initialize data
+
+        // Retrieve the property
+        Properties properties = new Properties();
+        FileInputStream streamFileInput = null;
+
+        try
+        {
+            streamFileInput = new FileInputStream("../common/config.properties");
+            properties.load(streamFileInput);
+            data = properties.getProperty("data"); // POTENTIAL FLAW
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        finally
+        {
+            if (streamFileInput != null)
+            {
+                streamFileInput.close();
+            }
+        }
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
