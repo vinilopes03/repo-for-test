@@ -29,12 +29,10 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         if (5==5)
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             {
                 Cookie cookieSources[] = request.getCookies();
                 if (cookieSources != null)
                 {
-                    /* POTENTIAL FLAW: Read data from the first cookie value */
                     data = cookieSources[0].getValue();
                 }
             }
@@ -54,18 +52,39 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (5!=5)
         {
-            data = null; // This code will never run but is needed for compilation
+            data = null;
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (5==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5==5)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null;
         }
 
         if (5==5)
@@ -81,7 +100,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // More good methods will be added in subsequent commits
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
