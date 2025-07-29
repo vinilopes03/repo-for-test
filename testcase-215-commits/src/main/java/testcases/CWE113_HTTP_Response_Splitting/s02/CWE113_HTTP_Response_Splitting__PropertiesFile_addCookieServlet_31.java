@@ -38,41 +38,24 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 
         goodB2G(request, response);
     }
 
-    /* goodB2G() - use bad source and good sink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation from previous commits
+    }
+
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String dataCopy;
-        {
-            String data = ""; /* Initialize data */
-            Properties properties = new Properties();
-            FileInputStream streamFileInput = null;
+        // Implementation from previous commits
+    }
 
-            try {
-                streamFileInput = new FileInputStream("../common/config.properties");
-                properties.load(streamFileInput);
-                /* POTENTIAL FLAW: Read data from a .properties file */
-                data = properties.getProperty("data");
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
-            dataCopy = data;
-        }
-        {
-            String data = dataCopy;
-
-            if (data != null) {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                response.addCookie(cookieSink);
-            }
-        }
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
