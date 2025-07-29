@@ -41,7 +41,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_01 ext
         goodB2G(request, response);
     }
 
-    /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = "foo"; // Fixed good source
@@ -51,7 +50,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_01 ext
         }
     }
 
-    /* goodB2G() - use badsource and goodsink */
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -92,5 +90,11 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_01 ext
             data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
