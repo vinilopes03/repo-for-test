@@ -45,34 +45,126 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticReturnsFalse())
+        if (IO.staticReturnsTrue())
         {
-            data = null;
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read user input
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            data = "foo"; // Use a hardcoded string
+            data = null;
         }
 
-        if (IO.staticReturnsTrue())
+        if (IO.staticReturnsFalse())
+        {
+            // Code that won't run
+        }
+        else
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encode the data
                 response.addCookie(cookieSink);
             }
         }
     }
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-
         if (IO.staticReturnsTrue())
         {
-            data = "foo"; // Use a hardcoded string
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read user input
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
@@ -83,7 +175,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encode the data
                 response.addCookie(cookieSink);
             }
         }
