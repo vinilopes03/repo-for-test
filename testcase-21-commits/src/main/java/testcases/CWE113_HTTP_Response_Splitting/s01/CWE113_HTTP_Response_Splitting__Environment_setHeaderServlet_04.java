@@ -44,8 +44,44 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE) {
+            data = null; // Dead code to ensure initialization
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null; // Dead code to ensure initialization
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature, implementation will follow in future commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // Additional methods will be implemented in future commits
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
