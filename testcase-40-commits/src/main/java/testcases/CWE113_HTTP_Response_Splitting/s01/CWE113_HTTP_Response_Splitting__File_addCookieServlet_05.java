@@ -48,11 +48,9 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
                 BufferedReader readerBuffered = null;
                 try
                 {
-                    /* read string from file into data */
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -61,7 +59,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
                     try
                     {
                         if (readerBuffered != null)
@@ -117,7 +114,25 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data;
+        if (privateTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
