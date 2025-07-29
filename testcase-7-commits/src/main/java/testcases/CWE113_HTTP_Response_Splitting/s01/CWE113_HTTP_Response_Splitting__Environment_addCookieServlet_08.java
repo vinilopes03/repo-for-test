@@ -61,8 +61,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_08 ext
         String data;
         if (privateReturnsTrue())
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
         else
         {
@@ -73,12 +72,18 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_08 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
                 response.addCookie(cookieSink);
             }
         }
     }
 
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
