@@ -40,8 +40,8 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_06 extends Ab
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode data
+                response.addCookie(cookieSink); // Safe addition of cookie
             }
         }
     }
