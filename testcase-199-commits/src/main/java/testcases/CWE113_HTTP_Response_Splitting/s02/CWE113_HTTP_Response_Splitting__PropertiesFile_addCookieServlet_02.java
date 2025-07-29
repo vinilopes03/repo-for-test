@@ -38,8 +38,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        data = "foo"; /* FIX: Use a hardcoded string */
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; /* FIX: Use a hardcoded string */
 
         if (data != null)
         {
@@ -52,7 +56,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be implemented in later commits
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
