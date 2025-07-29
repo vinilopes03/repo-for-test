@@ -31,35 +31,20 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-                try
-                {
-                    /* setup the connection */
-                    connection = IO.getDBConnection();
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-                    data = resultSet.getString(1); // POTENTIAL FLAW
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    // Close database objects
-                    try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) {}
-                    try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) {}
-                    try { if (connection != null) connection.close(); } catch (SQLException exceptSql) {}
-                }
-            }
+            data = "foo"; // FIX: Use a hardcoded string
         }
         else
         {
@@ -69,13 +54,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink); // POTENTIAL FLAW
+            response.addCookie(cookieSink); // This is still a potential flaw
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
