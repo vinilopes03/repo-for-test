@@ -112,38 +112,155 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (5!=5)
+        if (5==5)
         {
-            data = null;
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from a file */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
-        if (5==5)
+        if (5!=5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (5==5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from a file */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
@@ -154,7 +271,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -164,6 +282,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
