@@ -40,12 +40,10 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
             {
                 InputStreamReader readerInputStream = null;
                 BufferedReader readerBuffered = null;
-                /* read user input from console with readLine */
                 try
                 {
                     readerInputStream = new InputStreamReader(System.in, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from the console using readLine */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -90,7 +88,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -98,7 +95,25 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good methods will be implemented in future commits.
+        String data;
+        if (privateTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
