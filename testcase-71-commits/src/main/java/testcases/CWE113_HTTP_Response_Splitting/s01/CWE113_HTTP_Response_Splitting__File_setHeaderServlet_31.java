@@ -33,7 +33,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_31 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation from previous commit
         String dataCopy;
         {
             String data;
