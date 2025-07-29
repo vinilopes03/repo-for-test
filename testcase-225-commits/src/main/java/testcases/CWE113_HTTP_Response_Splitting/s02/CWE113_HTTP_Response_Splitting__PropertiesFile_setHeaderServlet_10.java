@@ -37,21 +37,28 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_10 
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // other good methods will be added in later commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as in Commit 3
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticFalse)
-        {
-            data = null; // Will not run
-        }
-        else
+        if (IO.staticTrue)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Will not run
         }
 
         if (IO.staticTrue)
