@@ -34,7 +34,8 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // (same code as previous commits)
+        goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -49,7 +50,31 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded good source
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        // Read data from a database
+        // (same code as previous commit)
+        // ...
+        // Use URLEncoder for encoding
+        if (data != null)
+        {
+            String encodedData = java.net.URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + encodedData);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         // Read data from a database
