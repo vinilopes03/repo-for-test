@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
     private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
@@ -31,11 +33,9 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             Cookie cookieSources[] = request.getCookies();
             if (cookieSources != null && cookieSources.length > 0)
             {
-                /* POTENTIAL FLAW: Read data from the first cookie value */
                 data = cookieSources[0].getValue();
             }
         }
@@ -44,7 +44,28 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null; // This block will not run
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -52,7 +73,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
