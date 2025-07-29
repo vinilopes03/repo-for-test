@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extends AbstractTestCaseServlet {
     private boolean privateTrue = true;
@@ -33,7 +34,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
         String data;
         if (privateTrue) {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
@@ -66,13 +66,12 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
         if (privateFalse) {
             data = null;
         } else {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
 
         if (privateTrue) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encoding input
                 response.addCookie(cookieSink);
             }
         }
