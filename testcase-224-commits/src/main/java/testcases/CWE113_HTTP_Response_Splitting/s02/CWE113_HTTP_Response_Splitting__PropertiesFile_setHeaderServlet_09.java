@@ -46,6 +46,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_09 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -56,7 +57,13 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_09 
         }
     }
 
-    // Other method signatures remain unchanged
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // FIX: Use a hardcoded string
+        if (data != null) {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
     {
