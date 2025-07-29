@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 extends AbstractTestCaseServlet
 {
@@ -10,12 +11,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
         String data;
         if (IO.staticReturnsTrue())
         {
-            // Read data from an environment variable (potential flaw)
             data = System.getenv("ADD");
         }
         else
         {
-            data = null; // Dead code
+            data = null;
         }
 
         if (IO.staticReturnsTrue())
@@ -23,14 +23,109 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsFalse())
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = System.getenv("ADD"); // Bad source
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsFalse())
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // Good sink
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = System.getenv("ADD"); // Bad source
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // Good sink
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature for good implementation
+        goodG2B1(request, response);
+        goodB2G1(request, response);
+        goodG2B2(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
