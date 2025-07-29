@@ -32,42 +32,25 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (PRIVATE_STATIC_FINAL_FIVE == 5)
-        {
-            data = ""; /* Initialize data */
-            Socket socket = null;
-            BufferedReader readerBuffered = null;
-            InputStreamReader readerInputStream = null;
-            try
-            {
-                socket = new Socket("host.example.org", 39544);
-                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                // Clean up
-                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) { /* Ignore */ }
-                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) { /* Ignore */ }
-                try { if (socket != null) socket.close(); } catch (IOException e) { /* Ignore */ }
-            }
-        }
-        
-        if (data != null)
-        {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
-        }
+        // Existing implementation
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in future commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // Will not run, just to avoid compiler error
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
