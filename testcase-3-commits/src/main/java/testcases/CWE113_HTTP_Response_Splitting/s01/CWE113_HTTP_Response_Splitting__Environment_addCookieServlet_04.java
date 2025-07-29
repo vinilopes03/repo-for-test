@@ -32,7 +32,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -45,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -53,7 +51,25 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation to be added in later commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // to avoid compiler error
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
