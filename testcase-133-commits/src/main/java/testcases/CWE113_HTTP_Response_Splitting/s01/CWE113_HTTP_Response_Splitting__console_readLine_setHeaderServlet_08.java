@@ -107,40 +107,125 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (privateReturnsFalse())
+        if (privateReturnsTrue())
         {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
-             * but ensure data is initialized before the Sink to avoid compiler errors */
-            data = null;
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                /* read user input from console with readLine */
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
-        if (privateReturnsTrue())
+        if (privateReturnsFalse())
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateReturnsTrue())
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                /* read user input from console with readLine */
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
@@ -151,7 +236,8 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
