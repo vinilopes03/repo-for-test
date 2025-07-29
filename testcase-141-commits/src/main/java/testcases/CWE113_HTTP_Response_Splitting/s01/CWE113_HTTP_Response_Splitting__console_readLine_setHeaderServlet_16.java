@@ -49,12 +49,18 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will go here
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will go here
+        String data = "foo"; // FIX: Use a hardcoded string
+
+        if (data != null) {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
