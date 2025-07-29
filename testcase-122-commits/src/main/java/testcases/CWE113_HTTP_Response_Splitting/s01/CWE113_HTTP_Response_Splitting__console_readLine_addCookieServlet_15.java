@@ -165,3 +165,9 @@ private void goodB2G1(HttpServletRequest request, HttpServletResponse response) 
         break;
     }
 }
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    goodG2B1(request, response);
+    goodB2G1(request, response);
+    // Other good methods can be called here as needed
+}
