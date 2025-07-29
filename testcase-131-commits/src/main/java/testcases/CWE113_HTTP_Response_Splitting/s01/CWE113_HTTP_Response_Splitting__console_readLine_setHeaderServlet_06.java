@@ -20,18 +20,41 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of bad method will follow in the next commits
+        String data = "";
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+            BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+            try
+            {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from the console
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // BAD SINK
+        }
     }
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of good method will follow in the next commits
+        // Implementation for good method will follow in the next commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
