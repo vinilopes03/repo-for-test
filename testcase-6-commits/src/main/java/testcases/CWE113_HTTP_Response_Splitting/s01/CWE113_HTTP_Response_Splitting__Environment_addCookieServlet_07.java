@@ -28,7 +28,24 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        String data;
+        if (privateFive == 5)
+        {
+            data = System.getenv("ADD"); // Read data from an environment variable
+        }
+        else
+        {
+            data = null; // Just to avoid compilation error
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
