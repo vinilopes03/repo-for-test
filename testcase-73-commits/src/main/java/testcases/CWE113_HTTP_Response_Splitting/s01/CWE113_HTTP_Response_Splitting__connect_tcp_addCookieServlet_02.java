@@ -37,15 +37,22 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
     /* goodG2B1() - use goodsource and badsink by changing first true to false */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+        // ...
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (false)
-        {
-            data = null; // Will not run
-        }
-        else
+        if (true)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Code below will not run
         }
 
         if (true)
@@ -62,7 +69,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be added in subsequent commits
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
