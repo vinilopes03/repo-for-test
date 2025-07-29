@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_06 extends AbstractTestCaseServlet
 {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
@@ -89,7 +91,22 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in future commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // This block won't run
+        }
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
