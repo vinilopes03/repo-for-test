@@ -55,6 +55,30 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFalse) {
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticTrue) {
             /* FIX: Use a hardcoded string */
@@ -63,17 +87,15 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
             data = null;
         }
 
-        if (IO.staticFalse) {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
-            IO.writeLine("Benign, fixed string");
-        } else {
+        if (IO.staticTrue) {
             if (data != null) {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                data = URLEncoder.encode(data, "UTF-8");
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
+
+    /* Additional good methods would be added here */
 
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException {
