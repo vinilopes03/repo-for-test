@@ -35,59 +35,21 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_11 extends Ab
 
     // (Same as previous goodG2B methods)
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.staticReturnsTrue() to IO.staticReturnsFalse() */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data;
-        if (IO.staticReturnsTrue()) {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try {
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine();
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                } finally {
-                    try {
-                        if (readerBuffered != null) {
-                            readerBuffered.close();
-                        }
-                    } catch (IOException exceptIO) {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-                    try {
-                        if (readerInputStream != null) {
-                            readerInputStream.close();
-                        }
-                    } catch (IOException exceptIO) {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-                    try {
-                        if (streamFileInput != null) {
-                            streamFileInput.close();
-                        }
-                    } catch (IOException exceptIO) {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
-        } else {
-            data = null; // Ensure data is initialized
-        }
+    // (GoodB2G1 method)
 
-        if (IO.staticReturnsFalse()) {
-            IO.writeLine("Benign, fixed string");
-        } else {
-            if (data != null) {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                response.addCookie(cookieSink);
-            }
-        }
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        // Add any additional good methods here if needed
+    }
+
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        mainFromParent(args);
     }
 }
