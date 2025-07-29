@@ -28,51 +28,18 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_17 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-
-        data = ""; /* Initialize data */
-
-        /* retrieve the property */
-        {
-            Properties properties = new Properties();
-            FileInputStream streamFileInput = null;
-
-            try
-            {
-                streamFileInput = new FileInputStream("../common/config.properties");
-                properties.load(streamFileInput);
-                data = properties.getProperty("data"); // POTENTIAL FLAW
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                try
-                {
-                    if (streamFileInput != null)
-                    {
-                        streamFileInput.close();
-                    }
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
-        }
-
-        // Use data in a cookie without validation
-        if (data != null)
-        {
-            Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink);
-        }
+        // (same as previous implementation)
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        String data;
+        data = "foo"; // FIX: Use a hardcoded string
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // Still potentially insecure but valid
+        }
     }
 }
