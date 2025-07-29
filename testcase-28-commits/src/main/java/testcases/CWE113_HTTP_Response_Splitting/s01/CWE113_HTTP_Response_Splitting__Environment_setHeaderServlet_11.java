@@ -45,18 +45,39 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.staticReturnsTrue() to IO.staticReturnsFalse() */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.staticReturnsFalse())
         {
-            data = null; // This will never run
+            data = null; 
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue())
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null; 
         }
 
         if (IO.staticReturnsTrue())
@@ -71,5 +92,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_11 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 }
