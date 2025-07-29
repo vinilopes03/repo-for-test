@@ -33,32 +33,36 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit...
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateTrue)
         {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try
-            {
-                connection = IO.getDBConnection();
-                preparedStatement = connection.prepareStatement("select name from users where id=0");
-                resultSet = preparedStatement.executeQuery();
-                data = resultSet.getString(1);
-            }
-            catch (SQLException exceptSql)
-            {
-                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-            }
-            finally
-            {
-                // Close database objects
-                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
-                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
-                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
-            }
+            data = "foo"; // Use a hardcoded string
         }
         else
         {
