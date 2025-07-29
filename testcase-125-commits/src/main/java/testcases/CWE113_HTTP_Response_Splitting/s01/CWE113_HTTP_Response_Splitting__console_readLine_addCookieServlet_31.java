@@ -89,6 +89,46 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_3
         }
     }
 
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data = ""; /* Initialize data */
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+
+            /* Read user input from console with readLine */
+            try
+            {
+                readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                /* POTENTIAL FLAW: Read data from the console using readLine */
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Closing resources (Not closing System.in)
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) {}
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) {}
+            }
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
