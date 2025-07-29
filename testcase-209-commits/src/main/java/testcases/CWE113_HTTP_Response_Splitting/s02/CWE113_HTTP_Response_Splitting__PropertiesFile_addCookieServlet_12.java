@@ -35,7 +35,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
         try {
             streamFileInput = new FileInputStream("../common/config.properties");
             properties.load(streamFileInput);
-            data = properties.getProperty("data"); // POTENTIAL FLAW
+            data = properties.getProperty("data"); // POTENTIAL FLAW: Reading from properties file
         } catch (IOException exceptIO) {
             IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
         } finally {
@@ -45,13 +45,13 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
         }
 
         if (data != null) {
-            Cookie cookieSink = new Cookie("lang", data); // Potential flaw
+            Cookie cookieSink = new Cookie("lang", data); // Potential flaw: not URL encoded
             response.addCookie(cookieSink);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = "foo"; // Hardcoded string
+        String data = "foo"; // Hardcoded string, safe input
 
         if (data != null) {
             Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Safe encoding
