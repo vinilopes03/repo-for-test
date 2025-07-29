@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -31,20 +32,47 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation from previous commit
+        // Implementation from previous commits
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = ""; /* Initialize data */
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                connection = IO.getDBConnection();
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+                data = resultSet.getString(1); // Read data from DB
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                // Close database objects
+                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) {}
+                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) {}
+                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) {}
+            }
         }
         else
         {
@@ -53,8 +81,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
 
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink); // This is still a potential flaw
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: use URLEncoder.encode
+            response.addCookie(cookieSink);
         }
     }
 
