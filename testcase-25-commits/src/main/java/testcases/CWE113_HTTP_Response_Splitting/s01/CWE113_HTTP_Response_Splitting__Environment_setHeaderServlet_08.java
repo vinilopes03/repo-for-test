@@ -45,8 +45,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateReturnsTrue()) {
             data = System.getenv("ADD");
@@ -54,9 +54,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
             data = null;
         }
 
-        if (privateReturnsFalse()) {
-            IO.writeLine("Benign, fixed string");
-        } else {
+        if (privateReturnsTrue()) {
             if (data != null) {
                 data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode
                 response.setHeader("Location", "/author.jsp?lang=" + data);
@@ -67,6 +65,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
