@@ -68,7 +68,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             data = null;
             break;
         default:
-            /* FIX: Use a hardcoded string */
             data = "foo";
             break;
         }
@@ -87,9 +86,46 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (6)
+        {
+        case 6:
+            data = ""; /* initialize data in case there are no cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    data = cookieSources[0].getValue();
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8)
+        {
+        case 7:
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
         // Other good methods will be added in future commits
     }
 
