@@ -22,7 +22,33 @@ import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_31 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Initial implementation will be added in later commits
+        String dataCopy;
+        {
+            String data;
+
+            data = ""; /* initialize data in case there are no cookies */
+
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null) {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
