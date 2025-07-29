@@ -102,8 +102,32 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.staticFive==5 to IO.staticFive!=5 */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.staticFive == 5)
@@ -144,12 +168,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
             data = null; // Dead code
         }
 
-        if (IO.staticFive != 5)
-        {
-            /* INCIDENTAL: CWE 561 Dead Code */
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (IO.staticFive == 5)
         {
             if (data != null)
             {
@@ -163,7 +182,9 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
