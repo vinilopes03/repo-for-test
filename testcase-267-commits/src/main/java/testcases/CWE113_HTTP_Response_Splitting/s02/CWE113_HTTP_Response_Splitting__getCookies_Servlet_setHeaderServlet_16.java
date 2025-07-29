@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_16 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -38,6 +40,29 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
                     data = cookieSources[0].getValue();
                 }
             }
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        while (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
             break;
         }
 
