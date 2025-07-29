@@ -92,12 +92,62 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = System.getenv("ADD"); // Read data from an environment variable
+        }
+        else
+        {
+            data = null; // Just to avoid compilation error
+        }
+
+        if (privateFive != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode the data
+                response.addCookie(cookieSink); // Safe addition of cookie
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = System.getenv("ADD"); // Read data from an environment variable
+        }
+        else
+        {
+            data = null; // Just to avoid compilation error
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode the data
+                response.addCookie(cookieSink); // Safe addition of cookie
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
-    
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
