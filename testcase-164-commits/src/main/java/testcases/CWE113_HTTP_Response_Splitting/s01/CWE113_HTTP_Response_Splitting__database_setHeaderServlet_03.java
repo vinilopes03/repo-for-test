@@ -37,12 +37,9 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
         ResultSet resultSet = null;
         try
         {
-            /* setup the connection */
             connection = IO.getDBConnection();
-            /* prepare and execute a (hardcoded) query */
             preparedStatement = connection.prepareStatement("select name from users where id=0");
             resultSet = preparedStatement.executeQuery();
-            /* POTENTIAL FLAW: Read data from a database query resultset */
             if (resultSet.next()) {
                 data = resultSet.getString(1);
             }
@@ -53,7 +50,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
         }
         finally
         {
-            /* Close database objects */
             try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
             try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
             try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -61,13 +57,17 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
 
         if (data != null)
         {
-            /* POTENTIAL FLAW: Input not verified before inclusion in header */
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented in later commits
+        String data = "foo"; // Use a hardcoded string
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 }
