@@ -51,7 +51,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
 
         if (IO.staticFive==5 && data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode the data
             response.addCookie(cookieSink); // Potential flaw
         }
     }
