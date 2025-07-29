@@ -7,10 +7,10 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_01 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        data = System.getenv("ADD"); // Read data from an environment variable
+        data = System.getenv("ADD");
 
         if (data != null) {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
@@ -20,7 +20,12 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_01 ext
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature created
+        String data;
+        data = "foo"; // Use a hardcoded string
+
+        if (data != null) {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
