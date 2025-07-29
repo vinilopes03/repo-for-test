@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
@@ -31,6 +32,26 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
     private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // The implementation from the previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Good Source: hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = ""; /* Initialize data */
         if (PRIVATE_STATIC_FINAL_TRUE)
@@ -52,7 +73,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
             }
             finally
             {
-                // Close database objects
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 if (connection != null) connection.close();
@@ -61,13 +81,9 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
         
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+            data = URLEncoder.encode(data, "UTF-8"); // Good Sink
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Placeholder for good method implementation
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
