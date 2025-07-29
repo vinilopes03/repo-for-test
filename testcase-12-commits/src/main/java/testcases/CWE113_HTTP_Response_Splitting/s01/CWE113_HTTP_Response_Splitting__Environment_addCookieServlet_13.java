@@ -54,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         String data;
         if (IO.STATIC_FINAL_FIVE!=5)
         {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
             data = null;
         }
         else
@@ -72,7 +71,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -95,14 +93,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.STATIC_FINAL_FIVE==5)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
@@ -124,11 +119,35 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // goodB2G1 will be implemented next
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
