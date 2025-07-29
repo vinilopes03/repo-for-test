@@ -42,12 +42,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
             {
                 /* setup the connection */
                 connection = IO.getDBConnection();
-
-                /* prepare and execute a (hardcoded) query */
                 preparedStatement = connection.prepareStatement("select name from users where id=0");
                 resultSet = preparedStatement.executeQuery();
-
-                /* POTENTIAL FLAW: Read data from a database query resultset */
                 if (resultSet.next()) {
                     data = resultSet.getString(1);
                 }
@@ -58,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
             }
             finally
             {
-                /* Close database objects */
                 try {
                     if (resultSet != null) resultSet.close();
                     if (preparedStatement != null) preparedStatement.close();
@@ -69,7 +64,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
             }
         }
 
-        // Add cookie with potentially unsafe data
         if (data != null) {
             Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink);
@@ -78,7 +72,12 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented later
+        String data = "foo"; // Use a hardcoded string
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
