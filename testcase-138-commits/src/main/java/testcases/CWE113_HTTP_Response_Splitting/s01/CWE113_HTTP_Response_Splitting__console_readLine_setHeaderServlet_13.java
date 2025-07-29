@@ -18,12 +18,44 @@ Template File: sources-sinks-13.tmpl.java
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_13 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Bad method implementation will be added later
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; /* Initialize data */
+            InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+            BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+            try
+            {
+                /* POTENTIAL FLAW: Read data from the console using readLine */
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
