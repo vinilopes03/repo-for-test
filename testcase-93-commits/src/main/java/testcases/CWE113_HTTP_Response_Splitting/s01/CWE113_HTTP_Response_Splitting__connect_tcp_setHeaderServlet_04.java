@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
@@ -103,10 +104,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            {
+                Socket socket = new Socket("host.example.org", 39544);
+                BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                data = readerBuffered.readLine();
+                readerBuffered.close();
+                socket.close();
+            }
+        }
+        
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
