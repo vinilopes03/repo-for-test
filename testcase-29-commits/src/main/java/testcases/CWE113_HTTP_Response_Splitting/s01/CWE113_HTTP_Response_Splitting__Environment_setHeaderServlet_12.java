@@ -33,14 +33,14 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         }
         else
         {
-            data = "foo";
+            data = "foo"; // Default value for other branch
         }
 
         if(IO.staticReturnsTrueOrFalse())
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
             }
         }
     }
@@ -50,7 +50,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         String data;
         if(IO.staticReturnsTrueOrFalse())
         {
-            data = "foo";
+            data = "foo"; // Good source
         }
         else
         {
@@ -61,7 +61,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a Bad Sink
             }
         }
     }
@@ -71,7 +71,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         String data;
         if(IO.staticReturnsTrueOrFalse())
         {
-            data = System.getenv("ADD");
+            data = System.getenv("ADD"); // Bad Source
         }
         else
         {
@@ -82,7 +82,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         {
             if (data != null)
             {
-                data = URLEncoder.encode(data, "UTF-8");
+                data = URLEncoder.encode(data, "UTF-8"); // Good Sink
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
