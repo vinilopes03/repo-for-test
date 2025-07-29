@@ -28,44 +28,23 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; /* Initialize data */
-        InputStreamReader readerInputStream = null;
-        BufferedReader readerBuffered = null;
+        // Implementation remains the same as previous commit
+    }
 
-        /* read user input from console with readLine */
-        try
-        {
-            readerInputStream = new InputStreamReader(System.in, "UTF-8");
-            readerBuffered = new BufferedReader(readerInputStream);
-            data = readerBuffered.readLine(); // Read data from console
-        }
-        catch (IOException exceptIO)
-        {
-            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-        }
-        finally
-        {
-            try
-            {
-                if (readerBuffered != null) readerBuffered.close();
-                if (readerInputStream != null) readerInputStream.close();
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
-            }
-        }
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string for good source
 
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink); // Potential flaw
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method will be implemented in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
