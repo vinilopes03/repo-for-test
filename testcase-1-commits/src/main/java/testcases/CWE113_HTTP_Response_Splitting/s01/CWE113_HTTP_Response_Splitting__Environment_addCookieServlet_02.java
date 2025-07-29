@@ -65,20 +65,43 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second true to false */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // This block will never run
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (true)
         {
             data = System.getenv("ADD");
         }
-
-        if (false)
-        {
-            // Some benign output, never reached
-        }
         else
+        {
+            data = null; // This block will never run
+        }
+
+        if (true)
         {
             if (data != null)
             {
@@ -91,7 +114,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
-        // Additional good methods could be added here.
+        goodB2G2(request, response);
+    }
+
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
