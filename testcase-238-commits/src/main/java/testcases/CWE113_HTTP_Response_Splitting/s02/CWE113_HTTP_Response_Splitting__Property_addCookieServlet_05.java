@@ -32,12 +32,11 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
         String data;
         if (privateTrue)
         {
-            // Get system property user.home
             data = System.getProperty("user.home");
         }
         else
         {
-            data = null; // This code will never run
+            data = null; 
         }
 
         if (privateTrue)
@@ -45,7 +44,52 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                // Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+    
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null; // This code will never run
+        }
+        else
+        {
+            // Use a hardcoded string
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            // Use a hardcoded string
+            data = "foo";
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -53,8 +97,8 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // More good methods will be added later
     }
-    
-    // Additional good methods will be added later
 }
