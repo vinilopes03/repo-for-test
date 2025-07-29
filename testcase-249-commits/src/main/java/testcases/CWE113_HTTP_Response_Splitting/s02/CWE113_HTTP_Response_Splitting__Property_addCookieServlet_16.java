@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_16 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -46,9 +48,34 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_16 extend
         }
     }
 
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        while (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented in future commits
+        goodG2B(request, response);
+        // Further good methods will be implemented in future commits
     }
 
     /* Below is the main(). It is only used when building this testcase on
