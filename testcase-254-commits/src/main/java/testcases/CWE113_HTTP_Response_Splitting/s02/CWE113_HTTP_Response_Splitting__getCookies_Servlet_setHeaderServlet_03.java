@@ -28,11 +28,9 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (5 == 5)
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             Cookie cookieSources[] = request.getCookies();
             if (cookieSources != null)
             {
-                /* POTENTIAL FLAW: Read data from the first cookie value */
                 data = cookieSources[0].getValue();
             }
         }
@@ -41,7 +39,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -49,7 +46,20 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in the next commit
+        String data;
+        if (5 == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (5 == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
