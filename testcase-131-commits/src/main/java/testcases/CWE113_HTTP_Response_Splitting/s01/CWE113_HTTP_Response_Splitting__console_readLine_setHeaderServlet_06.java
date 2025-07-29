@@ -54,7 +54,11 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation for good method will follow in the next commits
+        String data = "foo"; // FIX: Use a hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // GOOD SINK
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
