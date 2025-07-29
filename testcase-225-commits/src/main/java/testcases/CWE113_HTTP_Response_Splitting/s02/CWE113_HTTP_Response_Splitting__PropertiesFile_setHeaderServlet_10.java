@@ -24,50 +24,34 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_10 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as in Commit 2
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // other good methods will be added in later commits
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticTrue)
+        if (IO.staticFalse)
         {
-            data = ""; /* Initialize data */
-            /* retrieve the property */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-                try
-                {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
-                    data = properties.getProperty("data");
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* Close stream reading object */
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            data = null; // Will not run
         }
         else
         {
-            data = null; // Will be initialized correctly in the true block
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (IO.staticTrue)
@@ -78,11 +62,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_10 
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
