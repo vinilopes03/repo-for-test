@@ -71,6 +71,12 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data = "foo"; // Use a hardcoded string
         if (data != null) {
             Cookie cookieSink = new Cookie("lang", data);
