@@ -33,37 +33,13 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; /* Initialize data */
-        /* retrieve the property */
-        {
-            Properties properties = new Properties();
-            FileInputStream streamFileInput = null;
-            try
-            {
-                streamFileInput = new FileInputStream("../common/config.properties");
-                properties.load(streamFileInput);
-                /* POTENTIAL FLAW: Read data from a .properties file */
-                data = properties.getProperty("data");
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                try
-                {
-                    if (streamFileInput != null)
-                    {
-                        streamFileInput.close();
-                    }
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
-        }
+        // Implementation from previous commit
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = "foo"; /* FIX: Use a hardcoded string */
 
         if (data != null)
         {
@@ -75,7 +51,8 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented in later commits
+        goodG2B1(request, response);
+        // Other good methods will be implemented in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
