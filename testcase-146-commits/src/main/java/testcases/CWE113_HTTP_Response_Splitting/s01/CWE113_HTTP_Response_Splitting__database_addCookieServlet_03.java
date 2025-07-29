@@ -20,15 +20,31 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_03 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        String data;
+        if (5==5)
+        {
+            data = ""; /* Initialize data */
+            // Database read logic to be implemented
+        }
+        else
+        {
+            data = null; // Fallback
+        }
+        
+        // Cookie handling to be implemented
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        // To be implemented
     }
 }
