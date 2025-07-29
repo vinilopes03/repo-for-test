@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_01 extends AbstractTestCaseServlet {
 
@@ -21,7 +22,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_01 ext
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
-        data = "foo"; // Use a hardcoded string
+        data = "foo";
 
         if (data != null) {
             response.setHeader("Location", "/author.jsp?lang=" + data);
@@ -29,7 +30,13 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_01 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature created
+        String data;
+        data = System.getenv("ADD");
+
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8"); // Encode data
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
