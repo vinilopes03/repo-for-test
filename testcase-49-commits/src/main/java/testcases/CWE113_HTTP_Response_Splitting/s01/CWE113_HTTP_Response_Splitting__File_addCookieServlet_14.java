@@ -76,7 +76,24 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_14 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented in future commits
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = "foo";  // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // To avoid compiler error
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);  // POTENTIAL FLAW
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
