@@ -20,6 +20,11 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.Socket;
+
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
     private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
@@ -27,7 +32,28 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in later commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = new Socket("host.example.org", 39544);
+                BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                data = readerBuffered.readLine();
+                readerBuffered.close();
+                socket.close();
+            }
+        }
+        
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
