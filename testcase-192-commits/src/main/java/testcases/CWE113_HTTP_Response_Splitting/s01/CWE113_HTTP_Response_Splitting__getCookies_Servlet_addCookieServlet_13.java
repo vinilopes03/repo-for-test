@@ -24,37 +24,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to implement
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; // initialize data in case there are no cookies
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                // POTENTIAL FLAW: Read data from the first cookie value
+                data = cookieSources[0].getValue();
+            }
+        }
+        else
+        {
+            data = null; // This code will never run, but is here to avoid compiler errors
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement
-    }
-
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement
-    }
-
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement
-    }
-
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement
-    }
-
-    public static void main(String[] args) throws ClassNotFoundException,
-           InstantiationException, IllegalAccessException
-    {
-        mainFromParent(args);
-    }
+    // Other methods...
 }
