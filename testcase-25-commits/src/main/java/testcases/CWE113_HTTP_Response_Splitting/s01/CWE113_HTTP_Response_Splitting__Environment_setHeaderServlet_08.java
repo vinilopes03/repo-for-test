@@ -3,6 +3,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 extends AbstractTestCaseServlet {
     private boolean privateReturnsTrue() {
@@ -44,9 +45,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsFalse()) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
-        // Other methods will be added in later commits
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
