@@ -54,6 +54,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -118,6 +119,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
             // Incidental code that will not execute
         }
         else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Using URLEncoder to encode
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW
+        }
+        else
+        {
+            data = null; // This branch will never execute
+        }
+
+        if (privateTrue)
         {
             if (data != null)
             {
