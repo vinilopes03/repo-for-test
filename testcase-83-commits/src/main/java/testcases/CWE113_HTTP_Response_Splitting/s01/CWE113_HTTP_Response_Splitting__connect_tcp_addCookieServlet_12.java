@@ -63,6 +63,14 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 ext
                 response.addCookie(cookieSink); // Safe addition
             }
         }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encoding the data
+                response.addCookie(cookieSink); // Safe addition
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
