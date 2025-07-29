@@ -28,24 +28,43 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (IO.staticFive == 5)
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             Cookie cookieSources[] = request.getCookies();
             if (cookieSources != null)
             {
-                /* POTENTIAL FLAW: Read data from the first cookie value */
                 data = cookieSources[0].getValue();
             }
         }
         else
         {
-            data = null; // This will not be executed, but needs to be initialized.
+            data = null;
         }
 
         if (IO.staticFive == 5)
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive != 5)
+        {
+            data = null; // This will not be executed, but needs to be initialized.
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -53,7 +72,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
