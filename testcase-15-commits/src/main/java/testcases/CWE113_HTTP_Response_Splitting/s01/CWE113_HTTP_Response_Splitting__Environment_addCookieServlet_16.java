@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -41,14 +43,12 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 ext
         }
     }
 
-    /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         while (true)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // FIX: Use a hardcoded string
             break;
         }
         while (true)
@@ -62,9 +62,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 ext
         }
     }
 
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        while (true)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+            break;
+        }
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX
+                response.addCookie(cookieSink); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            }
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
