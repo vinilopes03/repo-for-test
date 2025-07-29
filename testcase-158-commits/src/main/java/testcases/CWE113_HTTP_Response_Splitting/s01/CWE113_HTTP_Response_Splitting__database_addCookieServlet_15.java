@@ -36,16 +36,21 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing goodG2B1 method implementation
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
-        switch (5)
+        switch (6)
         {
         case 6:
-            data = null;
-            break;
-        default:
             /* FIX: Use a hardcoded string */
             data = "foo";
+            break;
+        default:
+            data = null;
             break;
         }
 
@@ -68,6 +73,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will follow
     }
 
