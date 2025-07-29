@@ -97,10 +97,61 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_15 extend
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+
+        switch (6) {
+        case 6:
+            data = System.getProperty("user.home");
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8) {
+        case 7:
+            break;
+        default:
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing the blocks in the second switch  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+
+        switch (6) {
+        case 6:
+            data = System.getProperty("user.home");
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7) {
+        case 7:
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other good methods to be added in subsequent commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
