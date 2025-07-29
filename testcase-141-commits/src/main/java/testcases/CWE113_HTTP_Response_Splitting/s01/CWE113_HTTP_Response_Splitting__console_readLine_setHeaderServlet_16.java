@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_16 extends AbstractTestCaseServlet
 {
@@ -65,7 +66,23 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will go here
+        String data;
+
+        /* Read user input from console with readLine */
+        try (InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+            data = readerBuffered.readLine(); // POTENTIAL FLAW
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            return;
+        }
+
+        if (data != null) {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
