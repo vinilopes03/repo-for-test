@@ -81,7 +81,24 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_16 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good implementation
+        String data;
+
+        while (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
