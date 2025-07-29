@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_15 extends AbstractTestCaseServlet
 {
@@ -122,10 +123,92 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8)
+        {
+        case 7:
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing the blocks in the second switch  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
