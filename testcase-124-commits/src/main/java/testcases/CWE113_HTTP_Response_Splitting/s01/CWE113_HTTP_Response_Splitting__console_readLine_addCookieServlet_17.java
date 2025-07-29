@@ -20,11 +20,58 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_17 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation will go here
+        String data;
+        data = ""; /* Initialize data */
+
+        {
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+
+            /* Read user input from console with readLine */
+            try
+            {
+                readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+            }
+        }
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -32,11 +79,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         // Good implementations will go here
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
