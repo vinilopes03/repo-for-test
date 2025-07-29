@@ -100,7 +100,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data); // Use a hardcoded string
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Use URLEncoder for safety
                 response.addCookie(cookieSink);
             }
         }
