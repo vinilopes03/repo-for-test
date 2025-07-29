@@ -47,6 +47,11 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data = "foo"; // FIX: Use a hardcoded string
 
         for (int j = 0; j < 1; j++) {
@@ -74,5 +79,9 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        mainFromParent(args);
     }
 }
