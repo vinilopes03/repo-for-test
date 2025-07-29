@@ -59,6 +59,17 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+        }
     }
 }
