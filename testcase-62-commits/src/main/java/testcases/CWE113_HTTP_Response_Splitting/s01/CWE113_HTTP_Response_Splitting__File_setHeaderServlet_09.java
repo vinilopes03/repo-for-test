@@ -42,11 +42,9 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
                 BufferedReader readerBuffered = null;
                 try
                 {
-                    /* read string from file into data */
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -55,7 +53,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                     try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
@@ -71,7 +68,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -79,7 +75,24 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Will not be used
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
