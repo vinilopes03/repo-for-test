@@ -71,8 +71,24 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 ext
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateFive == 5) {
+            data = "foo"; // Good source
+        } else {
+            data = null; // This block will not execute
+        }
+        if (privateFive == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Add cookie with hardcoded string data
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will be added in later commits
     }
 
