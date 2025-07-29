@@ -37,7 +37,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_09 ext
         if (IO.STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             // (Socket reading code omitted for brevity)
         }
         else
@@ -55,18 +54,40 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_09 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_TRUE to IO.STATIC_FINAL_FALSE */
+    /* goodG2B1() - use goodsource and badsink */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.STATIC_FINAL_FALSE) // This branch will not execute
+        if (IO.STATIC_FINAL_FALSE)
         {
             data = null; // This will never run
         }
         else
         {
+            data = "foo"; // Fixed string
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
             /* FIX: Use a hardcoded string */
             data = "foo"; // Fixed string
+        }
+        else
+        {
+            data = null; // This will never run
         }
 
         if (IO.STATIC_FINAL_TRUE)
