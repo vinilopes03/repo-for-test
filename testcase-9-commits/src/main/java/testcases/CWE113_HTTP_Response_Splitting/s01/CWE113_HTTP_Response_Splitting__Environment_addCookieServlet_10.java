@@ -29,8 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
         String data;
         if (IO.staticTrue)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
@@ -43,7 +41,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFalse)
+        {
+            data = null; // This will not be executed
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -51,7 +72,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_10 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good code
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
