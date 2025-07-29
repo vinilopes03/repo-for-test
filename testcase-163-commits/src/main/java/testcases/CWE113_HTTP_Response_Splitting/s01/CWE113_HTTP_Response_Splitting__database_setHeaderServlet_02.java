@@ -53,7 +53,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
         }
         finally
         {
-            /* Close database objects */
             try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
             try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
             try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -61,14 +60,17 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
 
         if (data != null)
         {
-            /* POTENTIAL FLAW: Input not verified before inclusion in header */
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial method structure created
+        String data = "foo"; // Use hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
