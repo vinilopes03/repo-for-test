@@ -42,14 +42,32 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                response.addCookie(cookieSink);
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        String data;
+        if (privateFive==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
