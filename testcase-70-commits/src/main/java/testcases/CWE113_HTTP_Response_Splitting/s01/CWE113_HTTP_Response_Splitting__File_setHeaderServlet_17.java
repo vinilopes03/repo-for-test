@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_17 extends AbstractTestCaseServlet
 {
@@ -66,12 +67,33 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_17 extends Ab
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        String data = ""; // Initialize data
+        {
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+
+                // POTENTIAL FLAW: Read data from a file
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+
+        for (int k = 0; k < 1; k++) {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
