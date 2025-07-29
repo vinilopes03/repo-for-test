@@ -61,8 +61,31 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_13 extend
         }
     }
 
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; // Incidental dead code
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // FIX: use URLEncoder.encode
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 }
