@@ -48,7 +48,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrueOrFalse()) {
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         } else {
             data = System.getenv("ADD");
@@ -56,7 +55,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
 
         if (IO.staticReturnsTrueOrFalse()) {
             if (data != null) {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
