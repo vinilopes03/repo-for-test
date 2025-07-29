@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_01 extends AbstractTestCaseServlet
 {
@@ -49,7 +50,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // goodB2G will be added in the next commit
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
@@ -64,6 +65,31 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             Cookie cookieSink = new Cookie("lang", data);
             // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            response.addCookie(cookieSink);
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        data = ""; // initialize data in case there are no cookies
+
+        // Read data from cookies
+        {
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                // POTENTIAL FLAW: Read data from the first cookie value
+                data = cookieSources[0].getValue();
+            }
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
             response.addCookie(cookieSink);
         }
     }
