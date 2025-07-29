@@ -49,91 +49,25 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_10 extends Ab
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticTrue)
-        {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try
-                {
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // Read from the file
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Closing resources
-                }
-            }
-        }
-        else
-        {
-            data = null; // To avoid compilation error
-        }
-
-        if (IO.staticFalse)
-        {
-            IO.writeLine("Benign, fixed string"); // Unreachable code
-        }
-        else
-        {
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode for safety
-                response.addCookie(cookieSink); // Add cookie safely
-            }
-        }
+        // (goodB2G1 method code as implemented in Commit 4)
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticTrue)
-        {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try
-                {
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // Read from the file
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Closing resources
-                }
-            }
-        }
-        else
-        {
-            data = null; // To avoid compilation error
-        }
+        // (goodB2G2 method code as implemented in Commit 4)
+    }
 
-        if (IO.staticTrue)
-        {
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode for safety
-                response.addCookie(cookieSink); // Add cookie safely
-            }
-        }
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args); // For testing
     }
 }
