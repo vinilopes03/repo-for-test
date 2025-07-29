@@ -30,7 +30,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
         if (IO.staticReturnsTrue())
         {
             /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
@@ -43,17 +42,14 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
-                response.addCookie(cookieSink);
+                response.addCookie(cookieSink); // Potential flaw remains
             }
         }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        /* FIX: Use a hardcoded string instead of reading from the environment */
-        data = "foo";
+        String data = "foo"; // Hardcoded string
 
         if (IO.staticReturnsTrue())
         {
@@ -61,6 +57,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink); // Potential flaw remains
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Proper encoding
+                response.addCookie(cookieSink);
             }
         }
     }
