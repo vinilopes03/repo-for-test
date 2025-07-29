@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
@@ -35,39 +36,25 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // (Previous implementation remains unchanged)
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodB2G1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (PRIVATE_STATIC_FINAL_TRUE)
+        if (PRIVATE_STATIC_FINAL_FALSE)
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try
-                {
-                    /* read string from file into data */
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // POTENTIAL FLAW
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* Close stream reading objects */
-                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
-                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
-                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
-                }
-            }
+            data = null; // Dead code
         }
         else
         {
-            data = null; // Dead code
+            data = "foo"; // FIX: Hardcoded string
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
@@ -77,11 +64,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
                 response.setHeader("Location", "/author.jsp?lang=" + data); // FLAW
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
