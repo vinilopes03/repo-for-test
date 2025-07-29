@@ -35,17 +35,23 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_14 
     /* goodG2B1() - use goodsource and badsink by changing first IO.staticFive==5 to IO.staticFive!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // ... (previous implementation)
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticFive!=5)
+        if (IO.staticFive==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
         {
             /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
              * but ensure data is initialized before the Sink to avoid compiler errors */
             data = null;
-        }
-        else
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
         }
 
         if (IO.staticFive==5)
