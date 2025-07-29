@@ -29,9 +29,51 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
         }
     }
 
-    // Other method signatures remain unchanged
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    // Remaining method signatures
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
