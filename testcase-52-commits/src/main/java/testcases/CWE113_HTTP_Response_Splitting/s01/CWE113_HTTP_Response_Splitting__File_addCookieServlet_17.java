@@ -69,7 +69,15 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_17 extends Ab
             }
         }
 
-        // Logic for adding cookie will be implemented in the next commit
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
