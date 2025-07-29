@@ -38,17 +38,13 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
                 BufferedReader readerBuffered = null;
                 InputStreamReader readerInputStream = null;
                 try {
-                    /* Read data using an outbound tcp connection */
                     socket = new Socket("host.example.org", 39544);
-                    /* read input from socket */
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                     data = readerBuffered.readLine();
                 } catch (IOException exceptIO) {
                     IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
                 } finally {
-                    /* clean up stream reading objects */
                     try {
                         if (readerBuffered != null) {
                             readerBuffered.close();
@@ -65,7 +61,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
                         IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
                     }
 
-                    /* clean up socket objects */
                     try {
                         if (socket != null) {
                             socket.close();
@@ -82,14 +77,31 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
         if (5 == 5) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (5 != 5) {
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added in future commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
