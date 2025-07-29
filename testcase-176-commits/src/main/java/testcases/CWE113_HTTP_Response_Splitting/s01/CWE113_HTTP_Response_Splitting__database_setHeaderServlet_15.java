@@ -29,18 +29,15 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; 
-        // Read data from a database
-        // (same code as previous commit)
-        // ...
-        // Set header without validation
-        if (data != null)
-        {
-            response.setHeader("Location", "/author.jsp?lang=" + data);
-        }
+        // (same code as previous commits)
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // (same code as previous commits)
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         // Use a hardcoded string
@@ -48,7 +45,19 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
 
         if (data != null)
         {
-            // Good practice: use URLEncoder to encode the parameter
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        // Read data from a database
+        // (same code as previous commit)
+        // ...
+        // Use URLEncoder for encoding
+        if (data != null)
+        {
             String encodedData = java.net.URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + encodedData);
         }
