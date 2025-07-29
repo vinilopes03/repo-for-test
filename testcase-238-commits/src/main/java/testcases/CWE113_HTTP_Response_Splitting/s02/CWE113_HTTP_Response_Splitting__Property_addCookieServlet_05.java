@@ -54,11 +54,10 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
         String data;
         if (privateFalse)
         {
-            data = null; // This code will never run
+            data = null; 
         }
         else
         {
-            // Use a hardcoded string
             data = "foo";
         }
 
@@ -77,7 +76,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
         String data;
         if (privateTrue)
         {
-            // Use a hardcoded string
             data = "foo";
         }
         else
@@ -94,11 +92,61 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
             }
         }
     }
-    
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (privateTrue)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (privateFalse)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // More good methods will be added later
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 }
