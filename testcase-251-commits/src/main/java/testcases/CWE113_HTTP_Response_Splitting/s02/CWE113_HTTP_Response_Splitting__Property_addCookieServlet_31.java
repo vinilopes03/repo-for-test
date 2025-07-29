@@ -51,7 +51,7 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_31 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // goodB2G will be implemented next
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
@@ -73,6 +73,31 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_31 extend
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
