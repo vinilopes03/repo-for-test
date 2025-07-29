@@ -24,6 +24,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as before
         String data;
 
         data = ""; /* initialize data in case there are no cookies */
@@ -37,6 +38,25 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
                 data = cookieSources[0].getValue();
             }
         }
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
 
         for (int j = 0; j < 1; j++)
         {
