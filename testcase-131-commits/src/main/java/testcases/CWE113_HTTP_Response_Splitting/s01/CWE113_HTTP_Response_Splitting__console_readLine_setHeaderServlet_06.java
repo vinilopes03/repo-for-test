@@ -49,6 +49,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
         if (data != null)
         {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Encode the data to prevent HTTP Response Splitting
             response.setHeader("Location", "/author.jsp?lang=" + data); // BAD SINK
         }
     }
