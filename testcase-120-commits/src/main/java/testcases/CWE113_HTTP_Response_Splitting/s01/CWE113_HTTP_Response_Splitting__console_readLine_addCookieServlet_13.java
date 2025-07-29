@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_13 extends AbstractTestCaseServlet
 {
@@ -108,7 +109,8 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
