@@ -49,16 +49,64 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFalse)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            data = "hardcodedString"; // Fixed string
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.staticTrue)
         {
             data = "hardcodedString"; // Fixed string
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (IO.staticTrue)
+        {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encode
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for B2G1
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for B2G2
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
