@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_01 extends AbstractTestCaseServlet
 {
@@ -66,6 +67,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_01 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
@@ -76,6 +78,45 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_01 
         if (data != null)
         {
             response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+        Properties properties = new Properties();
+        FileInputStream streamFileInput = null;
+
+        try
+        {
+            streamFileInput = new FileInputStream("../common/config.properties");
+            properties.load(streamFileInput);
+            data = properties.getProperty("data"); // Read data from properties file
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        finally
+        {
+            try
+            {
+                if (streamFileInput != null)
+                {
+                    streamFileInput.close();
+                }
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+            }
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Fix by encoding
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
