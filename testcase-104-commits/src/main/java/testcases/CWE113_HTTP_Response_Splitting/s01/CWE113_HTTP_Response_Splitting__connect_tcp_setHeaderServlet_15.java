@@ -31,12 +31,10 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-
         switch (6)
         {
         case 6:
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -54,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
                 }
                 finally
                 {
-                    // Cleanup code
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) {}
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) {}
                     try { if (socket != null) socket.close(); } catch (IOException exceptIO) {}
@@ -80,9 +77,38 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
         }
     }
 
+    /* goodG2B1() - use goodsource and badsink by changing the first switch to switch(5) */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            data = "foo"; // Hardcoded string
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in future commits.
+        goodG2B1(request, response);
+        // Other good methods will be added in future commits.
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
