@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 extends AbstractTestCaseServlet
@@ -45,7 +45,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
         if (privateReturnsTrue())
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -88,6 +87,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
 
         if (data != null)
         {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
