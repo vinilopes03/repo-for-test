@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -46,7 +47,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -55,7 +55,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
                 }
                 finally
                 {
-                    /* clean up stream reading objects */
                     try
                     {
                         if (readerBuffered != null)
@@ -80,7 +79,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
                         IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
                     }
 
-                    /* clean up socket objects */
                     try
                     {
                         if (socket != null)
@@ -95,12 +93,31 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
                 }
             }
         }
-        // Add logic for using the data in the response
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in later commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // This case won't run
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
