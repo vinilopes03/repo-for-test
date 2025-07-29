@@ -65,7 +65,12 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_14 ext
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in later commits
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = "foo"; // Good source: hardcoded string
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe since data is hardcoded
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
