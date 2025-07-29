@@ -49,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -60,7 +59,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -69,7 +67,58 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
@@ -77,7 +126,9 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will follow
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // goodB2G1 will be implemented next
     }
 
     /* Below is the main(). It is only used when building this testcase on
