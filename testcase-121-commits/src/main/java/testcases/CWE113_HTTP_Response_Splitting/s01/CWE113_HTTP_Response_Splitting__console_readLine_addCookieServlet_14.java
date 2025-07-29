@@ -28,10 +28,60 @@ import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_14 extends AbstractTestCaseServlet
 {
-    // Initial empty methods for bad and good functions
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for bad implementation
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read user input from console
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null) readerInputStream.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Avoid compiler error
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // Potential flaw
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
