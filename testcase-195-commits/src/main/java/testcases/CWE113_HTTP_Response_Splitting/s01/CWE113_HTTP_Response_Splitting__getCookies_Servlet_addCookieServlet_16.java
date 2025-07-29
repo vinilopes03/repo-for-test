@@ -20,21 +20,20 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_16 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-
         while (true)
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             {
                 Cookie cookieSources[] = request.getCookies();
                 if (cookieSources != null && cookieSources.length > 0)
                 {
-                    /* POTENTIAL FLAW: Read data from the first cookie value */
                     data = cookieSources[0].getValue();
                 }
             }
@@ -46,7 +45,28 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        while (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
             break;
@@ -55,7 +75,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        goodG2B(request, response);
+        // Other good methods will be added later
     }
 
     /* Below is the main(). It is only used when building this testcase on
