@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_31 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -33,7 +35,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_3
         String dataCopy;
         {
             String data;
-
             data = ""; /* Initialize data */
 
             try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
@@ -57,12 +58,27 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_3
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
     
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String dataCopy;
+        {
+            String data;
+            /* FIX: Use a hardcoded string */
+            data = "foo"; 
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
