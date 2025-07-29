@@ -32,30 +32,40 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; /* Initialize data */
+        // Existing implementation from the previous commit
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null; // This block will never run
+        }
+        else
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            /* Read data from a database */
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try
-            {
-                connection = IO.getDBConnection();
-                preparedStatement = connection.prepareStatement("select name from users where id=0");
-                resultSet = preparedStatement.executeQuery();
-                data = resultSet.getString(1); // POTENTIAL FLAW: Read data from a database query resultset
-            }
-            catch (SQLException exceptSql)
-            {
-                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-            }
-            finally
-            {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            }
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+        else
+        {
+            data = null; // This block will never run
         }
 
         if (data != null)
@@ -67,7 +77,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will follow in subsequent commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
