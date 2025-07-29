@@ -53,7 +53,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
         if (privateReturnsFalse()) {
             data = null; // This will never run
         } else {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -68,7 +67,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateReturnsTrue()) {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         } else {
             data = null; // This will never run
@@ -76,7 +74,42 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
 
         if (privateReturnsTrue()) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            data = System.getProperty("user.home");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsFalse()) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            data = System.getProperty("user.home");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
@@ -85,6 +118,8 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
