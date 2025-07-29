@@ -17,6 +17,7 @@ Template File: sources-sinks-01.tmpl.java
 
 package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
+import java.net.URLEncoder;
 import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_01 extends AbstractTestCaseServlet
@@ -60,6 +61,30 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (data != null)
         {
             /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        data = ""; /* initialize data in case there are no cookies */
+
+        /* Read data from cookies */
+        {
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null && cookieSources.length > 0)
+            {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        }
+
+        if (data != null)
+        {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
