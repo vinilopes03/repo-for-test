@@ -55,12 +55,39 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
     
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // FIX: Use a hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // GOOD SINK
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data = "foo"; // FIX: Use a hardcoded string
         if (data != null)
         {
             data = URLEncoder.encode(data, "UTF-8"); // FIX: Good sink using URLEncoder
             response.setHeader("Location", "/author.jsp?lang=" + data); // GOOD SINK
         }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation details will follow similarly for goodB2G1 and goodB2G2.
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation details will follow similarly for goodB2G1 and goodB2G2.
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
