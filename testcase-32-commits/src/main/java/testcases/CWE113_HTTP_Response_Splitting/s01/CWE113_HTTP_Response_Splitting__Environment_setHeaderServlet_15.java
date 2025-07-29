@@ -51,38 +51,39 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing the first switch to switch(5) */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
 
-        switch (5)
+        switch (6)
         {
         case 6:
-            data = null;
+            data = System.getenv("ADD");
             break;
         default:
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
             break;
         }
 
-        switch (7)
+        switch (8)
         {
         case 7:
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
             break;
         default:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
             break;
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
