@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
@@ -43,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
                 {
                     streamFileInput = new FileInputStream("../common/config.properties");
                     properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
                     data = properties.getProperty("data");
                 }
                 catch (IOException exceptIO)
@@ -83,26 +83,80 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (PRIVATE_STATIC_FINAL_FALSE)
+        if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            data = null;
+            data = "foo"; /* FIX: Use a hardcoded string */
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             if (data != null)
             {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
