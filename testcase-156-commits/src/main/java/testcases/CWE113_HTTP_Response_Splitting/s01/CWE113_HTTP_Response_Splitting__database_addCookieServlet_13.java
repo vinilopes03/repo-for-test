@@ -40,7 +40,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
@@ -97,9 +96,34 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will be added in later commits
     }
 
