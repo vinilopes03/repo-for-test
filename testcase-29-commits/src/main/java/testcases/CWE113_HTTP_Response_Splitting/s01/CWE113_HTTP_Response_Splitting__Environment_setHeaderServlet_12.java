@@ -20,14 +20,13 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initializing data variable
         String data;
-
-        // Simulating control flow
         if(IO.staticReturnsTrueOrFalse())
         {
             // POTENTIAL FLAW: Read data from an environment variable
@@ -35,11 +34,22 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         }
         else
         {
-            // Placeholder for other branch
-            data = "foo"; // This will be updated in a later commit
+            // FIX: Use a hardcoded string
+            data = "foo";
         }
 
-        // Placeholder for further processing
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            // Placeholder for other processing
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -47,11 +57,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         // Placeholder for good method implementation
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
