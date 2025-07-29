@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_01 extends AbstractTestCaseServlet
 {
@@ -60,6 +61,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
@@ -70,6 +72,37 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         if (data != null)
         {
             response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+        
+        InputStreamReader readerInputStream = null;
+        BufferedReader readerBuffered = null;
+
+        try
+        {
+            readerInputStream = new InputStreamReader(System.in, "UTF-8");
+            readerBuffered = new BufferedReader(readerInputStream);
+            data = readerBuffered.readLine(); // Read data from console
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        finally
+        {
+            if (readerBuffered != null) { readerBuffered.close(); }
+            if (readerInputStream != null) { readerInputStream.close(); }
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
         }
     }
 }
