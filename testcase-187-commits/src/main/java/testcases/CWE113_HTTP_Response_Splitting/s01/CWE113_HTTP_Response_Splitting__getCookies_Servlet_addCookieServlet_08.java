@@ -63,6 +63,11 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             data = "foo"; /* GoodSource */
         }
+        else
+        {
+            data = null; // To ensure data is initialized
+        }
+
         if (privateReturnsTrue())
         {
             if (data != null)
@@ -72,6 +77,30 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation will be added later
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation will be added later
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation will be added later
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation will be added later
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
