@@ -51,8 +51,7 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_09 extend
         String data;
         if (IO.STATIC_FINAL_TRUE)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good hardcoded string
         }
         else
         {
@@ -63,7 +62,8 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_09 extend
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
