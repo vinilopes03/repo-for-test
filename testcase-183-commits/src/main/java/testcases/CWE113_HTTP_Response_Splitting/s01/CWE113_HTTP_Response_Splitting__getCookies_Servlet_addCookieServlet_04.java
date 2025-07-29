@@ -54,13 +54,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         String data;
         if (PRIVATE_STATIC_FINAL_FALSE)
         {
-            // Dead code
-            data = null;
+            data = null; // Dead code
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
+        }
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null; // Dead code
         }
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
@@ -75,6 +94,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
