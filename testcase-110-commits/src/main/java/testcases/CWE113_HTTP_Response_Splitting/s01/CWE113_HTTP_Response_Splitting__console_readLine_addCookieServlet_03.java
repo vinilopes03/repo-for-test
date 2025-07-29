@@ -90,11 +90,39 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5 != 5)
+        {
+            data = null; // Will not run
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
+
+        if (5 == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (5 == 5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good source
         }
         else
         {
