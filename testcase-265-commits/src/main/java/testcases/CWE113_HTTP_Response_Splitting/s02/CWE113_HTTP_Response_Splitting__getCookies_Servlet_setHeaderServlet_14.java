@@ -51,43 +51,19 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticFive != 5)
+        String data = "foo"; // Good source
+        if (data != null)
         {
-            data = null;
-        }
-        else
-        {
-            data = "foo"; // Good source
-        }
-
-        if (IO.staticFive == 5)
-        {
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticFive == 5)
+        String data = "foo"; // Good source
+        if (data != null)
         {
-            data = "foo"; // Good source
-        }
-        else
-        {
-            data = null;
-        }
-
-        if (IO.staticFive == 5)
-        {
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
@@ -122,11 +98,39 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive == 5)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue();
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
