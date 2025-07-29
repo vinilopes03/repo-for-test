@@ -24,20 +24,20 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.STATIC_FINAL_FIVE == 5)
+        if (IO.STATIC_FINAL_FIVE != 5)
         {
-            data = ""; // initialize data in case there are no cookies
-            Cookie cookieSources[] = request.getCookies();
-            if (cookieSources != null)
-            {
-                // POTENTIAL FLAW: Read data from the first cookie value
-                data = cookieSources[0].getValue();
-            }
+            data = null; // This code will never run
         }
         else
         {
-            data = null; // This code will never run, but is here to avoid compiler errors
+            // FIX: Use a hardcoded string
+            data = "foo";
         }
 
         if (IO.STATIC_FINAL_FIVE == 5)
