@@ -20,11 +20,54 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.Socket;
+
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_31 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial commit with empty method
+        String dataCopy;
+        {
+            String data = ""; /* Initialize data */
+
+            /* Read data using an outbound tcp connection */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read data from socket
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Clean up resources
+                try {
+                    if (readerBuffered != null) readerBuffered.close();
+                    if (readerInputStream != null) readerInputStream.close();
+                    if (socket != null) socket.close();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing resources", exceptIO);
+                }
+            }
+
+            dataCopy = data;
+        }
+        {
+            // Use the data
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
