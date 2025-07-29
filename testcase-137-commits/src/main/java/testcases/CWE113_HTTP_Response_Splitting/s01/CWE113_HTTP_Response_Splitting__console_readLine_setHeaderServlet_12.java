@@ -30,7 +30,41 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation from previous commit
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                try
+                {
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+        }
+        else
+        {
+            data = "foo"; /* Hardcoded string */
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            // This branch will not be executed in the current implementation
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -38,13 +72,11 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
         String data;
         if(IO.staticReturnsTrueOrFalse())
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; /* Hardcoded string */
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; /* Hardcoded string */
         }
 
         if(IO.staticReturnsTrueOrFalse())
