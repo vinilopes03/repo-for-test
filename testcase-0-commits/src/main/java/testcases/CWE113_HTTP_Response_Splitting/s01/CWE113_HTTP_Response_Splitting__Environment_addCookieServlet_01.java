@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 extends AbstractTestCaseServlet {
 
@@ -38,7 +39,17 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for the goodB2G case
+        String data;
+
+        // Get environment variable ADD
+        // POTENTIAL FLAW: Read data from an environment variable
+        data = System.getenv("ADD");
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
