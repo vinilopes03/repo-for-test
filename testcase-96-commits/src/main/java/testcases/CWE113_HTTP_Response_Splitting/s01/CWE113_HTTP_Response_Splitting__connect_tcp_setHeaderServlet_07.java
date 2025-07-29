@@ -69,6 +69,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive != 5)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateFive == 5)
         {
@@ -82,8 +109,78 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
 
         if (data != null)
         {
-            // FIX: use URLEncoder.encode to encode non-alphanumerics
-            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; // Initialize data
+        if (privateFive == 5)
+        {
+            // Read data using an outbound tcp connection
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup resources
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { }
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { }
+                try { if (socket != null) socket.close(); } catch (IOException exceptIO) { }
+            }
+        }
+        
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Encoding
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; // Initialize data
+        if (privateFive == 5)
+        {
+            // Read data using an outbound tcp connection
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup resources
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { }
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { }
+                try { if (socket != null) socket.close(); } catch (IOException exceptIO) { }
+            }
+        }
+        
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Encoding
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
