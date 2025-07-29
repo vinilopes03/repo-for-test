@@ -42,10 +42,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
                 {
                     /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
                     data = resultSet.getString(1);
                 }
                 catch (SQLException exceptSql)
@@ -54,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
                 }
                 finally
                 {
-                    /* Close database objects */
                     try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
                     try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
                     try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -71,7 +68,30 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -79,7 +99,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B1(request, response);
+        // Other good methods will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
