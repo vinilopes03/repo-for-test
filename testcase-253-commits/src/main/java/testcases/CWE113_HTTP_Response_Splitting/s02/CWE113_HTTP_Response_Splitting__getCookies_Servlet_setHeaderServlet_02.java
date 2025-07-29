@@ -55,8 +55,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // fixed
         }
 
         if (true)
@@ -70,7 +69,23 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        String data;
+        if (true)
+        {
+            data = "foo"; // fixed
+        }
+        else
+        {
+            data = null; // dead code
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
