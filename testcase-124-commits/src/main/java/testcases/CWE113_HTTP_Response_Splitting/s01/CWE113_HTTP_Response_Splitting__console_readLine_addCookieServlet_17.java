@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_17 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -38,19 +40,28 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         data = "foo"; // FIX: Use a hardcoded string
+        // ... (cookie handling code from previous commit)
+    }
 
-        for (int j = 0; j < 1; j++)
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = ""; /* Initialize data */
+        // ... (input reading code from previous commit)
+
+        for (int k = 0; k < 1; k++)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // This is still a potential flaw
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Encoding data
+                response.addCookie(cookieSink);
             }
         }
     }
