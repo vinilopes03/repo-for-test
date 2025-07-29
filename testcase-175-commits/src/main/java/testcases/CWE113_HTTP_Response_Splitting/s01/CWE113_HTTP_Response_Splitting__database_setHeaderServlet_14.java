@@ -86,6 +86,15 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_14 extend
                 }
             }
         }
+
+        if (IO.staticFive==5) // Setting the response header
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
