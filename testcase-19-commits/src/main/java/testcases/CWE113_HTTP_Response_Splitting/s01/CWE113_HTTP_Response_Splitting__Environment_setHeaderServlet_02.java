@@ -125,3 +125,11 @@ private void goodB2G2(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    goodG2B1(request, response);
+    goodG2B2(request, response);
+    goodB2G1(request, response);
+    goodB2G2(request, response);
+}
