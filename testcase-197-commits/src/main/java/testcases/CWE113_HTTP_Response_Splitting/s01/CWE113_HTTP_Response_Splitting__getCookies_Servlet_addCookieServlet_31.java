@@ -58,9 +58,29 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         goodB2G(request, response);
     }
 
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String dataCopy;
+        {
+            String data;
+
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         mainFromParent(args);
     }
-
-    /* Placeholder for goodG2B and goodB2G methods */
 }
