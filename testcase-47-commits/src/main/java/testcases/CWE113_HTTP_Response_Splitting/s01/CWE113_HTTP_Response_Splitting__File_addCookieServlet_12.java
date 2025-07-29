@@ -129,3 +129,43 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
 }
 
 // ... Rest of the class remains unchanged
+
+// ... Previous code remains unchanged
+
+/* goodG2B() - use goodsource and badsink by changing the first "if" so that
+ * both branches use the GoodSource */
+private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if(IO.staticReturnsTrueOrFalse())
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+    else
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+
+    if(IO.staticReturnsTrueOrFalse())
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+    }
+    else
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+    }
+}
+
+// ... Rest of the class remains unchanged
