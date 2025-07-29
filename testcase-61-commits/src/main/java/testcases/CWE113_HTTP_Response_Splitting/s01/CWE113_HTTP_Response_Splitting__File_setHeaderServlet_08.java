@@ -51,11 +51,9 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
                 BufferedReader readerBuffered = null;
                 try
                 {
-                    /* read string from file into data */
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -64,7 +62,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
                     try
                     {
                         if (readerBuffered != null) readerBuffered.close();
@@ -87,7 +84,29 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsFalse())
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -95,7 +114,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will follow
+        goodG2B1(request, response);
+        // Other good methods will follow
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
