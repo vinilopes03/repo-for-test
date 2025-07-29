@@ -24,7 +24,26 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        String data;
+        if (true)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // This block will never run
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -32,11 +51,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         // To be implemented
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
