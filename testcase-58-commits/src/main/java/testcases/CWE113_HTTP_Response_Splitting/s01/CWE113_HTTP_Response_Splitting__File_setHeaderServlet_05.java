@@ -96,3 +96,53 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         }
     }
 }
+
+// Commit 3: Add Good Source Methods
+
+/* goodG2B1() - use goodsource and badsink by changing first privateTrue to privateFalse */
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (privateFalse)
+    {
+        data = null; // This will not execute, but needed to prevent compiler error
+    }
+    else
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+
+    if (privateTrue)
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (privateTrue)
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+    else
+    {
+        data = null; // This will not execute, but needed to prevent compiler error
+    }
+
+    if (privateTrue)
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
