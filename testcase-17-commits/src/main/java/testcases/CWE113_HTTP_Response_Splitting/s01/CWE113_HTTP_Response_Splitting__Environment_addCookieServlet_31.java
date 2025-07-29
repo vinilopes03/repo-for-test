@@ -56,10 +56,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_31 ext
         String dataCopy;
         {
             String data;
-
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-
+            data = "foo"; // Hardcoded string
             dataCopy = data; // Copy data for later use
         }
         {
@@ -69,6 +66,27 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_31 ext
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+            data = System.getenv("ADD");
+            dataCopy = data; // Copy data for later use
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
