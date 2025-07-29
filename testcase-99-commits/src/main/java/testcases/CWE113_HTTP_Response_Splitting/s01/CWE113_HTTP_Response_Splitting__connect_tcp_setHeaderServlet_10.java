@@ -98,8 +98,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_10 ext
         }
         else
         {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
-             * but ensure data is initialized before the Sink to avoid compiler errors */
             data = null;
         }
 
@@ -115,7 +113,17 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_10 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method implementation will be added later
+        String data;
+        if (IO.staticTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
