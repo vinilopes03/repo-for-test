@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_03 extends AbstractTestCaseServlet
 {
@@ -40,7 +41,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
         else
         {
-            data = null; // This code will never run but is needed for compilation
+            data = null;
         }
 
         if (5==5)
@@ -48,7 +49,30 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5!=5)
+        {
+            data = null; // This code will never run but is needed for compilation
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (5==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -56,7 +80,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in subsequent commits
+        goodG2B1(request, response);
+        // More good methods will be added in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
