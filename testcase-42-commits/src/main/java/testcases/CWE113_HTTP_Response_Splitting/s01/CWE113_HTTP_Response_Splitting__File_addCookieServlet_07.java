@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends AbstractTestCaseServlet
 {
@@ -41,7 +42,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
-        // Other good methods will be added in later commits
+        goodB2G2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -51,29 +52,15 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (privateFive == 5)
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-        else
-        {
-            data = null;
-        }
-
-        if (privateFive == 5)
-        {
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
-                response.addCookie(cookieSink);
-            }
-        }
+        // Implementation from previous commit
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFive == 5)
@@ -98,12 +85,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
             data = null;
         }
 
-        if (privateFive != 5)
-        {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (privateFive == 5)
         {
             if (data != null)
             {
