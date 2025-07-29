@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.io.*;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends AbstractTestCaseServlet
 {
@@ -34,7 +35,22 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of the bad() method
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new FileReader(file))) {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // POTENTIAL FLAW
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
