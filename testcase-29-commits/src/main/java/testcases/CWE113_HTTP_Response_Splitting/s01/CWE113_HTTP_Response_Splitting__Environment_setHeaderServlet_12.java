@@ -9,8 +9,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticReturnsTrueOrFalse()) {
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
+        } else {
+            data = "foo";
+        }
+
+        if (IO.staticReturnsTrueOrFalse()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticReturnsTrueOrFalse()) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         } else {
             /* FIX: Use a hardcoded string */
             data = "foo";
@@ -23,15 +43,9 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
             }
         } else {
             if (data != null) {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added later
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
