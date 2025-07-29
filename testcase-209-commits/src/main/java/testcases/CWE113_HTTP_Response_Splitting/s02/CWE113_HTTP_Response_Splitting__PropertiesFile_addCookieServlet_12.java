@@ -51,7 +51,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added later
+        String data = "foo"; // Hardcoded string
+
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Safe encoding
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
