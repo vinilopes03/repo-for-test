@@ -149,4 +149,10 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
         goodB2G1(request, response);
         goodB2G2(request, response);
     }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
 }
