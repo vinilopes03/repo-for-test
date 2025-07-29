@@ -105,12 +105,61 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is inititialized before the Sink to avoid compiler errors */
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is inititialized before the Sink to avoid compiler errors */
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
