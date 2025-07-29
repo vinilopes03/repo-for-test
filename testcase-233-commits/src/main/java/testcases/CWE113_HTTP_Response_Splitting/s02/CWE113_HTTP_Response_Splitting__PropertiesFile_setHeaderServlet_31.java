@@ -81,7 +81,30 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation will go here
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
