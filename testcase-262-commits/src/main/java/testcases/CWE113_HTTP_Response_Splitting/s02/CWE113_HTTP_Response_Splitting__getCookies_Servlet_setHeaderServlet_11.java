@@ -26,8 +26,24 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticReturnsFalse()) {
+            data = null;
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method will be implemented in future commits
+        goodG2B1(request, response);
+        // Other good methods will be implemented in future commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
