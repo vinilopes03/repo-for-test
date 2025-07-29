@@ -32,7 +32,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         String data;
         if (privateTrue)
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD"); // POTENTIAL FLAW
         }
         else
@@ -52,7 +51,29 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in the next commits
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null; // This branch will never execute
+        }
+        else
+        {
+            data = "foo"; // Using hardcoded string
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
