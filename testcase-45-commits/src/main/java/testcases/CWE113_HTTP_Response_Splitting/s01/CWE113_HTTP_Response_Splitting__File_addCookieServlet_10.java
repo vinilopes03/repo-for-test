@@ -39,44 +39,100 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_10 extends Ab
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticFalse)
-        {
-            data = null; // Unreachable code
-        }
-        else
-        {
-            data = "foo"; // Fixed string
-        }
-
-        if (IO.staticTrue)
-        {
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
-            }
-        }
+        // (goodG2B1 method code as implemented in Commit 3)
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // (goodG2B2 method code as implemented in Commit 3)
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.staticTrue)
         {
-            data = "foo"; // Fixed string
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read from the file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    // Closing resources
+                }
+            }
         }
         else
         {
-            data = null; // Unreachable code
+            data = null; // To avoid compilation error
+        }
+
+        if (IO.staticFalse)
+        {
+            IO.writeLine("Benign, fixed string"); // Unreachable code
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode for safety
+                response.addCookie(cookieSink); // Add cookie safely
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read from the file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    // Closing resources
+                }
+            }
+        }
+        else
+        {
+            data = null; // To avoid compilation error
         }
 
         if (IO.staticTrue)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode for safety
+                response.addCookie(cookieSink); // Add cookie safely
             }
         }
     }
