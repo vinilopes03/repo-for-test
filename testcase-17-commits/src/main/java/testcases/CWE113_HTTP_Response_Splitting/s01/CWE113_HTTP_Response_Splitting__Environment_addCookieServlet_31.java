@@ -30,15 +30,21 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_31 ext
         {
             String data;
 
-            // Placeholder for environment variable read
-            data = null;
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
 
             dataCopy = data;
         }
         {
             String data = dataCopy;
 
-            // Placeholder for bad sink
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
         }
     }
 
