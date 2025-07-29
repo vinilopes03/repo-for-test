@@ -76,7 +76,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_03 extends Ab
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first 5==5 to 5!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -99,9 +98,33 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_03 extends Ab
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5==5)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (5==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to follow
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
