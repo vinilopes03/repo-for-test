@@ -40,8 +40,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw remains
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Proper encoding
+                response.addCookie(cookieSink); // Fixed potential flaw
             }
         }
     }
