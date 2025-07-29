@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_10 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -28,6 +30,11 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (IO.staticTrue)
         {
             data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue(); // POTENTIAL FLAW
+            }
         }
         else
         {
@@ -42,7 +49,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
             }
         }
     }
-    
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Good methods will be added in subsequent commits.
