@@ -66,7 +66,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -88,8 +87,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.staticFive==5 to IO.staticFive!=5 */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.staticFive==5)
@@ -101,11 +100,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
             data = null;
         }
 
-        if (IO.staticFive!=5)
-        {
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (IO.staticFive==5)
         {
             if (data != null)
             {
@@ -120,7 +115,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
-        // Other good methods will be implemented later
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
