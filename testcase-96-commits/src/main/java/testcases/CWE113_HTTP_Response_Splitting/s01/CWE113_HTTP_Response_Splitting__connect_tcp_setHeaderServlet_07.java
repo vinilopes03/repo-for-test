@@ -62,7 +62,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
         
         if (data != null)
         {
-            // POTENTIAL FLAW: Input not verified before inclusion in header
+            // FIX: Encoding the data before including it in the header
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
