@@ -47,9 +47,31 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signatures to be implemented in future commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
