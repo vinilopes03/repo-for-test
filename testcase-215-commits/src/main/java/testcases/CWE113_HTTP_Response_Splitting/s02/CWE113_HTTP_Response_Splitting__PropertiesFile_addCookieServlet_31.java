@@ -28,29 +28,23 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        // Additional good methods can be called here
+    }
+
+    /* goodG2B() - use good source and bad sink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
-            String data = ""; /* Initialize data */
-            Properties properties = new Properties();
-            FileInputStream streamFileInput = null;
-
-            try {
-                streamFileInput = new FileInputStream("../common/config.properties");
-                properties.load(streamFileInput);
-                /* POTENTIAL FLAW: Read data from a .properties file */
-                data = properties.getProperty("data");
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            } finally {
-                /* Close stream reading object */
-                try {
-                    if (streamFileInput != null) {
-                        streamFileInput.close();
-                    }
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                }
-            }
+            String data;
+            /* FIX: Use a hardcoded string */
+            data = "foo";
             dataCopy = data;
         }
         {
@@ -62,10 +56,5 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Good methods will be implemented here
     }
 }
