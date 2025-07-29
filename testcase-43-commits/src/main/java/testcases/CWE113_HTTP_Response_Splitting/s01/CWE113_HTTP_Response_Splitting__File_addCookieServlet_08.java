@@ -20,6 +20,7 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 import java.io.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends AbstractTestCaseServlet
 {
@@ -54,6 +55,32 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsFalse())
+        {
+            data = null; // This will never run
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // This is safe
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateReturnsTrue())
