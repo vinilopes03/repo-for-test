@@ -86,7 +86,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_03 ext
         {
             if (data != null)
             {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5 == 5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Will not run
+        }
+
+        if (5 == 5)
+        {
+            if (data != null)
+            {
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
@@ -97,6 +118,12 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_03 ext
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
-        // More good methods can be added if necessary
+        goodB2G2(request, response);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
