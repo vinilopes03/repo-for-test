@@ -105,10 +105,38 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing the blocks in the first switch  */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (6)
+        {
+        case 6:
+            data = "foo"; // Hardcoded string
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be added in future commits.
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
