@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -35,19 +36,30 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
         // Implementation from previous commit
     }
 
-    // goodG2B1: Use a hardcoded string
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    // goodB2G1: Use badsource and goodsink
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // FIX: Use a hardcoded string
+        String data = ""; // Initialize data
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
 
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Use URLEncoder.encode
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 }
