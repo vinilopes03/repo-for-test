@@ -13,7 +13,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_03 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = ""; /* Initialize data */
-        /* retrieve the property */
         {
             Properties properties = new Properties();
             FileInputStream streamFileInput = null;
@@ -50,6 +49,15 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_03 
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Use a hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = "foo"; // Use a hardcoded string
         if (data != null)
@@ -100,6 +108,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_03 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
     }
 
