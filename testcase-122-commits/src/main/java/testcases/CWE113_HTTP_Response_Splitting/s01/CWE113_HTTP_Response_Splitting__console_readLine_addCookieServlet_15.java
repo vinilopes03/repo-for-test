@@ -110,3 +110,58 @@ private void goodG2B1(HttpServletRequest request, HttpServletResponse response) 
         break;
     }
 }
+
+private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+
+    switch (6) {
+    case 6:
+        data = ""; /* Initialize data */
+        {
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+            /* read user input from console with readLine */
+            try {
+                readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                /* POTENTIAL FLAW: Read data from the console using readLine */
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+
+                try {
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+            }
+        }
+        break;
+    default:
+        data = null;
+        break;
+    }
+
+    switch (8) {
+    case 7:
+        IO.writeLine("Benign, fixed string");
+        break;
+    default:
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+        break;
+    }
+}
