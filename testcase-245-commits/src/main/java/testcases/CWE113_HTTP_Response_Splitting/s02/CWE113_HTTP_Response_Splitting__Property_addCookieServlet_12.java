@@ -51,13 +51,45 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_12 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Hardcoded safe value
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = "foo"; // Hardcoded safe value
+        }
+        else
+        {
+            data = "foo"; // Hardcoded safe value
+        }
 
         if(IO.staticReturnsTrueOrFalse())
         {
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encoding the cookie value
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = System.getProperty("user.home"); // Redundant but for demonstration
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Safe encoding
                 response.addCookie(cookieSink);
             }
         }
