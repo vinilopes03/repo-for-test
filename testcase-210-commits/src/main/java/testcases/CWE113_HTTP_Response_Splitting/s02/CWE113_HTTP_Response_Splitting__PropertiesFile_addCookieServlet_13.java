@@ -85,7 +85,16 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_13 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in future commits
+        String data = "foo"; // Fixed good source string
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* Use a hardcoded string for the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
