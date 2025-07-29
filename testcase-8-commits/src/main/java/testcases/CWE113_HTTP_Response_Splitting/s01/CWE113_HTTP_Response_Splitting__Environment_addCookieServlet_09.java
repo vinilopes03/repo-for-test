@@ -46,7 +46,15 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of good method
+        String data = "foo"; // Using a hardcoded string
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
