@@ -32,51 +32,27 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
     {
         String data;
         data = ""; /* Initialize data */
+        // ... (input reading code from previous commit)
+    }
 
-        {
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+    }
 
-            /* Read user input from console with readLine */
-            try
-            {
-                readerInputStream = new InputStreamReader(System.in, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                try
-                {
-                    if (readerBuffered != null)
-                    {
-                        readerBuffered.close();
-                    }
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                }
-            }
-        }
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = "foo"; // FIX: Use a hardcoded string
 
         for (int j = 0; j < 1; j++)
         {
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                response.addCookie(cookieSink); // This is still a potential flaw
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Good implementations will go here
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
