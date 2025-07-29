@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
@@ -81,6 +82,14 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.staticReturnsFalse())
         {
@@ -90,6 +99,30 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // This block will never run
         }
 
         if (IO.staticReturnsTrue())
