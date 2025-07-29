@@ -59,13 +59,13 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.staticFive!=5)
+        if (IO.staticFive==5)
         {
-            data = null; // This branch won’t run in this scenario
+            data = "hardcodedString"; // Use a hardcoded string
         }
         else
         {
-            data = "hardcodedString"; // Use a hardcoded string
+            data = null; // This branch won’t run in this scenario
         }
 
         if (IO.staticFive==5 && data != null)
