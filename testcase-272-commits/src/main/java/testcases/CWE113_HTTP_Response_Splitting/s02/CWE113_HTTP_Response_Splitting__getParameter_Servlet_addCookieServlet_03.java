@@ -29,7 +29,6 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
         String data;
         if (5==5)
         {
-            /* POTENTIAL FLAW: Read data from a querystring using getParameter */
             data = request.getParameter("name");
         }
         else
@@ -52,8 +51,7 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
         String data;
         if (5==5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
         else
         {
@@ -64,7 +62,7 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encoding
                 response.addCookie(cookieSink);
             }
         }
