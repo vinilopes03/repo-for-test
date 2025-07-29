@@ -40,7 +40,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_12 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+                data = URLEncoder.encode(data, "UTF-8"); // Fixed Sink
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Now a Good Sink
             }
         }
     }
