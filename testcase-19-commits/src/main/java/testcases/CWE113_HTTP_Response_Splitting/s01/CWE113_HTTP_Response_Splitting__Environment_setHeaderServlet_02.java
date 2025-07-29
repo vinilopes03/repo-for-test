@@ -52,8 +52,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null;
         }
 
         if (true)
@@ -68,7 +88,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods to be implemented
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
