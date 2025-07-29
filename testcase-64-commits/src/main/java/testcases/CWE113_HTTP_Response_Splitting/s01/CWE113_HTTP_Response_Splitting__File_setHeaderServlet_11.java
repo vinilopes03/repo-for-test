@@ -1,76 +1,50 @@
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
-    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    // ... (bad method here)
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticReturnsTrue() to IO.staticReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.staticReturnsTrue()) 
+        if (IO.staticReturnsFalse()) 
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try 
-                {
-                    /* read string from file into data */
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
-                    data = readerBuffered.readLine();
-                } 
-                catch (IOException exceptIO) 
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                } 
-                finally 
-                {
-                    /* Close stream reading objects */
-                    try 
-                    {
-                        if (readerBuffered != null) 
-                        {
-                            readerBuffered.close();
-                        }
-                    } 
-                    catch (IOException exceptIO) 
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-                    try 
-                    {
-                        if (readerInputStream != null) 
-                        {
-                            readerInputStream.close();
-                        }
-                    } 
-                    catch (IOException exceptIO) 
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-                    try 
-                    {
-                        if (streamFileInput != null) 
-                        {
-                            streamFileInput.close();
-                        }
-                    } 
-                    catch (IOException exceptIO) 
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            data = null;
         } 
         else 
         {
-            data = null; // Initialize data to avoid compiler error
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
-        if (IO.staticReturnsTrue())
+        if (IO.staticReturnsTrue()) 
         {
-            if (data != null)
+            if (data != null) 
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue()) 
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } 
+        else 
+        {
+            data = null; // Initialize to avoid compiler error
+        }
+
+        if (IO.staticReturnsTrue()) 
+        {
+            if (data != null) 
             {
                 /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
