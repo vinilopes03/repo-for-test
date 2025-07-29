@@ -34,7 +34,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
         if (IO.STATIC_FINAL_FIVE==5)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -73,7 +72,24 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method to be implemented
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            data = "hardcodedString"; // Good source
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Safe
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
