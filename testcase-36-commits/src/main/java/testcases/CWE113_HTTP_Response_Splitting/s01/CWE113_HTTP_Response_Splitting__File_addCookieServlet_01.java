@@ -41,12 +41,9 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
 
             try
             {
-                /* read string from file into data */
                 streamFileInput = new FileInputStream(file);
                 readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-
-                /* POTENTIAL FLAW: Read data from a file */
                 data = readerBuffered.readLine();
             }
             catch (IOException exceptIO)
@@ -55,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
             }
             finally
             {
-                /* Close stream reading objects */
                 try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                 try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                 try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
@@ -65,14 +61,28 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
-            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
             response.addCookie(cookieSink);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
