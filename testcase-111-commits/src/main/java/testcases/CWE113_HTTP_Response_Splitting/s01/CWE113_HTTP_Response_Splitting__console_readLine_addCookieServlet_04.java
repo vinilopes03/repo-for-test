@@ -200,3 +200,15 @@ private void goodB2G1(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    goodG2B1(request, response);
+    // You can add other good methods here as needed
+}
+
+public static void main(String[] args) throws ClassNotFoundException,
+       InstantiationException, IllegalAccessException
+{
+    mainFromParent(args);
+}
