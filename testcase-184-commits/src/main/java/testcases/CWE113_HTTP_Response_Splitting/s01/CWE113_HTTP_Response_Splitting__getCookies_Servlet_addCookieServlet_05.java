@@ -27,7 +27,29 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented in the next commits
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue(); // POTENTIAL FLAW
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // POTENTIAL FLAW
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
