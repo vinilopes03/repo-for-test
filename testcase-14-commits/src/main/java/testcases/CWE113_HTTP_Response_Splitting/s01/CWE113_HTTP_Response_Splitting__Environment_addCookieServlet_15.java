@@ -2,6 +2,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 extends AbstractTestCaseServlet
 {
@@ -23,8 +24,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
         String data = "foo"; // Use a hardcoded string
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
-            /* Input is safe as it is hardcoded */
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encode the data
             response.addCookie(cookieSink);
         }
     }
