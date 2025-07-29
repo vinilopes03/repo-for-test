@@ -41,27 +41,33 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_16 extend
             /* prepare and execute a (hardcoded) query */
             preparedStatement = connection.prepareStatement("select name from users where id=0");
             resultSet = preparedStatement.executeQuery();
-            /* POTENTIAL FLAW: Read data from a database query resultset */
             if (resultSet.next()) {
                 data = resultSet.getString(1);
             }
         } catch (SQLException exceptSql) {
             IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
         } finally {
-            /* Close database objects */
             try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
             try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
             try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
         }
 
         if (data != null) {
-            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = "foo"; // Use a hardcoded string
+
+        if (data != null) {
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added in subsequent commits
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
