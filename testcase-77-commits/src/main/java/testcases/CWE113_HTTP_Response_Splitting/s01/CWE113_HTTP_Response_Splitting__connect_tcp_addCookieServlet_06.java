@@ -36,14 +36,12 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
                 InputStreamReader readerInputStream = null;
                 try
                 {
-                    /* Read data using an outbound tcp connection */
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
@@ -103,6 +101,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        {
+            data = null; // This case won't run
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
@@ -115,7 +140,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_06 ext
 
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+            Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink);
         }
     }
