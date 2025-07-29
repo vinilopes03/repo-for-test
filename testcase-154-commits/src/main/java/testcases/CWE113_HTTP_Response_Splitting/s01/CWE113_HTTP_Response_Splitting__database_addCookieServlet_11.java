@@ -219,6 +219,88 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_11 extend
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    /* setup the connection */
+                    connection = IO.getDBConnection();
+                    /* prepare and execute a (hardcoded) query */
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    /* POTENTIAL FLAW: Read data from a database query resultset */
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    /* Close database objects */
+                    try
+                    {
+                        if (resultSet != null)
+                        {
+                            resultSet.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (preparedStatement != null)
+                        {
+                            preparedStatement.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (connection != null)
+                        {
+                            connection.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Avoid compiler error
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
