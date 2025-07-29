@@ -49,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -74,9 +73,67 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second IO.staticTrue to IO.staticFalse */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (IO.staticFalse)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation will go here
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        // Call goodB2G1() here if needed
     }
 
     /* Below is the main(). It is only used when building this testcase on
