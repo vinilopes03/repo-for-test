@@ -57,8 +57,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         String data;
         while (true)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; /* FIX: Use a hardcoded string */
             break;
         }
 
@@ -73,10 +72,38 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        while (true)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null && cookieSources.length > 0)
+                {
+                    data = cookieSources[0].getValue();
+                }
+            }
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            }
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // Other good methods will be added later
+        goodB2G(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
