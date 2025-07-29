@@ -92,11 +92,60 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive==5)
+        {
+            data = System.getenv("ADD"); // Read data from an environment variable
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive!=5)
+        {
+            // Dead code
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fix: URL encode
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive==5)
+        {
+            data = System.getenv("ADD"); // Read data from an environment variable
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fix: URL encode
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other good methods will be implemented in subsequent commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
