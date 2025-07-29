@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_31 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String dataCopy;
@@ -52,10 +54,13 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Initial implementation will be added in later commits
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         mainFromParent(args);
     }
+
+    /* Placeholder for goodG2B and goodB2G methods */
 }
