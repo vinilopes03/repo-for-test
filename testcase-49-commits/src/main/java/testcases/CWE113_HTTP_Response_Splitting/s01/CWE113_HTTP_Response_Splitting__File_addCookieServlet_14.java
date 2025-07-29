@@ -97,6 +97,8 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_14 extends Ab
         }
     }
 
+    /* Additional good methods can be added here */
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
