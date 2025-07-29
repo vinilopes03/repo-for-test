@@ -79,9 +79,46 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_17 
         }
     }
 
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; // Initialize data
+
+        // Retrieve the property
+        Properties properties = new Properties();
+        FileInputStream streamFileInput = null;
+
+        try
+        {
+            streamFileInput = new FileInputStream("../common/config.properties");
+            properties.load(streamFileInput);
+            data = properties.getProperty("data"); // POTENTIAL FLAW
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        finally
+        {
+            if (streamFileInput != null)
+            {
+                streamFileInput.close();
+            }
+        }
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in the next commits
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
