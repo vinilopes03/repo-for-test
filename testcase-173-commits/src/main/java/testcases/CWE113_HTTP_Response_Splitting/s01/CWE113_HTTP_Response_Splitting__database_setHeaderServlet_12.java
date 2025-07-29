@@ -47,12 +47,13 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_12 extend
             data = "foo"; // Good source fallback
         }
 
-        // Safe header setting
+        // Safe header setting using URL encoding
         if(IO.staticReturnsTrueOrFalse())
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Still potentially unsafe
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
