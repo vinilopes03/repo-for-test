@@ -85,6 +85,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
