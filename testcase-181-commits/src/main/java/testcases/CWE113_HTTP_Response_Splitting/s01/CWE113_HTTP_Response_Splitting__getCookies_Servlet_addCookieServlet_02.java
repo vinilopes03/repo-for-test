@@ -20,15 +20,15 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_02 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (true) {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             Cookie cookieSources[] = request.getCookies();
             if (cookieSources != null && cookieSources.length > 0) {
-                /* POTENTIAL FLAW: Read data from the first cookie value */
                 data = cookieSources[0].getValue();
             }
         }
@@ -36,14 +36,31 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         if (true) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first true to false */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (false) {
+            data = null; // Will never run
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (true) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added in later commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
