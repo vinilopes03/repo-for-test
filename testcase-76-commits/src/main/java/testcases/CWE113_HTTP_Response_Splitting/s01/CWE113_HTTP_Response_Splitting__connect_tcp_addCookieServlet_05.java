@@ -36,7 +36,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
         if (privateTrue)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             Socket socket = null;
             BufferedReader readerBuffered = null;
             InputStreamReader readerInputStream = null;
@@ -76,7 +75,16 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to be added later
+        String data;
+        if (privateTrue)
+        {
+            data = "foo"; // Good source
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a flaw but mitigated
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
