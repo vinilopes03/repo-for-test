@@ -20,7 +20,13 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to be added later
+        String data = "foo"; // Use a hardcoded string
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* Input is safe as it is hardcoded */
+            response.addCookie(cookieSink);
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
