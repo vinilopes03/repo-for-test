@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 extends AbstractTestCaseServlet
 {
@@ -27,8 +28,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         String data;
         if (IO.staticTrue)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
@@ -40,7 +39,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -56,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -64,7 +61,33 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second IO.staticTrue to IO.staticFalse */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFalse)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -73,6 +96,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
