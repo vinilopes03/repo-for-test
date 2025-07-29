@@ -28,6 +28,8 @@ import java.io.IOException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -74,8 +76,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
         String data;
         if (IO.STATIC_FINAL_FIVE == 5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; /* FIX: Use a hardcoded string */
         }
         else
         {
@@ -86,6 +87,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
         {
             if (data != null)
             {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
