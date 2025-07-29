@@ -320,3 +320,23 @@ private void goodB2G(HttpServletRequest request, HttpServletResponse response) t
 }
 
 // ... Rest of the class remains unchanged
+
+// ... Previous code remains unchanged
+
+public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    goodG2B(request, response);
+    goodB2G(request, response);
+}
+
+/* Below is the main(). It is only used when building this testcase on
+ * its own for testing or for building a binary to use in testing binary
+ * analysis tools. It is not used when compiling all the testcases as one
+ * application, which is how source code analysis tools are tested.
+ */
+public static void main(String[] args) throws ClassNotFoundException,
+       InstantiationException, IllegalAccessException
+{
+    mainFromParent(args);
+}
+}
