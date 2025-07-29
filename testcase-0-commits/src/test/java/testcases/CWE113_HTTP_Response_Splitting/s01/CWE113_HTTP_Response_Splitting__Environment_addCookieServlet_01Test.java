@@ -123,7 +123,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01Test
             String header = response.getHeader("Set-Cookie");
             boolean isVulnerable = header != null && (header.contains("\r\n") || header.contains("%0d%0a"));
             assertTrue(isVulnerable, "Vulnerability present: CRLF was not sanitized from input");
-        } catch (Exception e) {
+        } catch (Throwable t) {
             fail("Vulnerability fixed or not triggered: Exception occurred or CRLF was sanitized");
         }
     }
