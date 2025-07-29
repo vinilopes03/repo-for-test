@@ -67,7 +67,18 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_08 extend
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in later commits
+        String data;
+        if (privateReturnsTrue()) {
+            data = "foo"; // Good source: hardcoded string
+        } else {
+            data = null; // Dead code
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but controlled
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
