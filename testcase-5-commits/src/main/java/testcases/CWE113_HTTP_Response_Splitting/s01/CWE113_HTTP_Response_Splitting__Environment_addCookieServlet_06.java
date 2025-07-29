@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 extends AbstractTestCaseServlet
 {
     /* The variable below is declared "final", so a tool should be able
@@ -49,7 +51,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_FIVE==5 to PRIVATE_STATIC_FINAL_FIVE!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -72,13 +73,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE==5)
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
         else
@@ -91,6 +90,36 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second PRIVATE_STATIC_FINAL_FIVE==5 to PRIVATE_STATIC_FINAL_FIVE!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE!=5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
