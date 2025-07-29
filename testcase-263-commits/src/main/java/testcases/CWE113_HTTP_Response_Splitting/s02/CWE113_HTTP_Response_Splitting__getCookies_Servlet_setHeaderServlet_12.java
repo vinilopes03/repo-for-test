@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_12 extends AbstractTestCaseServlet
 {
@@ -60,7 +61,30 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            // This section will be fixed in the good method
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
