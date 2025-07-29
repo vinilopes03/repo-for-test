@@ -51,11 +51,10 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         String data;
         if (IO.staticFive!=5)
         {
-            data = null; // To avoid compiler error
+            data = null;
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -69,9 +68,36 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFive!=5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
