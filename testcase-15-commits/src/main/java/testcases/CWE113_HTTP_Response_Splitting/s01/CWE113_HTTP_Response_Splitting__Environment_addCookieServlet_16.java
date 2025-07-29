@@ -1,13 +1,14 @@
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 extends AbstractTestCaseServlet
 {
-    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
 
         while (true)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
             break;
         }
 
@@ -15,8 +16,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
             break;
