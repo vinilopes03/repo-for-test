@@ -20,7 +20,7 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
-// Commit 2 - Implementing the bad method
+// Commit 3 - Implementing the good method
 public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServlet_05 extends AbstractTestCaseServlet
 {
     private boolean privateTrue = true;
@@ -31,12 +31,11 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
         String data;
         if (privateTrue) 
         {
-            // POTENTIAL FLAW: Read data from a querystring using getParameter
             data = request.getParameter("name");
         } 
         else 
         {
-            data = null; // This branch will never be executed
+            data = null; 
         }
 
         if (privateTrue) 
@@ -44,15 +43,32 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
             if (data != null) 
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
                 response.addCookie(cookieSink);
             }
         }
     }
 
+    // Good method using hardcoded string
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        String data;
+        if (privateFalse) 
+        {
+            data = null; // This branch will never be executed
+        } 
+        else 
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateTrue) 
+        {
+            if (data != null) 
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
