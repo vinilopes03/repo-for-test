@@ -76,13 +76,51 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_04 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // Good case
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good case with URLEncoding
+                Cookie cookieSink = new Cookie("lang", data); // Good case
                 response.addCookie(cookieSink);
             }
         }
