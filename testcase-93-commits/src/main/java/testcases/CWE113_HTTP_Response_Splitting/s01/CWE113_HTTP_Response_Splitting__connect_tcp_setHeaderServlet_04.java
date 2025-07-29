@@ -36,7 +36,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 ext
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = new Socket("host.example.org", 39544);
                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
@@ -56,9 +55,34 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 ext
         }
     }
 
+    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in later commits
+        goodG2B1(request, response);
+        // Other good methods will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
