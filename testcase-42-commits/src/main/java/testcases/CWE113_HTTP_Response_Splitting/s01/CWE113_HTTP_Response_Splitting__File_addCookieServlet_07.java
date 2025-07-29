@@ -33,28 +33,26 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        // Other good methods will be added in later commits
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateFive == 5)
+        if (privateFive != 5)
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                try (FileInputStream streamFileInput = new FileInputStream(file);
-                     InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                     BufferedReader readerBuffered = new BufferedReader(readerInputStream))
-                {
-                    /* POTENTIAL FLAW: Read data from a file */
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-            }
+            data = null;
         }
         else
         {
-            data = null;
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (privateFive == 5)
@@ -66,11 +64,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
