@@ -32,12 +32,34 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_04 extend
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            /* POTENTIAL FLAW: Read data from a system property */
             data = System.getProperty("user.home");
         }
         else
         {
+            data = null; 
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
             data = null; // This branch will not run
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
@@ -52,7 +74,7 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_04 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in subsequent commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
