@@ -29,8 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_13 extend
         String data;
         if (IO.STATIC_FINAL_FIVE == 5)
         {
-            /* get system property user.home */
-            /* POTENTIAL FLAW: Read data from a system property */
             data = System.getProperty("user.home");
         }
         else
@@ -43,7 +41,21 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_13 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = "foo"; // FIX: Use a hardcoded string
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -51,6 +63,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_13 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be done in subsequent commits
+        goodG2B(request, response);
     }
 }
