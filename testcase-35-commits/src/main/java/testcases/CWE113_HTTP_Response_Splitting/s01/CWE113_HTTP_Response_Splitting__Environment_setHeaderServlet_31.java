@@ -23,19 +23,35 @@ import javax.servlet.http.*;
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31 extends AbstractTestCaseServlet {
     
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in the next commit
+        String dataCopy;
+        {
+            String data;
+
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in the next commit
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
-    // Placeholder for goodG2B method
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // Method implementation will be added later
     }
 
-    // Placeholder for goodB2G method
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // Method implementation will be added later
     }
