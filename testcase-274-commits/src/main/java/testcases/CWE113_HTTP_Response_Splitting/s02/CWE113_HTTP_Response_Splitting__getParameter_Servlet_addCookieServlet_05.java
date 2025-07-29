@@ -20,7 +20,7 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
-// Commit 1 - Initial Class Structure
+// Commit 2 - Implementing the bad method
 public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServlet_05 extends AbstractTestCaseServlet
 {
     private boolean privateTrue = true;
@@ -28,7 +28,26 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for bad method implementation
+        String data;
+        if (privateTrue) 
+        {
+            // POTENTIAL FLAW: Read data from a querystring using getParameter
+            data = request.getParameter("name");
+        } 
+        else 
+        {
+            data = null; // This branch will never be executed
+        }
+
+        if (privateTrue) 
+        {
+            if (data != null) 
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
