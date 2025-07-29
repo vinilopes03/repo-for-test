@@ -33,6 +33,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_31 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
         String dataCopy;
         {
             String data;
@@ -114,6 +115,30 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_31 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
         // Future implementation will go here
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
