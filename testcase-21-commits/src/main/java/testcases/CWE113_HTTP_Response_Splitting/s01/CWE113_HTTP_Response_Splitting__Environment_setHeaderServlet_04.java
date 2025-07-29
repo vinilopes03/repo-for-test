@@ -23,15 +23,25 @@ import javax.servlet.http.*;
 import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 extends AbstractTestCaseServlet {
-    /* The two variables below are declared "final", so a tool should
-     * be able to identify that reads of these will always return their
-     * initialized values.
-     */
     private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
     private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature, implementation will follow in future commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        } else {
+            data = null; // Dead code to ensure initialization
+        }
+        
+        if (PRIVATE_STATIC_FINAL_TRUE) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
