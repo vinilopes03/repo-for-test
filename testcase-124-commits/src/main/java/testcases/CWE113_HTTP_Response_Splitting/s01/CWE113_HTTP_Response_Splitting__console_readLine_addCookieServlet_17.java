@@ -25,7 +25,6 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import java.util.logging.Level;
-
 import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_17 extends AbstractTestCaseServlet
@@ -34,7 +33,46 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
     {
         String data;
         data = ""; /* Initialize data */
-        // ... (input reading code from previous commit)
+
+        {
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+
+            /* Read user input from console with readLine */
+            try
+            {
+                readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+            }
+        }
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -47,20 +85,58 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
     {
         String data;
         data = "foo"; // FIX: Use a hardcoded string
-        // ... (cookie handling code from previous commit)
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // This is still a potential flaw
+            }
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         data = ""; /* Initialize data */
-        // ... (input reading code from previous commit)
+
+        {
+            InputStreamReader readerInputStream = null;
+            BufferedReader readerBuffered = null;
+
+            /* Read user input from console with readLine */
+            try
+            {
+                readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+            }
+        }
 
         for (int k = 0; k < 1; k++)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Encoding data
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Encoding
                 response.addCookie(cookieSink);
             }
         }
