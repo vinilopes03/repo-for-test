@@ -85,7 +85,17 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Use a hardcoded string
+        String data;
+        
+        if (5 == 5)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = ""; // Default case to avoid compiler error
+        }
+
         if (data != null)
         {
             /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
