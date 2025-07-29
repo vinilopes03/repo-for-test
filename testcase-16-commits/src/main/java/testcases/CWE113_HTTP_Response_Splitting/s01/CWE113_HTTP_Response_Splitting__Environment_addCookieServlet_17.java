@@ -41,7 +41,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fixed line
                 /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
