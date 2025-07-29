@@ -29,23 +29,16 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if(IO.staticReturnsTrueOrFalse())
         {
-            data = ""; /* Initialize data */
-            {
-                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
-                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
-                try
-                {
-                    /* POTENTIAL FLAW: Read data from the console using readLine */
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-            }
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
         else
         {
@@ -65,11 +58,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
         {
             // This branch will not be executed in the current implementation
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added later
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
