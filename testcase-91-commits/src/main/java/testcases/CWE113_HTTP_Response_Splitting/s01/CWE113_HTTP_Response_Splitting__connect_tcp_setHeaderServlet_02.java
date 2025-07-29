@@ -137,3 +137,45 @@ public void good(HttpServletRequest request, HttpServletResponse response) throw
     goodB2G1(request, response);
     goodB2G2(request, response);
 }
+
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (false)
+    {
+        data = null;
+    }
+    else
+    {
+        data = "foo"; // Use a hardcoded string
+    }
+
+    if (true)
+    {
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw
+        }
+    }
+}
+
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (true)
+    {
+        data = "foo"; // Use a hardcoded string
+    }
+    else
+    {
+        data = null;
+    }
+
+    if (true)
+    {
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw
+        }
+    }
+}
