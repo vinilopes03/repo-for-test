@@ -36,8 +36,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
         // Implementation from previous commit
     }
 
-    // goodB2G1: Use badsource and goodsink
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    // goodB2G2: Use badsource and goodsink
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = ""; // Initialize data
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
@@ -61,5 +61,12 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
