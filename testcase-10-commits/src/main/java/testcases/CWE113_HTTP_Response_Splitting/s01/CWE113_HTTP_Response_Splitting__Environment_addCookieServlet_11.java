@@ -29,7 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
         String data;
         if (IO.staticReturnsTrue())
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -81,5 +80,17 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
