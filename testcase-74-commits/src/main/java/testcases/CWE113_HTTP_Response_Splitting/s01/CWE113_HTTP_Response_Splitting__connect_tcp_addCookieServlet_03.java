@@ -76,7 +76,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_03 ext
 
         if (5 == 5) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Patched line
                 response.addCookie(cookieSink);
             }
         }
