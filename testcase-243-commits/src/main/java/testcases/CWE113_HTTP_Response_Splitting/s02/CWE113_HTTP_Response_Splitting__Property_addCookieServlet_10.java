@@ -73,7 +73,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -98,7 +97,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.staticTrue to IO.staticFalse */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -129,11 +127,37 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; 
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Call goodB2G1() here if needed
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
