@@ -94,6 +94,46 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_08 extends Ab
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new FileReader(file))) {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Use URLEncoder.encode
+            response.addCookie(cookieSink); // This is safe
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new FileReader(file))) {
+                data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Use URLEncoder.encode
+            response.addCookie(cookieSink); // This is safe
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
