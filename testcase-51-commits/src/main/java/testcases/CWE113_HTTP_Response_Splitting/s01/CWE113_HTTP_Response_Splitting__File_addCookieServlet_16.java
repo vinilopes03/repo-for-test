@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import java.util.logging.Level;
 
@@ -56,44 +57,33 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_16 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
-                    try
-                    {
-                        if (readerBuffered != null)
-                        {
-                            readerBuffered.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (readerInputStream != null)
-                        {
-                            readerInputStream.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
+                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) {}
+                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) {}
+                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException e) {}
                 }
             }
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        while (true)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
             break;
         }
 
