@@ -63,6 +63,22 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_17 
         }
     }
 
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        // FIX: Use a hardcoded string
+        data = "foo";
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Method implementation will be added in the next commits
