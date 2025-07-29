@@ -52,11 +52,17 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
+
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            // FIX: Use a hardcoded string
+            // Use a hardcoded string
             data = "foo";
         }
+        else
+        {
+            data = ""; // Dead code
+        }
+
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
             if (data != null)
