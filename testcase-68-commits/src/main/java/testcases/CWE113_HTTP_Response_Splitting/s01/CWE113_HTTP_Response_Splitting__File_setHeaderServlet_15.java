@@ -46,9 +46,54 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data = "foo"; // Use a hardcoded string
-        data = URLEncoder.encode(data, "UTF-8"); // URL encode the data
         response.setHeader("Location", "/author.jsp?lang=" + data);
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = "foo"; // Use a hardcoded string
+        response.setHeader("Location", "/author.jsp?lang=" + data);
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
+        File file = new File("C:\\data.txt");
+        try (FileInputStream streamFileInput = new FileInputStream(file);
+             InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+            data = readerBuffered.readLine(); // Read data from file
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8"); // URL encode
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
+        File file = new File("C:\\data.txt");
+        try (FileInputStream streamFileInput = new FileInputStream(file);
+             InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+            data = readerBuffered.readLine(); // Read data from file
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8"); // URL encode
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
