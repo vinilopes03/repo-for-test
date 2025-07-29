@@ -32,26 +32,22 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; // Initialize data
-        if (PRIVATE_STATIC_FINAL_FIVE == 5)
-        {
-            File file = new File("C:\\data.txt");
-            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-                data = readerBuffered.readLine(); // POTENTIAL FLAW
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        }
+        // Implementation from previous commit
+    }
+
+    // goodG2B1: Use a hardcoded string
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // FIX: Use a hardcoded string
 
         if (data != null)
         {
-            // Potential flaw: Input not verified before inclusion in header
-            response.setHeader("Location", "/author.jsp?lang=" + data);
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        goodG2B1(request, response);
     }
 }
