@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extends AbstractTestCaseServlet
 {
@@ -73,6 +74,36 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // Avoid compiler error
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFive == 5)
