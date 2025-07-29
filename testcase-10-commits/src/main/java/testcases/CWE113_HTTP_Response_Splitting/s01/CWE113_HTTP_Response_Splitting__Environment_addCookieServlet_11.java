@@ -56,8 +56,31 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_11 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue())
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null; // This will not run
         }
 
         if (IO.staticReturnsTrue())
