@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_13 extends AbstractTestCaseServlet
 {
@@ -69,9 +70,39 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_13 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // ensure data is initialized
+        }
+
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
