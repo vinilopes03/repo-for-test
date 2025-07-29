@@ -16,20 +16,37 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateReturnsTrue()) {
-            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+            data = System.getenv("ADD");
         } else {
-            data = null; // Will not be used
+            data = null;
         }
 
         if (privateReturnsTrue()) {
             if (data != null) {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW: Input not verified
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsFalse()) {
+            data = null; // Will not be used
+        } else {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in later commits
+        goodG2B1(request, response);
+        // Other methods will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
