@@ -52,8 +52,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good source
         }
 
         if (true)
@@ -66,9 +65,33 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second true to false */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = System.getenv("ADD");
+        }
+
+        if (false)
+        {
+            // Some benign output, never reached
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods would be called here.
+        goodB2G1(request, response);
+        // Additional good methods could be added here.
     }
 }
