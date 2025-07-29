@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
     private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
@@ -27,7 +29,23 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+        }
+        else
+        {
+            data = null; // This code is not reachable but keeps the compiler happy
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW: Input not verified before inclusion in header
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
