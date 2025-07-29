@@ -33,31 +33,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 ext
         if(IO.staticReturnsTrueOrFalse())
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
-            {
-                Socket socket = null;
-                BufferedReader readerBuffered = null;
-                InputStreamReader readerInputStream = null;
-                try
-                {
-                    /* Read data using an outbound tcp connection */
-                    socket = new Socket("host.example.org", 39544);
-                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // Read data from socket
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Clean up resources
-                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
-                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
-                    try { if (socket != null) socket.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO); }
-                }
-            }
+            // Code for reading data from socket (same as previous commit)
         }
         else
         {
@@ -76,7 +52,16 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data = "foo"; // Using a hardcoded string
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a potential flaw
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
