@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
@@ -29,19 +31,40 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_06 ext
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE==5)
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
         {
-            data = null; // This part is unreachable, but required for compilation
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE==5)
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_FIVE==5 to PRIVATE_STATIC_FINAL_FIVE!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE!=5)
+        {
+            data = null; // This part is unreachable
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -49,7 +72,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_06 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good implementation will be added in future commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
