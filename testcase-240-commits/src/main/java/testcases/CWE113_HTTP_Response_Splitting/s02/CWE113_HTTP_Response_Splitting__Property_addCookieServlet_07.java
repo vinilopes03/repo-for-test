@@ -48,13 +48,36 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
         }
     }
 
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B1() - use goodsource and badsink by changing first privateFive==5 to privateFive!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive!=5)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFive==5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good source
         }
         else
         {
@@ -65,10 +88,69 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fix: URL encode
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second privateFive==5 to privateFive!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive==5)
+        {
+            data = System.getProperty("user.home"); // Bad source
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive!=5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive==5)
+        {
+            data = System.getProperty("user.home"); // Bad source
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
