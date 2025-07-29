@@ -92,4 +92,10 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_17 
             response.addCookie(cookieSink);
         }
     }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
 }
