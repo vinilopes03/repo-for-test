@@ -9,37 +9,31 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_06 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method signature added
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature added
-    }
-
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature added
-    }
-
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature added
-    }
-
-    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature added
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method signature added
-    }
-
-    public static void main(String[] args) throws ClassNotFoundException,
-           InstantiationException, IllegalAccessException
-    {
-        mainFromParent(args);
-    }
+    // Other method signatures remain unchanged
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable { }
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException { mainFromParent(args); }
 }
