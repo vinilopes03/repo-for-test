@@ -26,7 +26,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.STATIC_FINAL_FIVE == 5) {
-            data = ""; /* initialize data in case there are no cookies */
+            data = ""; 
             Cookie cookieSources[] = request.getCookies();
             if (cookieSources != null) {
                 data = cookieSources[0].getValue();
@@ -42,13 +42,12 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.STATIC_FINAL_FIVE != 5) {
             data = null;
         } else {
-            data = "foo"; // Use hardcoded string
+            data = "foo"; 
         }
 
         if (IO.STATIC_FINAL_FIVE == 5) {
@@ -58,8 +57,31 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; 
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null) {
+                data = cookieSources[0].getValue();
+            }
+        } else {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
+        goodB2G1(request, response);
         // Other good methods will be added in subsequent commits
     }
 
