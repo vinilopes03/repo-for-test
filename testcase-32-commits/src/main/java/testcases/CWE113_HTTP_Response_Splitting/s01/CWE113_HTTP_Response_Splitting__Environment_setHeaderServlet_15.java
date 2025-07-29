@@ -20,30 +20,37 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for data
         String data;
-        
-        // Placeholder for switch case
-        switch (6) {
-            case 6:
-                // Environment variable read placeholder
-                break;
-            default:
-                data = null;
-                break;
+
+        switch (6)
+        {
+        case 6:
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+            break;
+        default:
+            data = null;
+            break;
         }
 
-        // Another switch case placeholder
-        switch (7) {
-            case 7:
-                // Placeholder for response header setting
-                break;
-            default:
-                break;
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            break;
         }
     }
 
