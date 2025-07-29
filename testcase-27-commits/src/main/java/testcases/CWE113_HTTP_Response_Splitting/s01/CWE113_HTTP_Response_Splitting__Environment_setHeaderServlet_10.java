@@ -66,6 +66,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     /* goodB2G1() - use badsource and goodsink by changing second IO.staticTrue to IO.staticFalse */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
@@ -93,10 +115,35 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         }
     }
 
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
