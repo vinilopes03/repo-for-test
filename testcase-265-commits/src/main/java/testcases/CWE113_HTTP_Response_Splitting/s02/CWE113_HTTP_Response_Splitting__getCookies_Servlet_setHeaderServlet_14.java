@@ -24,7 +24,31 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        String data;
+        if (IO.staticFive == 5)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        }
+        else
+        {
+            data = null; // This will not be executed, but needs to be initialized.
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
