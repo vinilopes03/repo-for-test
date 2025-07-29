@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_02 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -125,7 +127,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_02 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
