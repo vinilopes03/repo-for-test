@@ -31,7 +31,8 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
 
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
             /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
             response.addCookie(cookieSink);
         }
