@@ -58,7 +58,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing the first switch to switch(5) */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -86,7 +85,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -122,11 +120,47 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    /* goodB2G2() - use badsource and goodsink by reversing the blocks in the second switch  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (6)
+        {
+        case 6:
+            data = ""; /* initialize data in case there are no cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    data = cookieSources[0].getValue();
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
-        // Other good methods will be added in future commits
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
