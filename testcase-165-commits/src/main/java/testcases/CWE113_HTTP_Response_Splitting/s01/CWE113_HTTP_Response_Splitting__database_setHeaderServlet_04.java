@@ -40,6 +40,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
     {
         goodG2B(request, response);
         goodB2G(request, response);
+        goodG2B2(request, response); // Adding another good method
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -83,6 +84,15 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
         {
             data = URLEncoder.encode(data, "UTF-8"); // Good Sink
             response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Good Source: hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
         }
     }
 
