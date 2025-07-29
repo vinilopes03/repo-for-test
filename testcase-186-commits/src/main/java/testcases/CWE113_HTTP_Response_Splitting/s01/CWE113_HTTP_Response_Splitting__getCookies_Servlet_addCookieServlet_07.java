@@ -36,9 +36,33 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive!=5)
+        {
+            data = null;
+        }
+        else
+        {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
