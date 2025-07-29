@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_02 extends AbstractTestCaseServlet
 {
@@ -83,6 +84,24 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         String data;
         /* FIX: Use a hardcoded string */
         data = "foo";
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (false)
+        {
+            data = null; // Dead code for this path
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
 
         if (data != null)
         {
