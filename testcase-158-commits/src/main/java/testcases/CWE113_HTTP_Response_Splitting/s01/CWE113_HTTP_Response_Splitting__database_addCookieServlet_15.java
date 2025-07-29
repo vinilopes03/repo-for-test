@@ -41,13 +41,112 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing goodG2B2 method implementation
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
         switch (6)
         {
         case 6:
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    /* setup the connection */
+                    connection = IO.getDBConnection();
+                    /* prepare and execute a (hardcoded) query */
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    /* Close database objects */
+                    try
+                    {
+                        if (resultSet != null) resultSet.close();
+                        if (preparedStatement != null) preparedStatement.close();
+                        if (connection != null) connection.close();
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing resources", exceptSql);
+                    }
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8)
+        {
+        case 7:
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    /* setup the connection */
+                    connection = IO.getDBConnection();
+                    /* prepare and execute a (hardcoded) query */
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    /* Close database objects */
+                    try
+                    {
+                        if (resultSet != null) resultSet.close();
+                        if (preparedStatement != null) preparedStatement.close();
+                        if (connection != null) connection.close();
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing resources", exceptSql);
+                    }
+                }
+            }
             break;
         default:
             data = null;
@@ -59,8 +158,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
         case 7:
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
             break;
@@ -74,7 +172,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other good methods will follow
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
