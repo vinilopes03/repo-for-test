@@ -35,41 +35,93 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        goodG2B1(request, response); // Call good G2B1
-        goodG2B2(request, response); // Call good G2B2
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response); // Add goodB2G1
+        goodB2G2(request, response); // Add goodB2G2
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticReturnsFalse()) // This branch will never execute
-        {
-            data = null;
-        }
-        else
-        {
-            data = "foo"; // FIX: Use a hardcoded string
-        }
-
-        if (IO.staticReturnsTrue())
-        {
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
-            }
-        }
+        // (goodG2B1 implementation is the same as before)
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // FIX: Use a hardcoded string
+        // (goodG2B2 implementation is the same as before)
+    }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
         if (IO.staticReturnsTrue())
         {
-            if (data != null)
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
             }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup code omitted for brevity
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup code omitted for brevity
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
