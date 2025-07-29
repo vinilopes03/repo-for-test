@@ -24,7 +24,26 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation
+        String data;
+        if (true)
+        {
+            /* POTENTIAL FLAW: Read data from a querystring using getParameter */
+            data = request.getParameter("name");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
