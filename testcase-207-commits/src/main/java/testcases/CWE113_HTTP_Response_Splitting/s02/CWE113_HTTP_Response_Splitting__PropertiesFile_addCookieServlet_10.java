@@ -35,16 +35,22 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_10 
     /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as before
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticFalse) // This block will not run
-        {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
-            data = null;
-        }
-        else
+        if (IO.staticTrue)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            data = null;
         }
 
         if (IO.staticTrue)
@@ -61,5 +67,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_10 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 }
