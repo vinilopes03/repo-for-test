@@ -56,8 +56,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         }
         else
         {
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // This part will never run
         }
 
         if (privateTrue)
@@ -73,6 +95,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will be added in subsequent commits
     }
 
