@@ -19,8 +19,9 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
-// Commit 3 - Implementing the good method
+// Commit 4 - Implementing the goodB2G1 method
 public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServlet_05 extends AbstractTestCaseServlet
 {
     private boolean privateTrue = true;
@@ -48,17 +49,16 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
         }
     }
 
-    // Good method using hardcoded string
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFalse) 
         {
-            data = null; // This branch will never be executed
+            data = null; 
         } 
         else 
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = "foo"; 
         }
 
         if (privateTrue) 
@@ -66,6 +66,35 @@ public class CWE113_HTTP_Response_Splitting__getParameter_Servlet_addCookieServl
             if (data != null) 
             {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    // Good method using URL encoding for bad source
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (privateTrue) 
+        {
+            data = request.getParameter("name");
+        } 
+        else 
+        {
+            data = null; 
+        }
+
+        if (privateFalse) 
+        {
+            // This branch will never be executed
+            IO.writeLine("Benign, fixed string");
+        } 
+        else 
+        {
+            if (data != null) 
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
