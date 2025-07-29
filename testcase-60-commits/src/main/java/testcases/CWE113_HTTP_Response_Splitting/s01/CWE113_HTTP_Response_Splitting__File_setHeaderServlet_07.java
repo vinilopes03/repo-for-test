@@ -55,6 +55,10 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in future commits
+        String data = "foo"; // Use hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
+        }
     }
 }
