@@ -36,33 +36,30 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
             {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
                 try
                 {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    data = properties.getProperty("data");
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
                 }
                 catch (IOException exceptIO)
                 {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
                 }
             }
         }
@@ -85,6 +82,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
@@ -109,8 +107,8 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
@@ -148,11 +146,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
             data = null;
         }
 
-        if (PRIVATE_STATIC_FINAL_FALSE)
-        {
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (PRIVATE_STATIC_FINAL_TRUE)
         {
             if (data != null)
             {
