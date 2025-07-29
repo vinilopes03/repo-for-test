@@ -27,6 +27,8 @@ import java.sql.SQLException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extends AbstractTestCaseServlet
 {
     private int privateFive = 5;
@@ -37,16 +39,13 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extend
         if (privateFive == 5)
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
                     data = resultSet.getString(1); // Potential flaw
@@ -77,7 +76,29 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // dead code
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
