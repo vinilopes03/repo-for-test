@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 extends AbstractTestCaseServlet
 {
     private int privateFive = 5;
@@ -46,9 +48,32 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive!=5)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw: input not verified
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // This method will be implemented in subsequent commits
+        goodG2B1(request, response);
+        // Other good methods will be implemented in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
