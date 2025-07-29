@@ -56,15 +56,44 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_07 ext
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G1
+        String data;
+        if (privateFive == 5) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateFive != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for goodB2G2
+        String data;
+        if (privateFive == 5) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (privateFive == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for good
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
