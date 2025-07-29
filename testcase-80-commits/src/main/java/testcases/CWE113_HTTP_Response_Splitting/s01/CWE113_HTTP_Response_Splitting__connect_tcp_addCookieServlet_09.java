@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 extends AbstractTestCaseServlet
 {
@@ -34,7 +35,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
         if (IO.STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -52,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
                 }
                 finally
                 {
-                    /* clean up stream reading objects */
                     try
                     {
                         if (readerBuffered != null)
@@ -106,9 +105,54 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Empty for now
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
