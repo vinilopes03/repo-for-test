@@ -51,7 +51,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_01 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        goodB2G(request, response); // Final implementation
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
@@ -83,5 +83,11 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_01 ext
             Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
             response.addCookie(cookieSink);
         }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
