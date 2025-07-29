@@ -66,7 +66,14 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_31 ext
             dataCopy = data;
         }
         {
-            // Use the data
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
         }
     }
 
