@@ -27,6 +27,8 @@ import java.sql.SQLException;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_10 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -66,10 +68,34 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_10 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Use a hardcoded string
+        String data = ""; // Initialize data
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = IO.getDBConnection();
+            preparedStatement = connection.prepareStatement("select name from users where id=0");
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                data = resultSet.getString(1);
+            }
+        }
+        catch (SQLException exceptSql)
+        {
+            IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+        }
+        finally
+        {
+            try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+            try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+            try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+        }
 
         if (data != null)
         {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
