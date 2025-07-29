@@ -35,9 +35,41 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (privateReturnsTrue()) {
-            /* get system property user.home */
-            /* POTENTIAL FLAW: Read data from a system property */
             data = System.getProperty("user.home");
+        } else {
+            data = null;
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsFalse()) {
+            data = null; // This will never run
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateReturnsTrue()) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateReturnsTrue()) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         } else {
             data = null; // This will never run
         }
@@ -45,14 +77,14 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
         if (privateReturnsTrue()) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation will be added later
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
