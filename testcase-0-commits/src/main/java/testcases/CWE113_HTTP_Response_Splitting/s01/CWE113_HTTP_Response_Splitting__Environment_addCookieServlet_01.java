@@ -42,6 +42,17 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_01 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation will be added in later commits
+    }
+
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         // Implementation will be added in later commits
     }
 
