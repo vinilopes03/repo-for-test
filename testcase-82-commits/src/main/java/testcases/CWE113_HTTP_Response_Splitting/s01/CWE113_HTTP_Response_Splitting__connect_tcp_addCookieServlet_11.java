@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 extends AbstractTestCaseServlet
 {
@@ -48,7 +49,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_11 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: encode the cookie value
                 response.addCookie(cookieSink);
             }
         }
