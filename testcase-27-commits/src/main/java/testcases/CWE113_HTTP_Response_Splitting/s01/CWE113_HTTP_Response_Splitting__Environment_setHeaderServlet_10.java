@@ -11,7 +11,18 @@ import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method signature for bad
+        String data;
+        if (IO.staticTrue) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
