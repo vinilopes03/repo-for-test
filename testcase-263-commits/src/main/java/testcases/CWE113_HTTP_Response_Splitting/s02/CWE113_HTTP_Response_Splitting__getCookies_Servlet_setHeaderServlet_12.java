@@ -25,27 +25,9 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if(IO.staticReturnsTrueOrFalse())
-        {
-            data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
-            {
-                Cookie cookieSources[] = request.getCookies();
-                if (cookieSources != null)
-                {
-                    /* POTENTIAL FLAW: Read data from the first cookie value */
-                    data = cookieSources[0].getValue();
-                }
-            }
-        }
-        else
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-
-        if(IO.staticReturnsTrueOrFalse())
+        String data = getDataFromCookies(request);
+        
+        if (IO.staticReturnsTrueOrFalse())
         {
             if (data != null)
             {
@@ -59,21 +41,21 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    private String getDataFromCookies(HttpServletRequest request) {
+        String data = ""; /* initialize data in case there are no cookies */
+        Cookie cookieSources[] = request.getCookies();
+        if (cookieSources != null && cookieSources.length > 0)
+        {
+            data = cookieSources[0].getValue();
+        }
+        return data;
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if(IO.staticReturnsTrueOrFalse())
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-        else
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-
-        if(IO.staticReturnsTrueOrFalse())
+        String data = "foo"; // Good source
+        
+        if (IO.staticReturnsTrueOrFalse())
         {
             if (data != null)
             {
