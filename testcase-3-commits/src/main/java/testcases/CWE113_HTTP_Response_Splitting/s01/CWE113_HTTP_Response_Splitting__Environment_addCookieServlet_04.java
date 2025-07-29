@@ -54,8 +54,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good source
         }
         else
         {
@@ -66,7 +65,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_04 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good Sink
                 response.addCookie(cookieSink);
             }
         }
