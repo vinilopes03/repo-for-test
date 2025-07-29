@@ -60,15 +60,20 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_31 ext
         {
             String data;
 
-            // Placeholder for hardcoded string
-            data = null;
+            /* FIX: Use a hardcoded string */
+            data = "foo";
 
             dataCopy = data;
         }
         {
             String data = dataCopy;
 
-            // Placeholder for potential flaw
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
         }
     }
 
