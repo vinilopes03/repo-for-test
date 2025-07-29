@@ -83,3 +83,30 @@ public void bad(HttpServletRequest request, HttpServletResponse response) throws
         break;
     }
 }
+
+private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    String data;
+
+    switch (5) {
+    case 6:
+        data = null;
+        break;
+    default:
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+        break;
+    }
+
+    switch (7) {
+    case 7:
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+        break;
+    default:
+        IO.writeLine("Benign, fixed string");
+        break;
+    }
+}
