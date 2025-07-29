@@ -20,11 +20,60 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented later
+        String data = ""; /* Initialize data */
+
+        /* Read data from a database */
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            try
+            {
+                /* setup the connection */
+                connection = IO.getDBConnection();
+
+                /* prepare and execute a (hardcoded) query */
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+
+                /* POTENTIAL FLAW: Read data from a database query resultset */
+                if (resultSet.next()) {
+                    data = resultSet.getString(1);
+                }
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                /* Close database objects */
+                try {
+                    if (resultSet != null) resultSet.close();
+                    if (preparedStatement != null) preparedStatement.close();
+                    if (connection != null) connection.close();
+                } catch (SQLException exceptSql) {
+                    IO.logger.log(Level.WARNING, "Error closing database resources", exceptSql);
+                }
+            }
+        }
+
+        // Add cookie with potentially unsafe data
+        if (data != null) {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -32,7 +81,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
         // Method body will be implemented later
     }
 
-    // Main method for testing
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
