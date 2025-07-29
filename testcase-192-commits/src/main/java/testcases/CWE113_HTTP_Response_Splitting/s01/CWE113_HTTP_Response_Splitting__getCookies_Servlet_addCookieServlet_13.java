@@ -29,15 +29,20 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.STATIC_FINAL_FIVE != 5)
-        {
-            data = null; // This code will never run
-        }
-        else
+        if (IO.STATIC_FINAL_FIVE == 5)
         {
             // FIX: Use a hardcoded string
             data = "foo";
+        }
+        else
+        {
+            data = null; // This code will never run
         }
 
         if (IO.STATIC_FINAL_FIVE == 5)
