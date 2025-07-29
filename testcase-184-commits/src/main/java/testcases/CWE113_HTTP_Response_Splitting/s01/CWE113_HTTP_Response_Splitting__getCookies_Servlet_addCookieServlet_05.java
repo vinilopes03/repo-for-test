@@ -76,9 +76,64 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // Unused
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // POTENTIAL FLAW
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue(); // POTENTIAL FLAW
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFalse)
+        {
+            // Unused
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: use URLEncoder
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
         // Further methods will be implemented later
     }
 
