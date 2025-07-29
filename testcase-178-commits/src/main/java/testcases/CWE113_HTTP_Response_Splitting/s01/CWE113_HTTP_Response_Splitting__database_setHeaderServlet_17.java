@@ -49,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_17 extend
                 preparedStatement = connection.prepareStatement("select name from users where id=0");
                 resultSet = preparedStatement.executeQuery();
 
-                /* POTENTIAL FLAW: Read data from a database query resultset */
                 if (resultSet.next()) {
                     data = resultSet.getString(1);
                 }
@@ -65,6 +64,23 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_17 extend
                 try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
             }
         }
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
 
         for (int j = 0; j < 1; j++)
         {
