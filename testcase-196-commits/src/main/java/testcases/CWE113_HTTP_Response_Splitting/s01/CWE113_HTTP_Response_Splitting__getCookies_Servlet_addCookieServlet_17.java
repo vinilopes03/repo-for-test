@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -69,8 +70,37 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        data = ""; /* initialize data in case there are no cookies */
+
+        /* Read data from cookies */
+        {
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        }
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 }
