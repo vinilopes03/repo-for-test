@@ -19,10 +19,12 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 
 import testcasesupport.*;
 import javax.servlet.http.*;
+import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 extends AbstractTestCaseServlet {
     
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
         // Method implementation will be added later
     }
 
