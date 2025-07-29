@@ -75,6 +75,20 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation to be added
+        String data;
+        if (privateReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Will not be used
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 }
