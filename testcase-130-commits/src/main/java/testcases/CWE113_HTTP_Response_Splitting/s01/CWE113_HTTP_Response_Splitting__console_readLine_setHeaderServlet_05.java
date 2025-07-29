@@ -53,6 +53,34 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null; // This block will never execute
+        }
+        else
+        {
+            data = "foo"; // Good Source
+        }
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateTrue)
         {
@@ -62,8 +90,54 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         {
             if (data != null)
             {
-                // Good Sink: URLEncode input
-                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* Initialize data */
+            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
+                data = readerBuffered.readLine(); // Read data from the console
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (privateFalse)
+        {
+            IO.writeLine("Benign, fixed string"); // This block will never execute
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // Good Sink
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* Initialize data */
+            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
+                data = readerBuffered.readLine(); // Read data from the console
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // Good Sink
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
