@@ -368,3 +368,14 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_15 extends Ab
         }
     }
 }
+
+// Continuing from previous commit
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+}
