@@ -24,16 +24,47 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation is already done in the previous commit
+        // Implementation is already done in the previous commits
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+    }
+    
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Will not run
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE==5)
