@@ -39,20 +39,27 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
         // Other good methods will be added in later commits
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateFive != 5)
-        {
-            data = null;
-        }
-        else
+        if (privateFive == 5)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (privateFive == 5)
@@ -61,6 +68,47 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                try (FileInputStream streamFileInput = new FileInputStream(file);
+                     InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                     BufferedReader readerBuffered = new BufferedReader(readerInputStream))
+                {
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive != 5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
