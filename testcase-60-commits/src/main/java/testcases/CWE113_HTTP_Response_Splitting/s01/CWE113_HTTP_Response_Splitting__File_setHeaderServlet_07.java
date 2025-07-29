@@ -79,4 +79,50 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
             response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
         }
     }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8")))
+            {
+                data = readerBuffered.readLine(); // Read data from file
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Properly encode data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8")))
+            {
+                data = readerBuffered.readLine(); // Read data from file
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Properly encode data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
+        }
+    }
 }
