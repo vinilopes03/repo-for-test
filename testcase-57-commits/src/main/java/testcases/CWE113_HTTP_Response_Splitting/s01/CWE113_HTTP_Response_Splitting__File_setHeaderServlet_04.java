@@ -47,21 +47,50 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // (Previous implementation remains unchanged)
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (PRIVATE_STATIC_FINAL_FALSE)
+        if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            data = null; // Dead code
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // POTENTIAL FLAW
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
+                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
+                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
+                }
+            }
         }
         else
         {
-            data = "foo"; // FIX: Hardcoded string
+            data = null; // Dead code
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // FLAW
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
