@@ -69,6 +69,27 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null; // This part will not execute
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -89,7 +110,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         {
             if (data != null)
             {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
@@ -99,7 +141,9 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
