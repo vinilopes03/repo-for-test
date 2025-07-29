@@ -28,5 +28,23 @@ import java.util.logging.Level;
 import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_16 extends AbstractTestCaseServlet {
-    // Class implementation will be added in subsequent commits.
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation will be added in the next commit.
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation will be added in the next commit.
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation will be added in the next commit.
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation will be added in the next commit.
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        mainFromParent(args);
+    }
 }
