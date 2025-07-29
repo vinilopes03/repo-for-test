@@ -27,13 +27,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_14 ext
         String data;
         if (IO.staticFive == 5)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
         {
-            data = null; // Handle case when staticFive is not 5
+            data = null;
         }
 
         if (IO.staticFive == 5)
@@ -41,7 +39,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_14 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticFive==5 to IO.staticFive!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive != 5)
+        {
+            data = null; // Will not be used
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo"; // Safe hardcoded string
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
