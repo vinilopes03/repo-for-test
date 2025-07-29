@@ -122,6 +122,38 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_08 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsFalse())
+        {
+            data = null; // Dead code, but for compilation
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateReturnsTrue())
         {
@@ -139,6 +171,175 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_08 extend
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    /* setup the connection */
+                    connection = IO.getDBConnection();
+                    /* prepare and execute a (hardcoded) query */
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    /* POTENTIAL FLAW: Read data from a database query resultset */
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    /* Close database objects */
+                    try
+                    {
+                        if (resultSet != null)
+                        {
+                            resultSet.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (preparedStatement != null)
+                        {
+                            preparedStatement.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (connection != null)
+                        {
+                            connection.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Dead code, but for compilation
+        }
+
+        if (privateReturnsFalse())
+        {
+            // Dead code, but for compilation
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    /* setup the connection */
+                    connection = IO.getDBConnection();
+                    /* prepare and execute a (hardcoded) query */
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    /* POTENTIAL FLAW: Read data from a database query resultset */
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    /* Close database objects */
+                    try
+                    {
+                        if (resultSet != null)
+                        {
+                            resultSet.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (preparedStatement != null)
+                        {
+                            preparedStatement.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                    }
+
+                    try
+                    {
+                        if (connection != null)
+                        {
+                            connection.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Dead code, but for compilation
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
