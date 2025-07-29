@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -49,7 +50,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 ext
 
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
         }
     }
 
