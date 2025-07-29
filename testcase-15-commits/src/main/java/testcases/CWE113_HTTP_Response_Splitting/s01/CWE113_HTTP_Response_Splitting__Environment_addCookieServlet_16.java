@@ -1,14 +1,13 @@
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 extends AbstractTestCaseServlet
 {
-    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
 
         while (true)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
-            data = System.getenv("ADD");
+            /* FIX: Use a hardcoded string */
+            data = "foo";
             break;
         }
 
