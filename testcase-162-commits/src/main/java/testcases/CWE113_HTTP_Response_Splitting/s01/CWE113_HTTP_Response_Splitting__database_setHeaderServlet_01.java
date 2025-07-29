@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_01 extends AbstractTestCaseServlet {
 
@@ -33,17 +34,66 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_01 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation from the previous commit
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
 
-        /* FIX: Use a hardcoded string */
-        data = "foo";
+        data = ""; /* Initialize data */
+
+        /* Read data from a database */
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            try {
+                /* setup the connection */
+                connection = IO.getDBConnection();
+                /* prepare and execute a (hardcoded) query */
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+
+                /* POTENTIAL FLAW: Read data from a database query resultset */
+                data = resultSet.getString(1);
+            } catch (SQLException exceptSql) {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            } finally {
+                /* Close database objects */
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                } catch (SQLException exceptSql) {
+                    IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                }
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                } catch (SQLException exceptSql) {
+                    IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                }
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException exceptSql) {
+                    IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                }
+            }
+        }
 
         if (data != null) {
-            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
