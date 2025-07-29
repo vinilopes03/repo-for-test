@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_13 extends AbstractTestCaseServlet
 {
@@ -42,7 +43,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_13 extend
                 connection = IO.getDBConnection();
                 preparedStatement = connection.prepareStatement("select name from users where id=0");
                 resultSet = preparedStatement.executeQuery();
-                /* POTENTIAL FLAW: Read data from a database query resultset */
                 data = resultSet.getString(1);
             }
             catch (SQLException exceptSql)
@@ -68,6 +68,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_13 extend
         String data = "foo"; // Use a hardcoded string
         if (data != null)
         {
+            data = URLEncoder.encode(data, "UTF-8"); // Fix: Use URLEncoder to encode data
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
