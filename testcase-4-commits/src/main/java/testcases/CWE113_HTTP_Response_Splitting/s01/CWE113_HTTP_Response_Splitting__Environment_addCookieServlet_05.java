@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 extends AbstractTestCaseServlet
 {
@@ -74,7 +75,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         String data;
         if (privateTrue)
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
         else
@@ -92,11 +92,61 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            /* get environment variable ADD */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFalse)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other good methods will be added in subsequent commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
