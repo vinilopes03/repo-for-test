@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -57,6 +58,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         String data = "foo"; // FIX: Use a hardcoded string
         if (data != null)
         {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Good sink using URLEncoder
             response.setHeader("Location", "/author.jsp?lang=" + data); // GOOD SINK
         }
     }
