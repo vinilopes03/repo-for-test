@@ -37,12 +37,32 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data = "foo"; // Hardcoded string
 
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
             /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        // Read data from console as before...
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
             response.addCookie(cookieSink);
         }
     }
