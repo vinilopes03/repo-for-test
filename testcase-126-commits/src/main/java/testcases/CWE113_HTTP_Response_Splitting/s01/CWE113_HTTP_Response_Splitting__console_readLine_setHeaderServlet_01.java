@@ -105,4 +105,10 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
             response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
         }
     }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
 }
