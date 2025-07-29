@@ -23,36 +23,54 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation from previous commit
+        // Implementation from previous commits
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // Additional good methods can be called here
+        goodB2G(request, response);
     }
 
-    /* goodG2B() - use good source and bad sink */
-    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G() - use bad source and good sink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String dataCopy;
         {
-            String data;
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            String data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+
+            try {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                /* POTENTIAL FLAW: Read data from a .properties file */
+                data = properties.getProperty("data");
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
             dataCopy = data;
         }
         {
             String data = dataCopy;
 
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
