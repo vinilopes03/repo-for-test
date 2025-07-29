@@ -33,7 +33,7 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         }
         else
         {
-            data = null; // To avoid compiler error
+            data = null;
         }
 
         if (IO.staticFive==5)
@@ -56,6 +56,28 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         else
         {
             data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (IO.staticFive==5)
@@ -94,10 +116,34 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
