@@ -22,6 +22,7 @@ import javax.servlet.http.*;
 
 import java.io.*;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_04 extends AbstractTestCaseServlet
 {
@@ -81,8 +82,8 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_04 extends Ab
             data = "foo"; // FIX: Use a hardcoded string
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Good case
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good case with URLEncoding
+                response.addCookie(cookieSink);
             }
         }
     }
