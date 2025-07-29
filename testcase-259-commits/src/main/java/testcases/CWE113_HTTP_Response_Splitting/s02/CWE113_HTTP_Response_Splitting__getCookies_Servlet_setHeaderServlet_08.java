@@ -40,7 +40,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         if (privateReturnsTrue())
         {
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             {
                 Cookie cookieSources[] = request.getCookies();
                 if (cookieSources != null)
@@ -63,9 +62,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsFalse())
+        {
+            data = null; // This code is unreachable
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation to be done in later commits
+        goodG2B1(request, response);
+        // Other good methods to be implemented in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
