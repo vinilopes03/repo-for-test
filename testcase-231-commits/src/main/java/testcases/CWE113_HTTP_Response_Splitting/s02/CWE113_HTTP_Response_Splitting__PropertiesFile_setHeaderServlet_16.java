@@ -81,6 +81,13 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_16 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
         while (true)
