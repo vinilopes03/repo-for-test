@@ -159,7 +159,64 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_15 
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for goodB2G1 implementation
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading object */
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
