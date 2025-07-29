@@ -53,7 +53,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 ext
         String data;
         if (PRIVATE_STATIC_FINAL_FALSE)
         {
-            data = null; // This code is not reachable
+            data = null;
         }
         else
         {
@@ -69,9 +69,31 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_04 ext
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will be added in later commits
     }
 
