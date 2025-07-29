@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_07 extends AbstractTestCaseServlet
 {
@@ -100,8 +101,8 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data); // Potentially unsafe
-                response.addCookie(cookieSink);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Use URLEncoder
+                response.addCookie(cookieSink); // Safe
             }
         }
     }
