@@ -76,10 +76,131 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse) {
+            // Dead code
+            data = null;
+        } else {
+            data = "foo"; // Good source
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue) {
+            data = "foo"; // Good source
+        } else {
+            data = null; // Dead code
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (privateTrue)
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read data from socket
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Clean up resources
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) { }
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) { }
+                try { if (socket != null) socket.close(); } catch (IOException e) { }
+            }
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFalse) {
+            // Dead code
+        } else {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateTrue)
         {
-            data = "foo"; // Good source
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read data from socket
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Clean up resources
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) { }
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) { }
+                try { if (socket != null) socket.close(); } catch (IOException e) { }
+            }
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateTrue)
+        {
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
