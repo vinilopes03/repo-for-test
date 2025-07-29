@@ -87,7 +87,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_14 extend
             }
         }
 
-        if (IO.staticFive==5) // Setting the response header
+        if (IO.staticFive==5)
         {
             if (data != null)
             {
@@ -99,7 +99,25 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_14 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method placeholder
+        String data;
+        if (IO.staticFive==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Avoid compiler error
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
