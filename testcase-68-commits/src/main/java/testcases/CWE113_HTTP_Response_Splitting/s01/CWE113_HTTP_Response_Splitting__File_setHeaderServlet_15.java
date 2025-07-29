@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends AbstractTestCaseServlet {
     
@@ -46,6 +47,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data = "foo"; // Use a hardcoded string
+        data = URLEncoder.encode(data, "UTF-8"); // URL encode the data
         response.setHeader("Location", "/author.jsp?lang=" + data);
     }
 
