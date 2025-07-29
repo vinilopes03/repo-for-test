@@ -41,12 +41,10 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
             {
                 InputStreamReader readerInputStream = null;
                 BufferedReader readerBuffered = null;
-                /* read user input from console with readLine */
                 try
                 {
                     readerInputStream = new InputStreamReader(System.in, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from the console using readLine */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -84,7 +82,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
-            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
             response.addCookie(cookieSink);
         }
     }
@@ -94,17 +91,15 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded good source
         }
         else
         {
-            data = null; // This block won't run
+            data = null; // Not used
         }
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
-            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
             response.addCookie(cookieSink);
         }
     }
