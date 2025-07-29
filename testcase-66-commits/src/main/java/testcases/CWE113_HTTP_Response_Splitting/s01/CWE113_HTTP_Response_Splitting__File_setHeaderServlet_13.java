@@ -46,8 +46,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
                 streamFileInput = new FileInputStream(file);
                 readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-                /* POTENTIAL FLAW: Read data from a file */
-                data = readerBuffered.readLine();
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
             }
             catch (IOException exceptIO)
             {
@@ -55,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
             }
             finally
             {
-                /* Close stream reading objects */
                 try { if (readerBuffered != null) { readerBuffered.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                 try { if (readerInputStream != null) { readerInputStream.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                 try { if (streamFileInput != null) { streamFileInput.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
@@ -66,7 +64,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -74,7 +71,24 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // TODO: Implement good method
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Avoid potential errors
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
