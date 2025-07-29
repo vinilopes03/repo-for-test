@@ -19,11 +19,11 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_14 extends AbstractTestCaseServlet
@@ -69,7 +69,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_14 ext
         if (IO.staticFive==5)
         {
             data = "foo"; // Good source: hardcoded string
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe since data is hardcoded
+            data = URLEncoder.encode(data, "UTF-8"); // URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe since data is encoded
         }
     }
 
