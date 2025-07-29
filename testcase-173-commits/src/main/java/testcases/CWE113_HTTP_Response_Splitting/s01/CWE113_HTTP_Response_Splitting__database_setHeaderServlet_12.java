@@ -56,5 +56,14 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_12 extend
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
+        else
+        {
+            if (data != null)
+            {
+                // Another safe handling for the else case
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
